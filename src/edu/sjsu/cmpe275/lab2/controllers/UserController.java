@@ -31,6 +31,20 @@ public class UserController
 	
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	
+	@RequestMapping(value="/getSignUp")
+	public ModelAndView getUserSignup()
+	{
+		ModelAndView model = new ModelAndView("User/SignupForm");
+		return model;
+	}
+	
+	@RequestMapping(value="/getVerify")
+	public ModelAndView getVerify()
+	{
+		ModelAndView model = new ModelAndView("User/verify");
+		return model;
+	}
+	
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
 	public ModelAndView signIn(@RequestParam("email") String email, @RequestParam("password") String password)
 	{
@@ -50,22 +64,55 @@ public class UserController
 		return model; 
 	}
 	
-	@RequestMapping(value="/getSignUp")
-	public ModelAndView userForm()
+	@RequestMapping(value = "/signUp", method = RequestMethod.POST)
+	public ModelAndView signUp(@ModelAttribute("patron")  Patron patron)
 	{
-		ModelAndView model = new ModelAndView("User/SignupForm");
-		return model;
-	}
-	
-	@RequestMapping(value="/getVerify")
-	public ModelAndView getVerify()
-	{
-		ModelAndView model = new ModelAndView("User/verify");
-		return model;
+		PatronDao dao = context.getBean(PatronDao.class);
+		ModelAndView model;
+		
+		// check if sjsu id exists
+		int count = dao.countQuery("select count(p) from Patron p where p.sjsuId=" + patron.getSjsuId());
+		if(count>0)
+		{
+			model = new ModelAndView("DisplayMessage");
+			model.addObject("msg", "SJSU ID Already in use");
+		}
+		else
+		{
+			// generate verification code
+			Random rand = new Random();
+			int  code = rand.nextInt(999999) + 100000;
+			patron.setVerificationCode(code);
+			
+			// set user type 
+			if(patron.getEmail().contains("@sjsu.edu"))
+			{
+				patron.setUserType("librarian");
+			}
+			else
+			{
+				patron.setUserType("patron");
+			}
+			
+			// save user
+			dao.createPatron(patron);
+			
+			// send verification mail
+			String subject = "Verify Your Library Account";
+			String body = "Your library account verfication code is following.<br><br><h1>" + code + "</h1>";
+			String to = patron.getEmail();
+			Mail.generateAndSendEmail(subject, body, to);
+			
+			
+			model = new ModelAndView("DisplayMessage");
+			model.addObject("msg", "sign up successfull");
+		}
+		
+		return model; 
 	}
 	
 	@RequestMapping(value = "/verify", method = RequestMethod.POST)
-	public ModelAndView signUp(@RequestParam("email") String email, @RequestParam("code") int code)
+	public ModelAndView verify(@RequestParam("email") String email, @RequestParam("code") int code)
 	{
 		PatronDao dao = context.getBean(PatronDao.class);
 		Patron patron = dao.getPatron(email);
@@ -90,88 +137,4 @@ public class UserController
 		}
 		return model; 
 	}
-	
-	@RequestMapping(value = "/signUp", method = RequestMethod.POST)
-	public ModelAndView signUp(@ModelAttribute("patron")  Patron patron)
-	{
-		// generate verification code
-		Random rand = new Random();
-		int  code = rand.nextInt(999999) + 100000;
-		patron.setVerificationCode(code);
-		
-		// save patron
-		PatronDao dao = context.getBean(PatronDao.class);
-		dao.createPatron(patron);
-		
-		// send verification mail
-		String subject = "Verify Your Library Account";
-		String body = "Your library account verfication code is following.<br><br><h1>" + code + "</h1>";
-		String to = patron.getEmail();
-		Mail.generateAndSendEmail(subject, body, to);
-		
-		
-		ModelAndView model = new ModelAndView("DisplayMessage");
-		model.addObject("msg", "sign up successfull");
-		return model; 
-	}
-	
-	/*@RequestMapping(value="")
-	public ModelAndView userForm()
-	{
-		
-		ModelAndView model = new ModelAndView("User/UserForm");
-		return model;
-	}
-
-	@RequestMapping(value = "/userId"  , method = RequestMethod.POST)
-	public ModelAndView createUser(  @RequestParam Map<String, String> queryMap)
-	{
-			
-		UserDao dao = context.getBean(UserDao.class);
-		User user = dao.createUser(queryMap);
-		ModelAndView model = new ModelAndView("User/UserDetail"); 
-		model.addObject(user);
-		return model;
-	}
-	
-	
-	
-	@RequestMapping(value = "/{userId}")
-	public Object getUpdateDeleteUser(@RequestParam Map<String, String> queryMap, @PathVariable("userId") int userId, @RequestParam(required = false, defaultValue = "false" ) boolean json)
-	{
-		UserDao dao = context.getBean(UserDao.class);
-		User user;
-		
-		if(queryMap.isEmpty())
-		{
-			
-			user = dao.getUser(userId);
-		}
-		else if(json)
-		{
-			return new ResponseEntity<User>(dao.getUser(userId), HttpStatus.OK);
-		}
-		else if(queryMap.get("method").equals("update"))
-		{
-			user = dao.updateUser(queryMap,userId);
-		}
-		else
-		{		
-			dao.deleteUser(userId);
-			ModelAndView model = new ModelAndView("/User/UserForm"); 
-			return model;
-		}
-		ModelAndView model = new ModelAndView("User/UserDetail"); 
-		model.addObject(user);
-		return model;
-	}
-
-	public ResponseEntity<User> getUser(int id) {
-		UserDao dao = context.getBean(UserDao.class);
-		User user = dao.getUser(id);
-		return new ResponseEntity<User>(user, HttpStatus.CREATED);
-	}
-	*/
-	
-	
 }
