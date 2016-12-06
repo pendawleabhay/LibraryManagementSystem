@@ -76,6 +76,12 @@ public class UserController
 			dao.createPatron(patron);
 			model = new ModelAndView("DisplayMessage");
 			model.addObject("msg", "Your account is now verified");
+			
+			// send confirmation mail
+			String subject = "Library Account Verified";
+			String body = "Your library account is now verified.";
+			String to = patron.getEmail();
+			Mail.generateAndSendEmail(subject, body, to);
 		}
 		else
 		{
