@@ -53,8 +53,9 @@ public class UserController
 		ModelAndView model;
 		if(patron.getPassword().equals(password) && patron.getIsVerified()==1)
 		{
-			model = new ModelAndView("DisplayMessage");
-			model.addObject("msg", "login successfull");
+			/*model = new ModelAndView("DisplayMessage");
+			model.addObject("msg", "login successfull");*/
+			model = new ModelAndView("User/Homepage");
 		}
 		else
 		{
@@ -104,15 +105,16 @@ public class UserController
 			Mail.generateAndSendEmail(subject, body, to);
 			
 			
-			model = new ModelAndView("DisplayMessage");
-			model.addObject("msg", "sign up successfull");
+			/*model = new ModelAndView("DisplayMessage");
+			model.addObject("msg", "sign up successfull");*/
+			model = new ModelAndView("User/verify");
 		}
 		
 		return model; 
 	}
 	
 	@RequestMapping(value = "/verify", method = RequestMethod.POST)
-	public ModelAndView verify(@RequestParam("email") String email, @RequestParam("code") int code)
+	public ModelAndView verify(@RequestParam("email") String email, @RequestParam("code") int code) throws InterruptedException
 	{
 		PatronDao dao = context.getBean(PatronDao.class);
 		Patron patron = dao.getPatron(email);
@@ -121,8 +123,7 @@ public class UserController
 		{
 			patron.setIsVerified(1);
 			dao.createPatron(patron);
-			model = new ModelAndView("DisplayMessage");
-			model.addObject("msg", "Your account is now verified");
+			model = new ModelAndView("User/Homepage");
 			
 			// send confirmation mail
 			String subject = "Library Account Verified";
