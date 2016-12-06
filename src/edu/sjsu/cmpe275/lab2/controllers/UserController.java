@@ -8,6 +8,7 @@ import javax.mail.internet.AddressException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ public class UserController
 	}
 	
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
-	public ModelAndView signIn(@RequestParam("email") String email, @RequestParam("password") String password)
+	public ModelAndView signIn(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session)
 	{
 		PatronDao dao = context.getBean(PatronDao.class);
 		Patron patron = dao.getPatron(email);
@@ -55,7 +56,9 @@ public class UserController
 		{
 			/*model = new ModelAndView("DisplayMessage");
 			model.addObject("msg", "login successfull");*/
+			session.setAttribute("patron", patron);
 			model = new ModelAndView("User/Homepage");
+			model.addObject("patron", patron);
 		}
 		else
 		{
@@ -123,7 +126,7 @@ public class UserController
 		{
 			patron.setIsVerified(1);
 			dao.createPatron(patron);
-			model = new ModelAndView("User/Homepage");
+			model = new ModelAndView("index");
 			
 			// send confirmation mail
 			String subject = "Library Account Verified";

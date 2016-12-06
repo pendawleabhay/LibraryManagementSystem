@@ -7,6 +7,6 @@
 <title>HomePage</title>
 </head>
 <body>
-
+<h2>${patron.email }</h2>
 </body>
 </html>
