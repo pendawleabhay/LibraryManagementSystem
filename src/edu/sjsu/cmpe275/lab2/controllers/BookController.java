@@ -1,5 +1,7 @@
 package edu.sjsu.cmpe275.lab2.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,9 +20,16 @@ public class BookController {
 ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public ModelAndView add()
+	public ModelAndView add(HttpSession session)
 	{
-		ModelAndView model = new ModelAndView("Book/AddBook");
+		ModelAndView model;
+		if(session.getAttribute("user")!=null){
+			model = new ModelAndView("Book/AddBook");
+			return model;
+		} else {
+			model = new ModelAndView("error");
+			model.addObject("error","Please Log in before adding a book!");
+		}
 		return model; 
 	}
 
