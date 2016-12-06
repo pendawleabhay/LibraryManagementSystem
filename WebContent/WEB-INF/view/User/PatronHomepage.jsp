@@ -4,11 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>HomePage</title>
+<title>Home Page | Patron</title>
 </head>
 <body>
-<h2>${patron.email }</h2>
-
-<
+<h2>${user.email }</h2>
 </body>
 </html>

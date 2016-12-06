@@ -57,7 +57,10 @@ public class UserController
 			/*model = new ModelAndView("DisplayMessage");
 			model.addObject("msg", "login successfull");*/
 			session.setAttribute("user", user);
-			model = new ModelAndView("User/Homepage");
+			if(user.getUserType().equals("patron"))
+				model = new ModelAndView("User/PatronHomepage");
+			else
+				model = new ModelAndView("User/LibrarianHomepage");
 			model.addObject("user", user);
 		}
 		else
@@ -125,7 +128,7 @@ public class UserController
 		if(user.getVerificationCode() == code)
 		{
 			user.setIsVerified(1);
-			dao.updateUser(user);
+			dao.createUser(user);
 			model = new ModelAndView("index");
 			
 			// send confirmation mail
