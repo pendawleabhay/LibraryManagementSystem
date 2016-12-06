@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.sjsu.cmpe275.lab2.dao.PatronDao;
+import edu.sjsu.cmpe275.lab2.dao.UserDao;
 import edu.sjsu.cmpe275.lab2.entities.Book;
-import edu.sjsu.cmpe275.lab2.entities.Patron;
+import edu.sjsu.cmpe275.lab2.entities.User;
 
 @Controller
 @RequestMapping(value = "/book")
