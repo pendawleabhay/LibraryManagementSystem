@@ -18,4 +18,12 @@ public class frontcontroller
 		return model;
 	}
 	
+	@RequestMapping(value="/test")
+	public ModelAndView root1()
+	{
+		System.out.println("Test Controller");
+		ModelAndView model = new ModelAndView("error");
+		return model;
+	}
+	
 }
