@@ -18,8 +18,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name = "patron")
-public class Patron {
+@Table(name = "user")
+public class User {
 	
 		@Id
 		@Column(name = "email")

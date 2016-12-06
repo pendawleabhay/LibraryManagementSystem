@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.sjsu.cmpe275.lab2.dao.PatronDao;
+import edu.sjsu.cmpe275.lab2.dao.UserDao;
 import edu.sjsu.cmpe275.lab2.logic.Mail;
-import edu.sjsu.cmpe275.lab2.entities.Patron;
+import edu.sjsu.cmpe275.lab2.entities.User;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -49,16 +49,16 @@ public class UserController
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
 	public ModelAndView signIn(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session)
 	{
-		PatronDao dao = context.getBean(PatronDao.class);
-		Patron patron = dao.getPatron(email);
+		UserDao dao = context.getBean(UserDao.class);
+		User user = dao.getUser(email);
 		ModelAndView model;
-		if(patron.getPassword().equals(password) && patron.getIsVerified()==1)
+		if(user.getPassword().equals(password) && user.getIsVerified()==1)
 		{
 			/*model = new ModelAndView("DisplayMessage");
 			model.addObject("msg", "login successfull");*/
-			session.setAttribute("patron", patron);
+			session.setAttribute("user", user);
 			model = new ModelAndView("User/Homepage");
-			model.addObject("patron", patron);
+			model.addObject("user", user);
 		}
 		else
 		{
@@ -69,13 +69,13 @@ public class UserController
 	}
 	
 	@RequestMapping(value = "/signUp", method = RequestMethod.POST)
-	public ModelAndView signUp(@ModelAttribute("patron")  Patron patron)
+	public ModelAndView signUp(@ModelAttribute("user")  User user)
 	{
-		PatronDao dao = context.getBean(PatronDao.class);
+		UserDao dao = context.getBean(UserDao.class);
 		ModelAndView model;
 		
 		// check if sjsu id exists
-		int count = dao.countQuery("select count(p) from Patron p where p.sjsuId=" + patron.getSjsuId());
+		int count = dao.countQuery("select count(p) from User p where p.sjsuId=" + user.getSjsuId());
 		if(count>0)
 		{
 			model = new ModelAndView("DisplayMessage");
@@ -86,25 +86,25 @@ public class UserController
 			// generate verification code
 			Random rand = new Random();
 			int  code = rand.nextInt(999999) + 100000;
-			patron.setVerificationCode(code);
+			user.setVerificationCode(code);
 			
 			// set user type 
-			if(patron.getEmail().contains("@sjsu.edu"))
+			if(user.getEmail().contains("@sjsu.edu"))
 			{
-				patron.setUserType("librarian");
+				user.setUserType("librarian");
 			}
 			else
 			{
-				patron.setUserType("patron");
+				user.setUserType("user");
 			}
 			
 			// save user
-			dao.createPatron(patron);
+			dao.createUser(user);
 			
 			// send verification mail
 			String subject = "Verify Your Library Account";
 			String body = "Your library account verfication code is following.<br><br><h1>" + code + "</h1>";
-			String to = patron.getEmail();
+			String to = user.getEmail();
 			Mail.generateAndSendEmail(subject, body, to);
 			
 			
@@ -119,19 +119,19 @@ public class UserController
 	@RequestMapping(value = "/verify", method = RequestMethod.POST)
 	public ModelAndView verify(@RequestParam("email") String email, @RequestParam("code") int code) throws InterruptedException
 	{
-		PatronDao dao = context.getBean(PatronDao.class);
-		Patron patron = dao.getPatron(email);
+		UserDao dao = context.getBean(UserDao.class);
+		User user = dao.getUser(email);
 		ModelAndView model;
-		if(patron.getVerificationCode() == code)
+		if(user.getVerificationCode() == code)
 		{
-			patron.setIsVerified(1);
-			dao.createPatron(patron);
+			user.setIsVerified(1);
+			dao.updateUser(user);
 			model = new ModelAndView("index");
 			
 			// send confirmation mail
 			String subject = "Library Account Verified";
 			String body = "Your library account is now verified.";
-			String to = patron.getEmail();
+			String to = user.getEmail();
 			Mail.generateAndSendEmail(subject, body, to);
 		}
 		else

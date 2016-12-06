@@ -10,33 +10,39 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.sjsu.cmpe275.lab2.entities.Patron;
+import edu.sjsu.cmpe275.lab2.entities.User;
 import edu.sjsu.cmpe275.lab2.logic.Mail;
 
 @Repository
-public class PatronDao
+public class UserDao
 {
 	@PersistenceContext
 	private EntityManager entitymanager;
 	
 	 @Transactional
-	 public void createPatron(Patron patron)
+	 public void createUser(User user)
 	 {
-		 entitymanager.merge(patron);
+		 entitymanager.persist(user);
+	 }
+	 
+	 @Transactional
+	 public void updateUser(User user)
+	 {
+		 entitymanager.merge(user);
 	 }
 
 	 @Transactional
-	public Patron getPatron(String email)
+	public User getUser(String email)
 	{
-		 Patron patron = entitymanager.find(Patron.class, email);
-		 return patron;
+		 User user = entitymanager.find(User.class, email);
+		 return user;
 	}
 	 
 	 @Transactional
-	 public List<Patron> executeQuery(String query1)
+	 public List<User> executeQuery(String query1)
 	 {
 		 Query query = entitymanager.createQuery(query1);
-	      List<Patron> list = (List<Patron>)query.getResultList();
+	      List<User> list = (List<User>)query.getResultList();
 	      return list;
 	 }
 	 
