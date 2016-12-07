@@ -148,8 +148,9 @@ margin: 1em 0;
                     <li>
                         <a href="/lab2/user/waiting">Waiting Books</a>
                     </li>
-                    <li>
-                        <a href="/lab2/user/cart">Cart</a>
+                    
+                     <li>
+                        <a href="/lab2/issue/checkout">Check Out</a>
                     </li>
                     
                     <li class="signout">
