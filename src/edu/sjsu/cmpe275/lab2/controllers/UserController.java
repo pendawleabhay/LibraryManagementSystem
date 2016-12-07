@@ -1,5 +1,6 @@
 package edu.sjsu.cmpe275.lab2.controllers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.cmpe275.lab2.dao.BookDao;
+import edu.sjsu.cmpe275.lab2.dao.IssueDao;
 import edu.sjsu.cmpe275.lab2.dao.UserDao;
 import edu.sjsu.cmpe275.lab2.logic.Mail;
 import edu.sjsu.cmpe275.lab2.entities.Book;
@@ -33,8 +35,7 @@ public class UserController
 {
 	
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-	
-	
+	IssueDao issueDao;
 	
 	@RequestMapping(value="/getSignUp")
 	public ModelAndView getUserSignup()
@@ -156,5 +157,32 @@ public class UserController
 			model.addObject("msg", "Invalid verification code");
 		}
 		return model; 
+	}
+
+	@RequestMapping(value="/issued", method = RequestMethod.GET)
+	public ModelAndView issuedBooks(HttpSession session) {
+		ModelAndView model = null;
+		
+		User user = (User) session.getAttribute("user");
+		
+		if(user!=null && user.getUserType().equals("patron")){
+			
+			model = new ModelAndView("/User/IssuedBooks");
+			model.addObject("user", user);
+			
+			issueDao = context.getBean(IssueDao.class);
+			List<Book> issuedBooksList = issueDao.getIssuedBooks(user.getEmail());
+			
+			System.out.println("issuedBooksList length: " + issuedBooksList.size());
+			
+			if(issuedBooksList != null && issuedBooksList.size() >=1)
+				model.addObject("issuedBooksList", issuedBooksList);
+			else
+				model.addObject("message", "You have Issued no books!");
+		}else {
+			model = new ModelAndView("error");
+			model.addObject("error", "Login as a Patron to see your Issued Books!");
+		}
+		return model;
 	}
 }
