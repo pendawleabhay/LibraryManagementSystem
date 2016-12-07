@@ -109,49 +109,7 @@ margin: 1em 0;
 
 </head>
 <body>
-
-<!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                    	
-                    	<b style="color: white;, size: 20px;">${user.name }</b>
-                        
-                    </li>
-                    <li>
-                        <a href="/lab2/book/add">My Books</a>
-                    </li>
-                    <li>
-                        <a href="/lab2/book/add">Add Books</a>
-                    </li>
-                    <li>
-                        <a href="/lab2/book/add">Delete Books</a>
-                    </li>
-                    <li>
-                    <a href="/lab2/book/add">SignOut</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-
-
+			<%@ include file="NavBarLib.jsp" %>
             <div class="container">
            <!-- <form action="Dropdown.jsp"> -->
            <form action="/lab2/book/search" method = "GET">

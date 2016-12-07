@@ -37,6 +37,21 @@ public class UserController
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	IssueDao issueDao;
 	
+	@RequestMapping(value = "/signout")
+	public ModelAndView signout(HttpSession session){
+		ModelAndView model;
+		User user = (User) session.getAttribute("user");
+		
+		model = new ModelAndView("index");
+		if(user!=null) {
+			session.invalidate();
+			System.out.println("User is Signed out successfully!");
+		} else 
+			System.out.println("You must be Signed in order to Sign Out!");
+		
+		return model;
+	}
+	
 	@RequestMapping(value="/getSignUp")
 	public ModelAndView getUserSignup()
 	{
