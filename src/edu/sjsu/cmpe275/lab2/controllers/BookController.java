@@ -241,15 +241,4 @@ public class BookController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/issuebook", method = RequestMethod.POST)
-	public ModelAndView issuebooks(
-			@RequestParam(name = "bookIssue") String[] bookIssue,
-			HttpSession session
-			){
-		ModelAndView model;
-		System.out.println("bookIssue Length: " + bookIssue.length);
-		for(int index = 0; index < bookIssue.length; index++)
-			System.out.println("[" + index + "]:" + bookIssue[index]);
-		return null;
-	}
 }

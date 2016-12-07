@@ -265,8 +265,8 @@ label {
 		
 		<!-- For Patron -->
 		<c:if test="${user.userType == 'patron'}">
-			<%-- <%@ include file="NavBarPat.jsp" %> --%>
-			<form action = "/lab2/issue/issuebook" method="POST">
+			<%@ include file="NavBarPat.jsp" %>
+			<form action = "/lab2/issue/addToCart" method="POST">
 				<c:forEach items="${bookList}" var="book">
 					
 					
@@ -309,7 +309,7 @@ label {
 		    		
 				</c:forEach>
 				
-				<input class="product clearfix name btn btn-success" type="submit" value="Issue Books"/>
+				<input class="product clearfix name btn btn-success" type="submit" value="Add To Cart"/>
 				
 				
 			</form>

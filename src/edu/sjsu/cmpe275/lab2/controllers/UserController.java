@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.sjsu.cmpe275.lab2.dao.BookDao;
 import edu.sjsu.cmpe275.lab2.dao.UserDao;
 import edu.sjsu.cmpe275.lab2.logic.Mail;
+import edu.sjsu.cmpe275.lab2.entities.Book;
 import edu.sjsu.cmpe275.lab2.entities.User;
 
 @Controller
@@ -31,6 +33,8 @@ public class UserController
 {
 	
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+	
+	
 	
 	@RequestMapping(value="/getSignUp")
 	public ModelAndView getUserSignup()
@@ -58,9 +62,18 @@ public class UserController
 			model.addObject("msg", "login successfull");*/
 			session.setAttribute("user", user);
 			if(user.getUserType().equals("patron"))
+			{
 				model = new ModelAndView("User/PatronHomepage");
+				BookDao dao1 = context.getBean(BookDao.class);
+				Book book1 = dao1.getBookById(3);
+				Book book2 = dao1.getBookById(2);
+				model.addObject("book1", book1);
+				model.addObject("book2", book2);
+			}
 			else
+			{
 				model = new ModelAndView("User/LibrarianHomepage");
+			}
 			model.addObject("user", user);
 		}
 		else
@@ -98,7 +111,7 @@ public class UserController
 			}
 			else
 			{
-				user.setUserType("user");
+				user.setUserType("patron");
 			}
 			
 			// save user
@@ -128,7 +141,7 @@ public class UserController
 		if(user.getVerificationCode() == code)
 		{
 			user.setIsVerified(1);
-			dao.createUser(user);
+			dao.updateUser(user);
 			model = new ModelAndView("index");
 			
 			// send confirmation mail
