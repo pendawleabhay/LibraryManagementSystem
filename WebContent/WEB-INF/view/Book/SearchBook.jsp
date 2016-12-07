@@ -265,8 +265,8 @@ label {
 		
 		<!-- For Patron -->
 		<c:if test="${user.userType == 'patron'}">
-			<%@ include file="NavBarPat.jsp" %>
-			<form action = "/lab2/book/issuebook" method="POST">
+			<%-- <%@ include file="NavBarPat.jsp" %> --%>
+			<form action = "/lab2/issue/issuebook" method="POST">
 				<c:forEach items="${bookList}" var="book">
 					
 					
