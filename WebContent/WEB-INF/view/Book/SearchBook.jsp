@@ -207,6 +207,7 @@ label {
 	<c:if test="${bookList!=null}">		
 		<!-- For Librarian -->
 		<c:if test="${user.userType == 'librarian'}">
+			<%@ include file="NavBarLib.jsp" %>
 			<c:forEach items="${bookList}" var="book">
 				<div class="col-md-9">
 			<ul class="widget-products">
