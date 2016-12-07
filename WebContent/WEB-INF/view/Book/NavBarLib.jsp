@@ -141,18 +141,18 @@ margin: 1em 0;
                     	<b style="color: white;, size: 20px;">${user.name }</b>
                         
                     </li>
-                    <li>
-                        <a href="/lab2/book/my">My Books</a>
-                    </li>
+                    <!-- <li>
+                        <a href="/lab2/book/my">All Books</a>
+                    </li> -->
                     <li>
                         <a href="/lab2/book/add">Add Books</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="/lab2/book/add">Delete Books</a>
-                    </li>
-                    <li>
+                    </li> -->
+                    <!-- <li>
                         <a href="/lab2/book/add">Update Books</a>
-                    </li>
+                    </li> -->
                     <li class="signout">
                     <a href="/lab2/book/add">SignOut</a>
                     </li>
