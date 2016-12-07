@@ -252,7 +252,7 @@ label {
 					<!-- Form for submitting delete -->
 					<form action = "/lab2/book/delete" method="POST" class="product clearfix name">
 						<input type="hidden" name="bookid" value="${book.bookid}"/>
-						<input class="btn btn-danger" type="submit" value="Update"/>
+						<input class="btn btn-danger" type="submit" value="Delete"/>
 					</form>
 	    		</div>
 	    		</li>

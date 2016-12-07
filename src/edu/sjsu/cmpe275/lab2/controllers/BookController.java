@@ -221,20 +221,31 @@ public class BookController {
 		System.out.println("in delete book controller");
 		System.out.println("bookid: " + bookid);
 		User user = (User) session.getAttribute("user");
-		if(user!=null && user.getUserType().equals("librarian")){
+		if(user!=null && user.getUserType().equals("librarian"))
+		{
 			bookDao = context.getBean(BookDao.class);
 			Book bookGet = bookDao.getBookById(bookid);
 			
-			if(bookGet != null) {
+			if(bookGet == null) 
+			{
+				model = new ModelAndView("error");
+				model.addObject("error","Book with bookid: " + bookid + " can not be found!");
+			}
+			else if(bookGet.getNumber_of_copies() != bookGet.getCopies_available())
+			{
+				model = new ModelAndView("error");
+				model.addObject("error","Book with bookid: " + bookid + " is checked out!");
+			}
+			else 
+			{
 				bookDao.deleteBook(bookid);
 			
 				model = new ModelAndView("/User/LibrarianHomepage");
 				model.addObject("message", "Book with bookid: " + bookid + " deleted!");
-			} else {
-				model = new ModelAndView("error");
-				model.addObject("error","Book with bookid: " + bookid + " can not be found!");
-			}
-		} else {
+			} 
+		} 
+		else 
+		{
 			model = new ModelAndView("error");
 			model.addObject("error","Please Log in as librarian before deleting any book!");
 		}
