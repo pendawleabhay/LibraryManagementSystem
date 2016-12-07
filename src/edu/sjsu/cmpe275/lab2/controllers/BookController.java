@@ -171,21 +171,38 @@ public class BookController {
 		
 		System.out.println("searchType: " + searchType);
 		System.out.println("searchString: " + searchString);
+		
 		bookDao = context.getBean(BookDao.class);
 		ModelAndView model;
 		User user = (User) session.getAttribute("user");
 		
 		if(user!=null){
-			String querySearch = "select b from Book b where b." + searchType + " like '%" + searchString +"%'";
+			String querySearch;
+			//checking if search type is current_status then convert string to boolean values
+			if(searchType.equals("current_status")){
+				if(searchString.toLowerCase().equals("available"))
+					querySearch = "select b from Book b where b.current_status=1";
+				else
+					querySearch = "select b from Book b where b.current_status=0";
+			}
+			//checking if search type is year_of_publication || copies_available || number_of_copies then convert to int
+			else if(searchType.equals("year_of_publication") || searchType.equals("copies_available") || searchType.equals("number_of_copies"))
+				querySearch = "select b from Book b where b." + searchType + " = " + Integer.parseInt(searchString);
+			else if(searchType.equals("created_by") || searchType.equals("updated_by"))
+				querySearch = "select b from Book b where b." + searchType + " = '" + searchString +"'";
+			else 
+				querySearch = "select b from Book b where b." + searchType + " like '%" + searchString +"%'";
+			
 			List<Book> bookList = bookDao.getBookBySearchType(querySearch);
 			
 			model = new ModelAndView("/Book/SearchBook");
-			if(bookList!=null) {
+			if(bookList!=null && bookList.size()>=1) {
 				model.addObject("bookList", bookList);
 				model.addObject("user", user);
-			} else
+			} else{
 				model.addObject("message", "No Books Found for " + searchType + " = " + searchString +"!");
-			
+				System.out.println("message: No Books Found for " + searchType + " = " + searchString +"!" );
+			}
 		} else {
 			model = new ModelAndView("error");
 			model.addObject("error","Please Log in before searching for book!");

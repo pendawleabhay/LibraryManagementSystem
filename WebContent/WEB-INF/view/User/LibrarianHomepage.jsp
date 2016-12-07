@@ -162,6 +162,8 @@ margin: 1em 0;
 			    <option value="year_of_publication">Year Of Publication</option>
 			    <option value="copies_available">Copies Available</option>
 			    <option value="number_of_copies">Number Of Copies</option>
+			    <option value="current_status">Current Status</option>
+			    <option value="keywords">Keywords</option>
 			    <option value="created_by">Created By</option>
 			    <option value="updated_by">Updated By</option>
 			  </select>
