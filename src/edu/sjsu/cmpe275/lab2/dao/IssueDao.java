@@ -21,7 +21,7 @@ public class IssueDao
 	private EntityManager entitymanager;
 	
 	@Transactional
-	 public void issueBook(ArrayList<Issue> issueList, ArrayList<Book> bookList, User user)
+	 public void checkout(ArrayList<Issue> issueList, ArrayList<Book> bookList, User user)
 	 {
 		for(Issue issue:issueList)
 		{

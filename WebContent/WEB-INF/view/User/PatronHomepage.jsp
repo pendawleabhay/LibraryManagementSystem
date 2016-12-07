@@ -157,5 +157,9 @@ margin: 1em 0;
 </div>    
     </form>
    
+   <form action="/lab2/issue/checkout">
+   		<input type="submit" class="btn btn-primary btn-block btn-large" value="Checkout" />
+   </form>
+   
 </body>
 </html>

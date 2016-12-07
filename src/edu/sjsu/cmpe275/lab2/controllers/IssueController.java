@@ -8,9 +8,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.cmpe275.lab2.dao.BookDao;
 import edu.sjsu.cmpe275.lab2.dao.IssueDao;
@@ -26,29 +28,21 @@ public class IssueController
 {
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	
-	@RequestMapping(value ="/addToCart", method = RequestMethod.POST)
-	public void issueBook(@RequestParam("bookIssue") int[] bookids, HttpSession session)
+	@RequestMapping(value ="/checkout")
+	public ModelAndView checkout( HttpSession session)
 	{
-		// test 
-		System.out.println(bookids[0]);
+		int[] bookids = (int[]) session.getAttribute("sessionBookIds");
 		
-		IssueDao issuDao = context.getBean(IssueDao.class);
+		IssueDao issueDao = context.getBean(IssueDao.class);
 		BookDao bookDao = context.getBean(BookDao.class);
-		UserDao userDao = context.getBean(UserDao.class);
-
-		Date date = new Date();
-		System.out.println(date);
-		long ltime=date.getTime() + 30*24*60*60*1000;
-		Date today8 = new Date(ltime);
-		System.out.println(today8);
 		
-		// create object list
+		// create issue and book list
 		ArrayList<Issue> issueList = new ArrayList<Issue>();
 		ArrayList<Book> bookList = new ArrayList<Book>();
 		
 		for(int bookid:bookids)
 		{
-			//issue object
+			// add issue object to list
 			Issue issue = new Issue();
 			issue.setBookId(bookid);
 			issue.setDueDate( DateService.addDate(30));
@@ -57,19 +51,73 @@ public class IssueController
 			issue.setUserEmail(user.getEmail());
 			issueList.add(issue);
 			
-			// book object
+			// add book object to list
 			Book book = bookDao.getBookById(bookid);
 			book.setCopies_available(book.getCopies_available() - 1);
 			bookList.add(book);
-			
-			
 		}
 		
 		// user object
 		User user = (User) session.getAttribute("user");
-		user.setNoOfBooksIssued(user.getNoOfBooksIssued() + 1);
+		int[] sessionBookIds = (int[]) session.getAttribute("sessionBookIds");
+		user.setNoOfBooksIssued(user.getNoOfBooksIssued() + sessionBookIds.length);
 		
-		issuDao.issueBook(issueList, bookList, user);
+		issueDao.checkout(issueList, bookList, user);
 		
+		ModelAndView model = new ModelAndView("User/Checkout");
+		model.addObject(bookids);
+		return model;
+	}
+	
+	@RequestMapping(value ="/addToCart", method = RequestMethod.POST)
+	public ModelAndView addToCart(@RequestParam("bookIssue") int[] bookIds, HttpSession session)
+	{
+		ModelAndView model;
+		int[] sessionBookIds={};
+		if(session.getAttribute("sessionBookIds") != null)
+		{
+			sessionBookIds = (int[]) session.getAttribute("sessionBookIds");
+		}
+		System.out.println(sessionBookIds.length);
+		if(sessionBookIds.length + bookIds.length >5 )
+		{
+			model = new ModelAndView("User/PatronHomepage");
+			model.addObject("message", "You Cannot have more than 5 books in cart");
+			
+		}
+		else
+		{
+			int[] newBookIds;
+			if(sessionBookIds.length == 0)
+			{
+				newBookIds = new int[bookIds.length];
+			}
+			else
+			{
+				newBookIds = new int[sessionBookIds.length + bookIds.length];
+			}
+			int j=0;
+			for(int i=0; i< sessionBookIds.length ; i++)
+			{
+				newBookIds[j] = sessionBookIds[i];
+				j++;
+			}
+			System.out.println("j=" + j);
+			System.out.println("bookid length" + bookIds.length);
+			for(int i=0; i< bookIds.length ; i++)
+			{
+				newBookIds[j] = bookIds[i];
+				j++;
+			}
+			session.setAttribute("sessionBookIds", newBookIds);
+			model = new ModelAndView("User/PatronHomepage");
+			model.addObject("message", "Books added to cart");
+			for(int tempbook:newBookIds)
+			{
+				System.out.println(tempbook);
+			}
+		}
+		
+		return model;
 	}
 }
