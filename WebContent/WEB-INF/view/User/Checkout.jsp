@@ -17,7 +17,8 @@
 					<div class="panel-title">
 						<div class="row">
 							<div class="col-xs-6">
-								<h5><span class="glyphicon glyphicon-shopping-cart"></span> Books Cart</h5>
+								
+								<h5>${dueDate}<span class="glyphicon glyphicon-shopping-cart"></span> Books Cart</h5>
 							</div>
 							<div class="col-xs-6">
 								<form action = "/lab2/"></form>
@@ -72,6 +73,7 @@
 							<h4 class="text-right"><strong></strong></h4>
 						</div>
 						<div class="col-xs-3">
+							
 							<button type="button" class="btn btn-success btn-block">
 								Checkout
 							</button>
