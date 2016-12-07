@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<%@ include file="NavBarLib.jsp" %>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -197,18 +197,18 @@ label {
 }
 
 </style>
+
+
 <title>Book | Search</title>
 </head>
 <body>
-	<c:if test="${bookList!=null}">	
-		<c:forEach items="${bookList}" var="book">
-			<c:if test="${user.userType == 'patron'}">
-				
-			</c:if>
-			
-			
-			
-			<div class="col-md-9">
+
+	
+	<c:if test="${bookList!=null}">		
+		<!-- For Librarian -->
+		<c:if test="${user.userType == 'librarian'}">
+			<c:forEach items="${bookList}" var="book">
+				<div class="col-md-9">
 			<ul class="widget-products">
                   <li>
                      
@@ -240,28 +240,79 @@ label {
                      
                      </span>
                      
-            <!-- vansh -->
-			
-    		<div>
-    			<c:if test="${user.userType == 'librarian'}">
-    				<!-- Form for submitting update -->
-    				<form action = "/lab2/book/update" method="POST" class="product clearfix name">
-    					<input type="hidden" name="bookid" value="${book.bookid }"/>
-    					<input class="btn btn-success" type="submit" value="Update"/>
+            
+	    		<div>
+	    			<!-- Form for submitting update -->
+	    			<form action = "/lab2/book/update" method="POST" class="product clearfix name">
+	    				<input type="hidden" name="bookid" value="${book.bookid }"/>
+	    				<input class="btn btn-success" type="submit" value="Update"/>
 					</form>
-					
+						
 					<!-- Form for submitting delete -->
-					<form action = "/lab2/book/delete" method="POST" class="product clearfix name1">
-						<input type="hidden" name="bookid" value="${book.bookid }"/>
-    					<input class="btn btn-danger" type="submit" value="Delete"/>
+					<form action = "/lab2/book/delete" method="POST" class="product clearfix name">
+						<input type="hidden" name="bookid" value="${book.bookid}"/>
+						<input class="btn btn-danger" type="submit" value="Update"/>
 					</form>
-    			</c:if>
-    		</div>
-    		</li>
-    		</ul>
-    		</div>
-    		<br>
-		</c:forEach>
+	    		</div>
+	    		</li>
+	    		</ul>
+	    		</div>
+	    		<br>
+			</c:forEach>
+		</c:if>
+		
+		
+		<!-- For Patron -->
+		<c:if test="${user.userType == 'patron'}">
+			<form action = "/lab2/book/issuebook" method="POST">
+				<c:forEach items="${bookList}" var="book">
+					
+					
+					<div class="col-md-9">
+			<ul class="widget-products">
+                  <li>
+                     <input type="checkbox" name="bookIssue" value="${book.bookid}"/>
+                     <span class="img">
+                     </span>
+                     <span class="product clearfix">
+                     <span class="name"><b>Book Title:</b>
+                     <i class="fa fa-money"></i>
+                     ${book.title}
+                     </span>
+                     <span class="price"><b>Author:</b>
+                     
+                     <i class="fa fa-money"></i>${book.author}
+                     </span>
+                     
+                     <span class="price"><b>Number Of Copies:</b>
+                     
+                     <i class="fa fa-money"></i>${book.number_of_copies}
+                     </span>
+                     
+                     <span class="price"><b>Publisher:</b>
+                     
+                     <i class="fa fa-money"></i>${book.publisher}
+                     </span>
+                     <span class="price"><b>Year of Publication:</b>
+                     
+                     <i class="fa fa-money"></i>${book.year_of_publication}
+                     </span>
+                     
+                     </span>
+            
+		    		<br>
+		    		</li>
+		    		</ul>
+		    		</div>
+		    		
+				</c:forEach>
+				
+				<input class="product clearfix name btn btn-success" type="submit" value="Issue Books"/>
+				
+				
+			</form>
+			
+		</c:if>
 	</c:if>
 	
 	<c:if test="${message!=null}">
