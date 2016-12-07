@@ -39,13 +39,15 @@ public class IssueController
 		// create issue and book list
 		ArrayList<Issue> issueList = new ArrayList<Issue>();
 		ArrayList<Book> bookList = new ArrayList<Book>();
+		java.sql.Date dueDate =	null;
 		
 		for(int bookid:bookids)
 		{
 			// add issue object to list
 			Issue issue = new Issue();
 			issue.setBookId(bookid);
-			issue.setDueDate( DateService.addDate(30));
+			dueDate = DateService.addDate(30);
+			issue.setDueDate(dueDate );
 			issue.setIssueDate(DateService.addDate(0));
 			User user = (User) session.getAttribute("user");
 			issue.setUserEmail(user.getEmail());
@@ -65,7 +67,8 @@ public class IssueController
 		issueDao.checkout(issueList, bookList, user);
 		
 		ModelAndView model = new ModelAndView("User/Checkout");
-		model.addObject(bookids);
+		model.addObject(bookList);
+		model.addObject("dueDate", dueDate);
 		return model;
 	}
 	
