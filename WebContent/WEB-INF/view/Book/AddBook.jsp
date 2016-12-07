@@ -15,6 +15,7 @@
 <div id="main" class="container"> 	
 	<form name="loginform" id="loginform" action="/lab2/book/addBook" method="post" class="wpl-track-me">
 	<!-- <form name="loginform" id="loginform" action="/book/addBook" method="post" class="wpl-track-me"> --> 
+		<h2>Add Book</h2>
 		<!-- Author -->
 		<p class="login-username">
 		<label for="user_login">Author</label> 

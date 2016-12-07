@@ -15,10 +15,11 @@
 <div id="main" class="container"> 	
 	<form name="loginform" id="loginform" action="/lab2/book/updateBook" method="post" class="wpl-track-me">
 	<!-- <form name="loginform" id="loginform" action="/book/updateBook" method="post" class="wpl-track-me"> --> 
-		
+		<!-- Update Book -->
+		<h2>Update Book</h2>
 		<!-- Book ID -->
 		<p class="login-username">
-		<label for="user_login">Author</label> 
+		<label for="user_login">Book ID</label> 
 			<input type="text" name="bookid" id="bookid" class="input" placeholder="Book Id" value="${book.bookid}" size="20" readonly/>
 		</p>
 		

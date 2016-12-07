@@ -75,7 +75,11 @@ public class BookController {
 			bookDao = context.getBean(BookDao.class);
 			Book bookGet = bookDao.getBookByTitle("select b from Book b where b.title='" + book.getTitle() + "'");
 			if(bookGet != null) {
-				model = new ModelAndView("redirect:/book/update?bookid=" + bookGet.getBookid() + "&book=" + bookGet);
+				//model = new ModelAndView("redirect:/book/update?bookid=" + bookGet.getBookid());
+				model = new ModelAndView("/Book/UpdateBook");
+				//model.addObject("errorMessage", "Book Title already exist");
+				model.addObject("book", bookGet);
+				model.addObject("user",user);
 				//this.updateBook(bookGet, session);
 				//model.addObject("errorMessage", "Book Title already exist");
 				//model.addObject("book",bookGet);
