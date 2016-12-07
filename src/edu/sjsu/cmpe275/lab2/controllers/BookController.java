@@ -1,5 +1,7 @@
 package edu.sjsu.cmpe275.lab2.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -21,16 +23,6 @@ public class BookController {
 
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	BookDao bookDao;
-	
-	/*@RequestMapping(value = "/test", method = RequestMethod.POST)
-	public ModelAndView addBook1(@ModelAttribute("book") Book book)
-	{
-		ModelAndView model = new ModelAndView("error");
-		System.out.println("testing book controller");
-		System.out.println("Book Name: " + book.getAuthor());
-		model.addObject("error", "Testing Done");
-		return model;
-	}*/
 	
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add(HttpSession session)
@@ -98,20 +90,30 @@ public class BookController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ModelAndView update(
-			@RequestParam("book") Book book,
+			@RequestParam("bookid") String bookidStr,
 			HttpSession session){
-		
+		System.out.println("bookidStr: " + bookidStr);
+		int bookid = Integer.parseInt(bookidStr);
 		ModelAndView model;
 		System.out.println("in update controller");
+		System.out.println("bookid: " + bookid);
 		User user = (User) session.getAttribute("user");
 		if(user!=null && user.getUserType().equals("librarian")) {
 			System.out.println("in if user!=null");
-			model = new ModelAndView("/Book/UpdateBook");
-			//model.addObject("errorMessage", "Book Title already exist");
-			model.addObject("user",user);
-			model.addObject("book", book);
+			bookDao = context.getBean(BookDao.class);
+			Book bookGet = bookDao.getBookById(bookid);
+			
+			if(bookGet != null) {
+				model = new ModelAndView("/Book/UpdateBook");
+				//model.addObject("errorMessage", "Book Title already exist");
+				model.addObject("user",user);
+				model.addObject("book", bookGet);
+			} else {
+				model = new ModelAndView("error");
+				model.addObject("error","Wrong Book ID!");
+			}
 		}else {
 			model = new ModelAndView("error");
 			model.addObject("error","Wrong URL!");
@@ -157,6 +159,68 @@ public class BookController {
 			model.addObject("error","Please Log in as a Librarian before adding a book!");
 		}
 		
+		return model;
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public ModelAndView search(
+			@RequestParam("searchType") String searchType,
+			@RequestParam("searchString") String searchString,
+			HttpSession session
+			) {
+		
+		System.out.println("searchType: " + searchType);
+		System.out.println("searchString: " + searchString);
+		bookDao = context.getBean(BookDao.class);
+		ModelAndView model;
+		User user = (User) session.getAttribute("user");
+		
+		if(user!=null){
+			String querySearch = "select b from Book b where b." + searchType + " like '%" + searchString +"%'";
+			List<Book> bookList = bookDao.getBookBySearchType(querySearch);
+			
+			model = new ModelAndView("/Book/SearchBook");
+			if(bookList!=null) {
+				model.addObject("bookList", bookList);
+				model.addObject("user", user);
+			} else
+				model.addObject("message", "No Books Found for " + searchType + " = " + searchString +"!");
+			
+		} else {
+			model = new ModelAndView("error");
+			model.addObject("error","Please Log in before searching for book!");
+		}
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public ModelAndView delete(
+			@RequestParam(name = "bookid") String bookidStr,
+			HttpSession session){
+		ModelAndView model;
+		System.out.println("bookidStr: " + bookidStr);
+		int bookid = Integer.parseInt(bookidStr);
+		System.out.println("in delete book controller");
+		System.out.println("bookid: " + bookid);
+		User user = (User) session.getAttribute("user");
+		if(user!=null && user.getUserType().equals("librarian")){
+			bookDao = context.getBean(BookDao.class);
+			Book bookGet = bookDao.getBookById(bookid);
+			
+			if(bookGet != null) {
+				bookDao.deleteBook(bookid);
+			
+				model = new ModelAndView("/User/LibrarianHomepage");
+				model.addObject("message", "Book with bookid: " + bookid + " deleted!");
+			} else {
+				model = new ModelAndView("error");
+				model.addObject("error","Book with bookid: " + bookid + " can not be found!");
+			}
+		} else {
+			model = new ModelAndView("error");
+			model.addObject("error","Please Log in as librarian before deleting any book!");
+		}
 		return model;
 	}
 }

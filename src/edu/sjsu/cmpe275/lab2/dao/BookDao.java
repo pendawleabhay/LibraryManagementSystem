@@ -29,6 +29,20 @@ public class BookDao {
 		 entitymanager.merge(book);
 	}
 	
+	//Get Books by Different Search Type
+	@Transactional
+	public List<Book> getBookBySearchType(String querySearch){
+		Query query = entitymanager.createQuery(querySearch);
+		try{
+			List<Book> bookList = (List<Book>)query.getResultList();
+			System.out.println("bookList Length: " + bookList.size());
+			return bookList;
+		} catch(NoResultException e){
+			System.out.println("No Books Found!");
+			return null;
+		}
+	}
+	
 	//Get Book By ID
 	@Transactional
 	public Book getBookById(int bookid){
@@ -67,7 +81,8 @@ public class BookDao {
 	}
 	
 	@Transactional
-	public void deleteBook(Book book){
+	public void deleteBook(int bookid){
+		Book book = entitymanager.find(Book.class, bookid);
 		entitymanager.remove(book);
 	}
 	
