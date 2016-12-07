@@ -39,30 +39,51 @@ public class IssueDao
 	 }
 	
 	@Transactional
-	public List<Book> getIssuedBooks(String userEmail) {
+	public List<Issue> getIssuedBooksId(String userEmail) {
 		List<Book> issuedBooks = new ArrayList<Book>();
-		String queryGetIssuedBookId = "select i.bookId from Issue i where i.userEmail='" + userEmail + "'";
+		String queryGetIssuedBookId = "select i from Issue i where i.userEmail='" + userEmail + "'";
 		
 		Query queryForIssuedBookId = entitymanager.createQuery(queryGetIssuedBookId);
 		
 		try{
-			List<Integer> issuedBookidList = (List<Integer>)queryForIssuedBookId.getResultList();
+			List<Issue> issuedBookidList = (List<Issue>)queryForIssuedBookId.getResultList();
 			System.out.println("issuedBookList length: " + issuedBookidList.size());
 			
-			if(issuedBookidList.size()>=1){
-				for(int index = 0;index < issuedBookidList.size(); index++){
-					String queryGetIssuedBooks = "select b from Book b where b.bookid = " + issuedBookidList.get(index);
-					Query query = entitymanager.createQuery(queryGetIssuedBooks);
-					Book book = (Book)query.getSingleResult();
-					issuedBooks.add(book);
-				}
-			}
-			//issuedBooks = (List<Book>)query.getResultList();
-			System.out.println("List length is: " + issuedBooks.size());
+			if(issuedBookidList.size()>=1)
+				return issuedBookidList;
+			else
+				return null;
 		} catch(NoResultException e) {
 			System.out.println("No books found for user " + userEmail);
 			return null;
 		}
-		return issuedBooks;
+	}
+	
+	@Transactional
+	public List<Book> getIssuedBooks(List<Issue> issuedBookidList) {
+		List<Book> issuedBooks;
+		System.out.println("in getIssuedBooks Dao");
+		System.out.println("getIssuedBookidList size: " + issuedBookidList.size());
+		try{
+			
+			if(issuedBookidList.size()>=1){
+				issuedBooks = new ArrayList<Book>();
+				for(int index = 0;index < issuedBookidList.size(); index++){
+					Issue issue = issuedBookidList.get(index);
+					String queryGetIssuedBooks = "select b from Book b where b.bookid = " + issue.getBookId();
+					Query query = entitymanager.createQuery(queryGetIssuedBooks);
+					Book book = (Book)query.getSingleResult();
+					issuedBooks.add(book);
+				}
+				System.out.println("List length in IssdueDao is: " + issuedBooks.size());
+				return issuedBooks;
+			} else 
+				return null;
+			//issuedBooks = (List<Book>)query.getResultList();
+			
+		} catch(NoResultException e) {
+			System.out.println("No books found for user!");
+			return null;
+		}
 	}
 }

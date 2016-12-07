@@ -10,8 +10,10 @@
 <body>
 	<c:choose>
 		<c:when test="${issuedBooksList != null}">
-			<c:forEach items="${issuedBooksList}" var="book">
-				<div>${book.bookid} - ${book.title}</div>
+			<c:forEach var = "index" begin = "0" end = "${size-1}">
+				<div>BookId : ${issuedBooksList[index].bookid} --- Title : ${issuedBooksList[index].title}</div>
+				<div>Issue Date : ${issuedBookIdList[index].issueDate}</div>
+				<div>Due Date : ${issuedBookIdList[index].dueDate}</div>
 			</c:forEach>
 		</c:when>
 		
