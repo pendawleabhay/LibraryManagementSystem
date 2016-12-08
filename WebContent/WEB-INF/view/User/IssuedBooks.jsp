@@ -236,7 +236,7 @@ label {
                      </span>
             			
 		    		<br>
-		    		<form action = "/lab2/book/return" method="POST" class="product clearfix name">
+		    		<form action = "/book/return" method="POST" class="product clearfix name">
 						
 						<input class="btn btn-warning" type="submit" value="Return"/>
 					</form>

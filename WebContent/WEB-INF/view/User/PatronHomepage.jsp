@@ -115,7 +115,7 @@ margin: 1em 0;
 
             <div class="container">
            <!-- <form action="Dropdown.jsp"> -->
-           <form action="/lab2/book/search" method = "GET">
+           <form action="/book/search" method = "GET">
 			  <select style="left:170px;" name="searchType" class="input-group">
 			    <option value="author">Author</option>
 			    <option value="title">Title</option>
@@ -135,7 +135,7 @@ margin: 1em 0;
                 <input type="text" class="form-control" placeholder="Search for Books" name = "searchString"/>
                 <div class="input-group-btn">
                     <div class="btn-group" role="group"></div>
-                    	<!-- <form action = "/lab2/book/search" method = "GET"> -->
+                    	<!-- <form action = "/book/search" method = "GET"> -->
                         	<!-- <select style="left:170px;" name="item" class="input-group">
 							    <option value="author">Author</option>
 							    <option value="title">Title</option>

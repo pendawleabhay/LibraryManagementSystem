@@ -75,7 +75,7 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 <div class="login">
 <h1>Verify Your Account</h1>
     
-    <form action="/lab2/user/verify" method="post">
+    <form action="/user/verify" method="post">
     	<input type="text" name="email" placeholder="Your Email Id" required="required" />
     	<input type="text" name="code" placeholder="Verification Code" required="required" />
     	

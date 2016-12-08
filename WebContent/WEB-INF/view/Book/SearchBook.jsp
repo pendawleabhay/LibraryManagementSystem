@@ -244,13 +244,13 @@ label {
             
 	    		<div>
 	    			<!-- Form for submitting update -->
-	    			<form action = "/lab2/book/update" method="POST" class="product clearfix name">
+	    			<form action = "/book/update" method="POST" class="product clearfix name">
 	    				<input type="hidden" name="bookid" value="${book.bookid }"/>
 	    				<input class="btn btn-success" type="submit" value="Update"/>
 					</form>
 						
 					<!-- Form for submitting delete -->
-					<form action = "/lab2/book/delete" method="POST" class="product clearfix name">
+					<form action = "/book/delete" method="POST" class="product clearfix name">
 						<input type="hidden" name="bookid" value="${book.bookid}"/>
 						<input class="btn btn-danger" type="submit" value="Delete"/>
 					</form>
@@ -266,7 +266,7 @@ label {
 		<!-- For Patron -->
 		<c:if test="${user.userType == 'patron'}">
 			<%@ include file="NavBarPat.jsp" %>
-			<form action = "/lab2/issue/addToCart" method="POST">
+			<form action = "/issue/addToCart" method="POST">
 				<c:forEach items="${bookList}" var="book">
 					
 					

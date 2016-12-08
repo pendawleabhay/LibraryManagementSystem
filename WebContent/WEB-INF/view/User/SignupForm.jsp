@@ -79,7 +79,7 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 <div class="login">
     <h1>SJSU Library Sign Up</h1>
     
-    <form action="/lab2/user/signUp" method="post">
+    <form action="/user/signUp" method="post">
     	<input type="text" name="name" placeholder="Your Name" required="required" />
     	<input type="text" name="sjsuId" placeholder="SJSU ID" required="required" />
     	<input type="text" name="email" placeholder="Email Id" required="required" />
@@ -91,7 +91,7 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 	</form>
 	
 	<h4>Already have an account?</h4>
-	<form action="/lab2/" method="post">
+	<form action="/" method="post">
 	<input type="submit" class="btn btn-primary btn-block btn-large" value="Login Here" />
 	
 	</form>
