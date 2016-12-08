@@ -99,7 +99,7 @@ public class IssueController
 			
 			model = new ModelAndView("User/Checkout");
 			model.addObject(bookList);
-			model.addObject("dueDate", dueDate);
+			model.addObject("size", bookList.size());
 			
 			// send Mail
 			emailBody = emailBody.concat("<br><br>Due Date: " + dueDate);
