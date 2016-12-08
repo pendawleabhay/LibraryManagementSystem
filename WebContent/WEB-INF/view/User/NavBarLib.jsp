@@ -141,9 +141,7 @@ margin: 1em 0;
                     	<b style="color: white;, size: 20px;">${user.name }</b>
                         
                     </li>
-                    <li>
-                        <a href="/lab2/book/my">My Books</a>
-                    </li>
+                    
                     <li>
                         <a href="/lab2/book/add">Add Books</a>
                     </li>
