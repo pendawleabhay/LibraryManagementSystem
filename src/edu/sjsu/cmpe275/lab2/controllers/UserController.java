@@ -27,6 +27,7 @@ import edu.sjsu.cmpe275.lab2.dao.IssueDao;
 import edu.sjsu.cmpe275.lab2.dao.UserDao;
 import edu.sjsu.cmpe275.lab2.logic.Mail;
 import edu.sjsu.cmpe275.lab2.entities.Book;
+import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
 
 @Controller
@@ -186,14 +187,17 @@ public class UserController
 			model.addObject("user", user);
 			
 			issueDao = context.getBean(IssueDao.class);
-			List<Book> issuedBooksList = issueDao.getIssuedBooks(user.getEmail());
-			
-			System.out.println("issuedBooksList length: " + issuedBooksList.size());
-			
-			if(issuedBooksList != null && issuedBooksList.size() >=1)
+			List<Issue> issuedBookIdList = issueDao.getIssuedBooksId(user.getEmail());
+			System.out.println("issuedBookIdList length in controller: " + issuedBookIdList.size());
+			if(issuedBookIdList != null && issuedBookIdList.size()>=1){
+				List<Book> issuedBooksList = issueDao.getIssuedBooks(issuedBookIdList);
+				model.addObject("size", issuedBooksList.size());
 				model.addObject("issuedBooksList", issuedBooksList);
-			else
+				model.addObject("issuedBookIdList", issuedBookIdList);
+				System.out.println("issuedBooksList length: " + issuedBooksList.size());
+			} else
 				model.addObject("message", "You have Issued no books!");
+			
 		}else {
 			model = new ModelAndView("error");
 			model.addObject("error", "Login as a Patron to see your Issued Books!");
