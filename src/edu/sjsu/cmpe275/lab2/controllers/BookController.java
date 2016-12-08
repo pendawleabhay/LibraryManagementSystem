@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.cmpe275.lab2.dao.BookDao;
+import edu.sjsu.cmpe275.lab2.dao.IssueDao;
 import edu.sjsu.cmpe275.lab2.dao.UserDao;
 import edu.sjsu.cmpe275.lab2.entities.Book;
+import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
 
 @Controller
@@ -23,6 +25,8 @@ public class BookController {
 
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	BookDao bookDao;
+	IssueDao issueDao;
+	UserDao userDao;
 	
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add(HttpSession session)
@@ -248,6 +252,47 @@ public class BookController {
 		{
 			model = new ModelAndView("error");
 			model.addObject("error","Please Log in as librarian before deleting any book!");
+		}
+		return model;
+	}
+	
+	@RequestMapping(value = "/return", method = RequestMethod.POST)
+	public ModelAndView returnBook(
+			@RequestParam(name = "bookid") String bookStr,
+			HttpSession session){
+		ModelAndView model=null;
+		
+		System.out.println("BookidStr: " + bookStr);
+		int bookid = Integer.parseInt(bookStr);
+		System.out.println("BookId int: " + bookid);
+
+		User user = (User)session.getAttribute("user");
+		if(user!=null && user.getUserType().equals("patron")) {
+			bookDao = context.getBean(BookDao.class);
+			issueDao = context.getBean(IssueDao.class);
+			userDao = context.getBean(UserDao.class);
+			
+			//Removing Issue
+			Issue issue = issueDao.getIssueById("select i from Issue i where i.bookId=" + bookid + " and i.userEmail='" + user.getEmail() + "'");
+			if(issue!=null)
+				issueDao.deleteIssue(issue.getIssueId());
+			else
+				System.out.println("No Issue Found");
+			
+			//Update Book
+			Book book = bookDao.getBookById(bookid);
+			if(book!=null){
+				book.setCopies_available(book.getCopies_available()+1);
+				bookDao.updateBook(book);
+			}
+				
+			//Update User
+			user.setNoOfBooksIssued(user.getNoOfBooksIssued()-1);
+			userDao.updateUser(user);
+			session.setAttribute("user", user);
+			
+			model = new ModelAndView("/User/PatronHomepage");
+			model.addObject("message","Book has been Returned!");
 		}
 		return model;
 	}

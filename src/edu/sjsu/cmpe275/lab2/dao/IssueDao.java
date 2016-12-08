@@ -94,4 +94,23 @@ public class IssueDao
 			return null;
 		}
 	}
+	
+	@Transactional
+	public Issue getIssueById(String queryId){
+		try {
+			Query query = entitymanager.createQuery(queryId);
+			Issue issue = (Issue)query.getSingleResult();
+			return issue;
+		} catch(NoResultException e){
+			System.out.println("No Issue found for user!");
+			return null;
+		}
+	}
+	
+	@Transactional
+	public void deleteIssue(int issueid)
+	{
+		Issue issue= entitymanager.find(Issue.class, issueid);
+		entitymanager.remove(issue);
+	}
 }
