@@ -38,6 +38,13 @@ public class IssueController
 		BookDao bookDao = context.getBean(BookDao.class);
 		User user = (User) session.getAttribute("user");
 		
+		
+		if(bookids==null || bookids.length<1){
+			model = new ModelAndView("User/PatronHomepage");
+			model.addObject("message", "No books in your cart to Checkout!");
+			return model;
+		}
+			
 		String query3 = "select count(i) from Issue i where i.userEmail='" + user.getEmail() + "' AND i.issueDate='" + DateService.addDate(0) +"'";
 		int countToday = issueDao.countQuery(query3 );
 		System.out.println("query" + query3);
@@ -99,7 +106,7 @@ public class IssueController
 			
 			model = new ModelAndView("User/Checkout");
 			model.addObject(bookList);
-			model.addObject("size", bookList.size());
+			model.addObject("dueDate", dueDate);
 			
 			// send Mail
 			emailBody = emailBody.concat("<br><br>Due Date: " + dueDate);
