@@ -161,5 +161,6 @@ margin: 1em 0;
    		<input type="submit" class="btn btn-primary btn-block btn-large" value="Checkout" />
    </form>
    --> 
+   <h6> ${message} </h6>
 </body>
 </html>

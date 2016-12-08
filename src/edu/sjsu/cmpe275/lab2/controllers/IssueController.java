@@ -21,6 +21,7 @@ import edu.sjsu.cmpe275.lab2.entities.Book;
 import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
 import edu.sjsu.cmpe275.lab2.logic.DateService;
+import edu.sjsu.cmpe275.lab2.logic.Mail;
 
 @Controller
 @RequestMapping(value = "/issue")
@@ -31,44 +32,84 @@ public class IssueController
 	@RequestMapping(value ="/checkout")
 	public ModelAndView checkout( HttpSession session)
 	{
+		ModelAndView model;
 		int[] bookids = (int[]) session.getAttribute("sessionBookIds");
-		
 		IssueDao issueDao = context.getBean(IssueDao.class);
 		BookDao bookDao = context.getBean(BookDao.class);
+		User user = (User) session.getAttribute("user");
 		
-		// create issue and book list
-		ArrayList<Issue> issueList = new ArrayList<Issue>();
-		ArrayList<Book> bookList = new ArrayList<Book>();
-		java.sql.Date dueDate =	null;
+		String query3 = "select count(i) from Issue i where i.userEmail='" + user.getEmail() + "' AND i.issueDate='" + DateService.addDate(0) +"'";
+		int countToday = issueDao.countQuery(query3 );
+		System.out.println("query" + query3);
+		System.out.println("count today =" + countToday);
 		
-		for(int bookid:bookids)
+		int totalCount = issueDao.countQuery("select count(i) from Issue i where i.userEmail='" + user.getEmail() + "'" );
+		System.out.println("totalcount" + totalCount);
+		
+		// check if already checked out more than 5 books for the day
+		if(countToday + bookids.length >5)
 		{
-			// add issue object to list
-			Issue issue = new Issue();
-			issue.setBookId(bookid);
-			dueDate = DateService.addDate(30);
-			issue.setDueDate(dueDate );
-			issue.setIssueDate(DateService.addDate(0));
-			User user = (User) session.getAttribute("user");
-			issue.setUserEmail(user.getEmail());
-			issueList.add(issue);
-			
-			// add book object to list
-			Book book = bookDao.getBookById(bookid);
-			book.setCopies_available(book.getCopies_available() - 1);
-			bookList.add(book);
+			model = new ModelAndView("User/PatronHomepage");
+			model.addObject("message","You cannot issue more than 5 books for the day");
 		}
 		
-		// user object
-		User user = (User) session.getAttribute("user");
-		int[] sessionBookIds = (int[]) session.getAttribute("sessionBookIds");
-		user.setNoOfBooksIssued(user.getNoOfBooksIssued() + sessionBookIds.length);
+		// check if total books issued not more than 10
+		else if(totalCount>10)
+		{
+			model = new ModelAndView("User/PatronHomepage");
+			model.addObject("message","You cannot issue more than 10 books");
+		}
+		else
+		{
+			// create issue and book list
+			ArrayList<Issue> issueList = new ArrayList<Issue>();
+			ArrayList<Book> bookList = new ArrayList<Book>();
+			java.sql.Date dueDate =	null;
+			
+			String emailBody = "Your Order is";
+			
+			for(int bookid:bookids)
+			{
+				// add issue object to list
+				Issue issue = new Issue();
+				issue.setBookId(bookid);
+				dueDate = DateService.addDate(30);
+				issue.setDueDate(dueDate );
+				issue.setIssueDate(DateService.addDate(0));
+				issue.setUserEmail(user.getEmail());
+				issueList.add(issue);
+				
+				// add book object to list
+				Book book = bookDao.getBookById(bookid);
+				book.setCopies_available(book.getCopies_available() - 1);
+				bookList.add(book);
+				
+				// add books to mail
+				emailBody = emailBody.concat("<br><br> Book ID:" + book.getBookid() +
+											"<br> Title:" + book.getTitle() + 
+											"<br> Author:" + book.getAuthor()
+											);
+			}
+			
+			// user object
+			int[] sessionBookIds = (int[]) session.getAttribute("sessionBookIds");
+			user.setNoOfBooksIssued(user.getNoOfBooksIssued() + sessionBookIds.length);
+			
+			issueDao.checkout(issueList, bookList, user);
+			
+			model = new ModelAndView("User/Checkout");
+			model.addObject(bookList);
+			model.addObject("dueDate", dueDate);
+			
+			// send Mail
+			emailBody = emailBody.concat("<br><br>Due Date: " + dueDate);
+			//Mail.generateAndSendEmail("Your Order", emailBody, user.getEmail());
+		}
 		
-		issueDao.checkout(issueList, bookList, user);
+		int[] sessionBookIds1 = (int[]) session.getAttribute("sessionBookIds");
+		System.out.println("cart" + sessionBookIds1.length);
+		session.setAttribute("sessionBookIds", null);
 		
-		ModelAndView model = new ModelAndView("User/Checkout");
-		model.addObject(bookList);
-		model.addObject("dueDate", dueDate);
 		return model;
 	}
 	
@@ -81,7 +122,6 @@ public class IssueController
 		{
 			sessionBookIds = (int[]) session.getAttribute("sessionBookIds");
 		}
-		System.out.println(sessionBookIds.length);
 		if(sessionBookIds.length + bookIds.length >5 )
 		{
 			model = new ModelAndView("User/PatronHomepage");
@@ -120,6 +160,9 @@ public class IssueController
 				System.out.println(tempbook);
 			}
 		}
+		
+		int[] sessionBookIds1 = (int[]) session.getAttribute("sessionBookIds");
+		System.out.println("cart" + sessionBookIds1.length);
 		
 		return model;
 	}

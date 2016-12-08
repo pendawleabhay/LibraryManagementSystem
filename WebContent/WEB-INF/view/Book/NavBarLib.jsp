@@ -154,7 +154,7 @@ margin: 1em 0;
                         <a href="/lab2/book/add">Update Books</a>
                     </li> -->
                     <li class="signout">
-                    <a href="/lab2/book/add">SignOut</a>
+                    <a href="/lab2/user/signout">SignOut</a>
                     </li>
                 </ul>
             </div>
