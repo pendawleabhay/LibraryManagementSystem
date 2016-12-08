@@ -39,6 +39,13 @@ public class IssueDao
 	 }
 	
 	@Transactional
+	public int countQuery(String query1)
+	 {
+		 int count = Integer.parseInt(entitymanager.createQuery(query1).getSingleResult().toString());
+	      return count;
+	 }
+	
+	@Transactional
 	public List<Issue> getIssuedBooksId(String userEmail) {
 		List<Book> issuedBooks = new ArrayList<Book>();
 		String queryGetIssuedBookId = "select i from Issue i where i.userEmail='" + userEmail + "'";
@@ -58,7 +65,8 @@ public class IssueDao
 			return null;
 		}
 	}
-	
+
+
 	@Transactional
 	public List<Book> getIssuedBooks(List<Issue> issuedBookidList) {
 		List<Book> issuedBooks;
