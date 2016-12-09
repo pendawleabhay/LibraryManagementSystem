@@ -112,7 +112,7 @@ margin: 1em 0;
 			<%@ include file="NavBarLib.jsp" %>
             <div class="container">
            <!-- <form action="Dropdown.jsp"> -->
-           <form action="/book/search" method = "GET">
+           <form action="/lab2/book/search" method = "GET">
 			  <select style="left:170px;" name="searchType" class="input-group">
 			    <option value="author">Author</option>
 			    <option value="title">Title</option>

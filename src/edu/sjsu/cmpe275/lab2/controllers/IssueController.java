@@ -104,8 +104,10 @@ public class IssueController
 			
 			issueDao.checkout(issueList, bookList, user);
 			
+			System.out.println("bookList Length: " + bookList.size());
+			
 			model = new ModelAndView("User/Checkout");
-			model.addObject(bookList);
+			model.addObject("bookList", bookList);
 			model.addObject("dueDate", dueDate);
 			
 			// send Mail

@@ -236,7 +236,7 @@ label {
                      </span>
             			
 		    		<br>
-		    		<form action = "/book/return" method="POST" class="product clearfix name">
+		    		<form action = "/lab2/book/return" method="POST" class="product clearfix name">
 						<input type="hidden" name="bookid" value="${issuedBooksList[index].bookid}"/>
 						<input class="btn btn-warning" type="submit" value="Return"/>
 					</form>

@@ -139,21 +139,21 @@ margin: 1em 0;
                 <ul class="nav navbar-nav">
                     <li>
                     	
-                    	<a href="/user/home">
+                    	<a href="//lab2/user/home">
                     	<b style="color: white;, size: 20px;">${user.name }</b>
                         </a>
                     </li>
                     <li>
-                        <a href="/user/issued">Issued Books</a>
+                        <a href="/lab2/user/issued">Issued Books</a>
                     </li>
                     
                     
                      <li>
-                        <a href="/issue/checkout">Check Out</a>
+                        <a href="/lab2/issue/checkout">Check Out</a>
                     </li>
                     
                     <li class="signout">
-                    	<a href="/user/signout">SignOut</a>
+                    	<a href="/lab2/user/signout">SignOut</a>
                     </li>
                 </ul>
             </div>
