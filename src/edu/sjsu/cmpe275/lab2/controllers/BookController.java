@@ -178,6 +178,7 @@ public class BookController {
 		System.out.println("searchString: " + searchString);
 		
 		bookDao = context.getBean(BookDao.class);
+		issueDao = context.getBean(IssueDao.class);
 		ModelAndView model;
 		User user = (User) session.getAttribute("user");
 		
@@ -203,18 +204,14 @@ public class BookController {
 			model = new ModelAndView("/Book/SearchBook");
 			if(bookList!=null && bookList.size()>=1) {
 				model.addObject("bookList", bookList);
-				/*if(user.getUserType().equals("patron"))
+				if(user.getUserType().equals("patron"))
 				{
 					querySearch = "select i.bookId from Issue i where i.userEmail='" + user.getEmail() + "'";
 					System.out.println(querySearch);
-					List<Issue> bookidList = (List<Issue>) issueDao.getBookIds(querySearch);
-					int[] bookidarr = new int[bookidList.size()];
-					for(int i=0; i<bookidList.size(); i++)
-					{
-						bookidarr[i] = bookidList.get(i).getBookId();
-					}
-					model.addObject(bookidarr);
-				}*/
+					List<Integer> bookidList = new ArrayList<Integer>();
+					bookidList = (List<Integer>) issueDao.getBookIds(querySearch);
+					model.addObject(bookidList);
+				}
 				model.addObject("user", user);
 			} else{
 				model.addObject("message", "No Books Found for " + searchType + " = " + searchString +"!");

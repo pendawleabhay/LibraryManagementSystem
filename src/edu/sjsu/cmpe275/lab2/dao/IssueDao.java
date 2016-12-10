@@ -115,18 +115,18 @@ public class IssueDao
 	}
 	
 	@Transactional
-	public List<Issue> getBookIds(String queryId){
+	public List<Integer> getBookIds(String queryId){
 		try {
 			Query query = entitymanager.createQuery(queryId);
-			List<Issue> bookIds = query.getResultList();
-			System.out.println("*******************");
-			for(Issue temp: bookIds)
+			List<Integer> bookIds =  query.getResultList();
+			
+			for(Integer temp: bookIds)
 			{
-				System.out.println(temp.getBookId());
+				System.out.println(temp);
 			}
 			return bookIds;
+			
 		} catch(NoResultException e){
-			System.out.println("No Issue found for user!");
 			return null;
 		}
 	}
