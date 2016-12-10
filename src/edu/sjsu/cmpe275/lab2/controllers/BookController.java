@@ -1,5 +1,6 @@
 package edu.sjsu.cmpe275.lab2.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -202,12 +203,18 @@ public class BookController {
 			model = new ModelAndView("/Book/SearchBook");
 			if(bookList!=null && bookList.size()>=1) {
 				model.addObject("bookList", bookList);
-				if(user.getUserType().equals("patron"))
+				/*if(user.getUserType().equals("patron"))
 				{
-					querySearch = "select i from Issue where i.userEmail='" + user.getEmail() + "'";
-					List bookidList = issueDao.getBookIds(querySearch);
-					model.addObject(bookidList);
-				}
+					querySearch = "select i.bookId from Issue i where i.userEmail='" + user.getEmail() + "'";
+					System.out.println(querySearch);
+					List<Issue> bookidList = (List<Issue>) issueDao.getBookIds(querySearch);
+					int[] bookidarr = new int[bookidList.size()];
+					for(int i=0; i<bookidList.size(); i++)
+					{
+						bookidarr[i] = bookidList.get(i).getBookId();
+					}
+					model.addObject(bookidarr);
+				}*/
 				model.addObject("user", user);
 			} else{
 				model.addObject("message", "No Books Found for " + searchType + " = " + searchString +"!");
