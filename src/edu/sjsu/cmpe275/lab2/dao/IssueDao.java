@@ -1,5 +1,6 @@
 package edu.sjsu.cmpe275.lab2.dao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.sjsu.cmpe275.lab2.entities.Book;
 import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
+import edu.sjsu.cmpe275.lab2.entities.Waitlist;
 
 @Repository
 public class IssueDao
@@ -22,7 +24,7 @@ public class IssueDao
 	private EntityManager entitymanager;
 	
 	@Transactional
-	 public void checkout(ArrayList<Issue> issueList, ArrayList<Book> bookList, User user)
+	 public void checkout(ArrayList<Issue> issueList, ArrayList<Book> bookList, User user, ArrayList<Waitlist> waitlists) throws Exception
 	 {
 		for(Issue issue:issueList)
 		{
@@ -32,6 +34,11 @@ public class IssueDao
 		for(Book book: bookList)
 		{
 			entitymanager.merge(book);
+		}
+		
+		for(Waitlist waitlist : waitlists)
+		{
+			entitymanager.persist(waitlist);
 		}
 		
 		entitymanager.merge(user);

@@ -1,6 +1,7 @@
 package edu.sjsu.cmpe275.lab2.controllers;
 
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.NestedServletException;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import edu.sjsu.cmpe275.lab2.dao.BookDao;
 import edu.sjsu.cmpe275.lab2.dao.IssueDao;
@@ -20,6 +24,7 @@ import edu.sjsu.cmpe275.lab2.dao.UserDao;
 import edu.sjsu.cmpe275.lab2.entities.Book;
 import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
+import edu.sjsu.cmpe275.lab2.entities.Waitlist;
 import edu.sjsu.cmpe275.lab2.logic.DateService;
 import edu.sjsu.cmpe275.lab2.logic.Mail;
 
@@ -33,7 +38,7 @@ public class IssueController
 	public ModelAndView checkout( HttpSession session)
 	{
 		ModelAndView model;
-		int[] bookids = (int[]) session.getAttribute("sessionBookIds");
+		int[] bookids = (int[]) session.getAttribute("issueCart");
 		IssueDao issueDao = context.getBean(IssueDao.class);
 		BookDao bookDao = context.getBean(BookDao.class);
 		User user = (User) session.getAttribute("user");
@@ -98,11 +103,38 @@ public class IssueController
 											);
 			}
 			
-			// user object
-			int[] sessionBookIds = (int[]) session.getAttribute("sessionBookIds");
-			user.setNoOfBooksIssued(user.getNoOfBooksIssued() + sessionBookIds.length);
 			
-			issueDao.checkout(issueList, bookList, user);
+			
+			// user object
+			int[] issueCart = (int[]) session.getAttribute("issueCart");
+			user.setNoOfBooksIssued(user.getNoOfBooksIssued() + issueCart.length);
+			
+			// waitlist object
+			ArrayList<Waitlist> waitlists = new ArrayList<Waitlist>();
+			int[] waitlistCart = (int[]) session.getAttribute("waitlistCart");
+			
+			for(int tempBookId : waitlistCart)
+			{
+				Waitlist waitlist = new Waitlist();
+				waitlist.setBookId(tempBookId);
+				waitlist.setUserEmail(user.getEmail());
+				waitlist.setWaitlistDate(DateService.addDate(0));
+				waitlists.add(waitlist);
+			}
+			
+			
+				
+					try
+					{
+						issueDao.checkout(issueList, bookList, user, waitlists);
+					} catch (Exception e)
+					{
+						// TODO Auto-generated catch block
+						System.out.println("*************************************************************************************");
+						//e.printStackTrace();
+					}
+				
+			
 			
 			System.out.println("bookList Length: " + bookList.size());
 			
@@ -115,9 +147,10 @@ public class IssueController
 			//Mail.generateAndSendEmail("Your Order", emailBody, user.getEmail());
 		}
 		
-		int[] sessionBookIds1 = (int[]) session.getAttribute("sessionBookIds");
-		System.out.println("cart" + sessionBookIds1.length);
-		session.setAttribute("sessionBookIds", null);
+		int[] issueCart1 = (int[]) session.getAttribute("issueCart");
+		System.out.println("cart" + issueCart1.length);
+		int[] issueCart2={};
+		session.setAttribute("issueCart", issueCart2);
 		
 		return model;
 	}
@@ -126,12 +159,8 @@ public class IssueController
 	public ModelAndView addToCart(@RequestParam("bookIssue") int[] bookIds, HttpSession session)
 	{
 		ModelAndView model;
-		int[] sessionBookIds={};
-		if(session.getAttribute("sessionBookIds") != null)
-		{
-			sessionBookIds = (int[]) session.getAttribute("sessionBookIds");
-		}
-		if(sessionBookIds.length + bookIds.length >5 )
+		int[] issueCart = (int[]) session.getAttribute("issueCart");
+		if(issueCart.length + bookIds.length >5 )
 		{
 			model = new ModelAndView("User/PatronHomepage");
 			model.addObject("message", "You Cannot have more than 5 books in cart");
@@ -140,39 +169,78 @@ public class IssueController
 		else
 		{
 			int[] newBookIds;
-			if(sessionBookIds.length == 0)
+			if(issueCart.length == 0)
 			{
 				newBookIds = new int[bookIds.length];
 			}
 			else
 			{
-				newBookIds = new int[sessionBookIds.length + bookIds.length];
+				newBookIds = new int[issueCart.length + bookIds.length];
 			}
 			int j=0;
-			for(int i=0; i< sessionBookIds.length ; i++)
+			for(int i=0; i< issueCart.length ; i++)
 			{
-				newBookIds[j] = sessionBookIds[i];
+				newBookIds[j] = issueCart[i];
 				j++;
 			}
 			System.out.println("j=" + j);
 			System.out.println("bookid length" + bookIds.length);
+			for(int i=0; i< issueCart.length ; i++)
+			{
+				newBookIds[j] = issueCart[i];
+				j++;
+			}
 			for(int i=0; i< bookIds.length ; i++)
 			{
 				newBookIds[j] = bookIds[i];
 				j++;
 			}
-			session.setAttribute("sessionBookIds", newBookIds);
+			session.setAttribute("issueCart", newBookIds);
 			model = new ModelAndView("User/PatronHomepage");
-			model.addObject("message", "Books added to cart");
+			model.addObject("message", bookIds.length + " books added to Cart");
 			for(int tempbook:newBookIds)
 			{
 				System.out.println(tempbook);
 			}
 		}
 		
-		int[] sessionBookIds1 = (int[]) session.getAttribute("sessionBookIds");
-		System.out.println("cart" + sessionBookIds1.length);
+		int[] issueCart1 = (int[]) session.getAttribute("issueCart");
+		System.out.println("cart" + issueCart1.length);
 		
 		return model;
 	}
+
+	public ModelAndView addToWaitlist(@RequestParam("bookIssue") int[] bookIds, HttpSession session)
+	{
+		ModelAndView model;
+		int[] waitlistCart = (int[]) session.getAttribute("waitlistCart");
+		User user = (User) session.getAttribute("user");
+		
+		// 
+		int[] newBookIds = null;
+		int j=0;
+		for(int i=0; i< waitlistCart.length ; i++)
+		{
+			newBookIds[j] = waitlistCart[i];
+			j++;
+		}
+		for(int i=0; i< bookIds.length ; i++)
+		{
+			newBookIds[j] = bookIds[i];
+			j++;
+		}
+		session.setAttribute("waitlistCart", newBookIds);
+		model = new ModelAndView("User/PatronHomepage");
+		model.addObject("message", bookIds.length + " books added to Cart");
+		for(int tempbook:newBookIds)
+		{
+			System.out.println(tempbook);
+		}
+		int[] waitlistCart1 = (int[]) session.getAttribute("waitlistCart");
+		System.out.println("cart" + waitlistCart1.length);
+		
+		return model;
+	}
+
+	
 }

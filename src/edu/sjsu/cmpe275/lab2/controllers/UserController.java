@@ -38,6 +38,21 @@ public class UserController
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	IssueDao issueDao;
 	
+	@RequestMapping(value = "/home")
+	public ModelAndView home(HttpSession session) {
+		ModelAndView model;
+		User user = (User)session.getAttribute("user");
+		if(user!=null){
+			if(user.getUserType().equals("patron"))
+				model = new ModelAndView("/User/PatronHomepage");
+			else
+				model = new ModelAndView("/User/LibrarianHomepage");
+		} else {
+			model = new ModelAndView("redirect:/");
+		}
+		return model;
+	}
+	
 	@RequestMapping(value = "/signout")
 	public ModelAndView signout(HttpSession session){
 		ModelAndView model;
@@ -75,17 +90,18 @@ public class UserController
 		ModelAndView model;
 		if(user.getPassword().equals(password) && user.getIsVerified()==1)
 		{
-			/*model = new ModelAndView("DisplayMessage");
-			model.addObject("msg", "login successfull");*/
+			// set user details in session
 			session.setAttribute("user", user);
 			if(user.getUserType().equals("patron"))
 			{
+				// set carts in session
+				int[] issueCart={};
+				session.setAttribute("issueCart", issueCart);
+				int[] waitlistCart={};
+				session.setAttribute("waitlistCart", waitlistCart);
+				
 				model = new ModelAndView("User/PatronHomepage");
 				BookDao dao1 = context.getBean(BookDao.class);
-				Book book1 = dao1.getBookById(3);
-				Book book2 = dao1.getBookById(2);
-				model.addObject("book1", book1);
-				model.addObject("book2", book2);
 			}
 			else
 			{
