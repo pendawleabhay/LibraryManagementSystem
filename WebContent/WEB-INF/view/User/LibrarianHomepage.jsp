@@ -113,7 +113,12 @@ margin: 1em 0;
             <div class="container">
            <!-- <form action="Dropdown.jsp"> -->
            <form action="/lab2/book/search" method = "GET">
-			  <select style="left:170px;" name="searchType" class="input-group">
+			  
+  
+	<div class="row">
+		<div class="col-md-12">
+            <div class="input-group" id="adv-search">
+            <select name="searchType" class="input-group">
 			    <option value="author">Author</option>
 			    <option value="title">Title</option>
 			    <option value="publisher">Publisher</option>
@@ -125,24 +130,10 @@ margin: 1em 0;
 			    <option value="created_by">Created By</option>
 			    <option value="updated_by">Updated By</option>
 			  </select>
-  
-	<div class="row">
-		<div class="col-md-12">
-            <div class="input-group" id="adv-search">
                 <input type="text" class="form-control" placeholder="Search for Books" name = "searchString"/>
                 <div class="input-group-btn">
                     <div class="btn-group" role="group"></div>
-                    	<!-- <form action = "/book/search" method = "GET"> -->
-                        	<!-- <select style="left:170px;" name="item" class="input-group">
-							    <option value="author">Author</option>
-							    <option value="title">Title</option>
-							    <option value="publisher">Publisher</option>
-							    <option value="year_of_publication">Year Of Publication</option>
-							    <option value="copies_available">Copies Available</option>
-							    <option value="number_of_copies">Number Of Copies</option>
-							    <option value="created_by">Created By</option>
-							    <option value="updated_by">Updated By</option>
-							  </select> -->
+                    	
                         	<input type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></input>
                     	<!-- </form> -->
                     </div>

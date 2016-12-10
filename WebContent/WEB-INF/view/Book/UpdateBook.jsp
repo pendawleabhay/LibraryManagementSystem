@@ -148,7 +148,7 @@ margin: 1em 0;
 <%@ include file="NavBarLib.jsp" %>
 
 <div id="main" class="container absolute centerpage form-group"> 	
-	<form name="loginform" id="loginform" action="/book/updateBook" method="post" class="wpl-track-me">
+	<form name="loginform" id="loginform" action="/lab2/book/updateBook" method="post" class="wpl-track-me">
 	<!-- <form name="loginform" id="loginform" action="/book/updateBook" method="post" class="wpl-track-me"> --> 
 		<!-- Update Book -->
 		<h3 style="top:50px;">Update Book</h3>

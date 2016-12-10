@@ -213,7 +213,7 @@ public class UserController
 				System.out.println("issuedBooksList length: " + issuedBooksList.size());
 			} else
 				model.addObject("message", "You have Issued no books!");
-			
+				
 		}else {
 			model = new ModelAndView("error");
 			model.addObject("error", "Login as a Patron to see your Issued Books!");

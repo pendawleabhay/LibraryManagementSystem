@@ -202,6 +202,12 @@ public class BookController {
 			model = new ModelAndView("/Book/SearchBook");
 			if(bookList!=null && bookList.size()>=1) {
 				model.addObject("bookList", bookList);
+				if(user.getUserType().equals("patron"))
+				{
+					querySearch = "select i from Issue where i.userEmail='" + user.getEmail() + "'";
+					List bookidList = issueDao.getBookIds(querySearch);
+					model.addObject(bookidList);
+				}
 				model.addObject("user", user);
 			} else{
 				model.addObject("message", "No Books Found for " + searchType + " = " + searchString +"!");

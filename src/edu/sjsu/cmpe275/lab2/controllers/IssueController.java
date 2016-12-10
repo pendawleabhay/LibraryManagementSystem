@@ -122,20 +122,9 @@ public class IssueController
 				waitlists.add(waitlist);
 			}
 			
-			
-				
-					try
-					{
-						issueDao.checkout(issueList, bookList, user, waitlists);
-					} catch (Exception e)
-					{
-						// TODO Auto-generated catch block
-						System.out.println("*************************************************************************************");
-						//e.printStackTrace();
-					}
-				
-			
-			
+			issueDao.checkout(issueList, bookList, user, waitlists);
+					
+	
 			System.out.println("bookList Length: " + bookList.size());
 			
 			model = new ModelAndView("User/Checkout");

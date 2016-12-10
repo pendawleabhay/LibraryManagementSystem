@@ -113,7 +113,14 @@
 <body>
 	<div class="container">
 		<form action="/lab2/book/search" method = "GET">
-			<select style="left:170px;" name="searchType" class="input-group">
+			
+		
+			 
+  
+	<div class="row">
+		<div class="col-md-12">
+    		<div class="input-group" id="adv-search">
+    		<select name="searchType" class="input-group">
 				<option value="author">Author</option>
 			    <option value="title">Title</option>
 			    <option value="publisher">Publisher</option>
@@ -125,23 +132,20 @@
 			    <option value="created_by">Created By</option>
 			    <option value="updated_by">Updated By</option>
 			 </select>
-  
-	<div class="row">
-		<div class="col-md-12">
-    		<div class="input-group" id="adv-search">
             	<input type="text" class="form-control" placeholder="Search for Books" name = "searchString"/>
                 	<div class="input-group-btn">
                     	<div class="btn-group" role="group"></div>
                     		<input type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></input>
                     	
                   		</div>
+                  		<h3 style="bold;" class="container input-group col-md-12"> ${message} </h3>
                 	</div>
             </div>
         </div>
         </form>
     </div>    
     	
-   <h5 class="container input-group"> ${message} </h5>
+   
    
 </body>
 </html>

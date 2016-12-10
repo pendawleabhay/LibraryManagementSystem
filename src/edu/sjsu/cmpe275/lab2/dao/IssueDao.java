@@ -24,7 +24,7 @@ public class IssueDao
 	private EntityManager entitymanager;
 	
 	@Transactional
-	 public void checkout(ArrayList<Issue> issueList, ArrayList<Book> bookList, User user, ArrayList<Waitlist> waitlists) throws Exception
+	 public void checkout(ArrayList<Issue> issueList, ArrayList<Book> bookList, User user, ArrayList<Waitlist> waitlists) 
 	 {
 		for(Issue issue:issueList)
 		{
@@ -108,6 +108,18 @@ public class IssueDao
 			Query query = entitymanager.createQuery(queryId);
 			Issue issue = (Issue)query.getSingleResult();
 			return issue;
+		} catch(NoResultException e){
+			System.out.println("No Issue found for user!");
+			return null;
+		}
+	}
+	
+	@Transactional
+	public List getBookIds(String queryId){
+		try {
+			Query query = entitymanager.createQuery(queryId);
+			List bookIds = query.getResultList();
+			return bookIds;
 		} catch(NoResultException e){
 			System.out.println("No Issue found for user!");
 			return null;

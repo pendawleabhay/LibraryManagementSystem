@@ -27,6 +27,23 @@
     color: #cccccc;
     font-size: 1.3em;
 }
+.row.vertical-divider {
+  overflow: hidden;
+}
+.row.vertical-divider > div[class^="col-"] {
+  text-align: center;
+  padding-bottom: 100px;
+  margin-bottom: -100px;
+  border-left: 3px solid #F2F7F9;
+  border-right: 3px solid #F2F7F9;
+}
+.row.vertical-divider div[class^="col-"]:first-child {
+  border-left: none;
+}
+.row.vertical-divider div[class^="col-"]:last-child {
+  border-right: none;
+}
+
 .btn-success {
     background-color: #2ecc71;
     border-color: #27ae60;
@@ -199,16 +216,22 @@ label {
 </style>
 
 
-<title>Book | Search</title>
+<title>Book | Search Results</title>
 </head>
 <body>
-
+	<div class="modal-body row vertical-divider" style="margin-top: 30px">
+	 <div class="col-md-6">
+	<h2 style="bold;">
+	Available Books</h2>
+	
+	
 	
 	<c:if test="${bookList!=null}">		
 		<!-- For Librarian -->
 		<c:if test="${user.userType == 'librarian'}">
 			<%@ include file="NavBarLib.jsp" %>
 			<c:forEach items="${bookList}" var="book">
+				<c:if test="${book.copies_available>0}">
 				<div class="col-md-9">
 			<ul class="widget-products">
                   <li>
@@ -225,9 +248,9 @@ label {
                      <i class="fa fa-money"></i>${book.author}
                      </span>
                      
-                     <span class="price"><b>Number Of Copies:</b>
+                     <span class="price"><b>Copies Available:</b>
                      
-                     <i class="fa fa-money"></i>${book.number_of_copies}
+                     <i class="fa fa-money"></i>${book.copies_available}
                      </span>
                      
                      <span class="price"><b>Publisher:</b>
@@ -259,8 +282,11 @@ label {
 	    		</ul>
 	    		</div>
 	    		<br>
+	    		
+	    		</c:if>
 			</c:forEach>
 		</c:if>
+		
 		
 		
 		<!-- For Patron -->
@@ -268,12 +294,13 @@ label {
 			<%@ include file="NavBarPat.jsp" %>
 			<form action = "/lab2/issue/addToCart" method="POST">
 				<c:forEach items="${bookList}" var="book">
+				<c:if test="${book.copies_available>0}">
 					
 					
 					<div class="col-md-9">
 			<ul class="widget-products">
                   <li>
-                     <input type="checkbox" name="bookIssue" value="${book.bookid}"/>
+                     <input style=" text-align: left;"  type="checkbox" name="bookIssue" value="${book.bookid}"/>
                      <span class="img">
                      </span>
                      <span class="product clearfix">
@@ -286,9 +313,9 @@ label {
                      <i class="fa fa-money"></i>${book.author}
                      </span>
                      
-                     <span class="price"><b>Number Of Copies:</b>
+                     <span class="price"><b>Copies Available:</b>
                      
-                     <i class="fa fa-money"></i>${book.number_of_copies}
+                     <i class="fa fa-money"></i>${book.copies_available}
                      </span>
                      
                      <span class="price"><b>Publisher:</b>
@@ -306,7 +333,7 @@ label {
 		    		</li>
 		    		</ul>
 		    		</div>
-		    		
+		    		</c:if>
 				</c:forEach>
 				
 				<input class="product clearfix name btn btn-success" type="submit" value="Add To Cart"/>
@@ -320,5 +347,138 @@ label {
 	<c:if test="${message!=null}">
 		<div>${message}</div>
 	</c:if>
+	</div>
+	<div class="col-md-6">
+	<h2 style="bold;">
+	Not Available Books</h2>
+	
+	
+	
+	<c:if test="${bookList!=null}">		
+		<!-- For Librarian -->
+		<c:if test="${user.userType == 'librarian'}">
+			<%@ include file="NavBarLib.jsp" %>
+			<c:forEach items="${bookList}" var="book">
+				<c:if test="${book.copies_available==0}">
+				<div class="col-md-9">
+			<ul class="widget-products">
+                  <li>
+                     
+                     <span class="img">
+                     </span>
+                     <span class="product clearfix">
+                     <span class="name"><b>Book Title:</b>
+                     <i class="fa fa-money"></i>
+                     ${book.title}
+                     </span>
+                     <span class="price"><b>Author:</b>
+                     
+                     <i class="fa fa-money"></i>${book.author}
+                     </span>
+                     
+                     <span class="price"><b>Copies Available:</b>
+                     
+                     <i class="fa fa-money"></i>${book.copies_available}
+                     </span>
+                     
+                     <span class="price"><b>Publisher:</b>
+                     
+                     <i class="fa fa-money"></i>${book.publisher}
+                     </span>
+                     <span class="price"><b>Year of Publication:</b>
+                     
+                     <i class="fa fa-money"></i>${book.year_of_publication}
+                     </span>
+                     
+                     </span>
+                     
+            
+	    		<div>
+	    			<!-- Form for submitting update -->
+	    			<form action = "/lab2/book/update" method="POST" class="product clearfix name">
+	    				<input type="hidden" name="bookid" value="${book.bookid }"/>
+	    				<input class="btn btn-success" type="submit" value="Update"/>
+					</form>
+						
+					<!-- Form for submitting delete -->
+					<form action = "/lab2/book/delete" method="POST" class="product clearfix name">
+						<input type="hidden" name="bookid" value="${book.bookid}"/>
+						<input class="btn btn-danger" type="submit" value="Delete"/>
+					</form>
+	    		</div>
+	    		</li>
+	    		</ul>
+	    		</div>
+	    		<br>
+	    		
+	    		</c:if>
+			</c:forEach>
+		</c:if>
+		
+		
+		
+		<!-- For Patron -->
+		<c:if test="${user.userType == 'patron'}">
+			<%@ include file="NavBarPat.jsp" %>
+			<form action = "/lab2/issue/addToCart" method="POST">
+				<c:forEach items="${bookList}" var="book">
+				<c:if test="${book.copies_available==0}">
+					
+					
+					<div class="col-md-9">
+			<ul class="widget-products">
+                  <li>
+                     <input style=" text-align: left;" type="checkbox" name="bookIssue" value="${book.bookid}"/>
+                     <span class="img">
+                     </span>
+                     <span class="product clearfix">
+                     <span class="name"><b>Book Title:</b>
+                     <i class="fa fa-money"></i>
+                     ${book.title}
+                     </span>
+                     <span class="price"><b>Author:</b>
+                     
+                     <i class="fa fa-money"></i>${book.author}
+                     </span>
+                     
+                     <span class="price"><b>Copies Available:</b>
+                     
+                     <i class="fa fa-money"></i>${book.copies_available}
+                     </span>
+                     
+                     <span class="price"><b>Publisher:</b>
+                     
+                     <i class="fa fa-money"></i>${book.publisher}
+                     </span>
+                     <span class="price"><b>Year of Publication:</b>
+                     
+                     <i class="fa fa-money"></i>${book.year_of_publication}
+                     </span>
+                     
+                     </span>
+            
+		    		<br>
+		    		</li>
+		    		</ul>
+		    		</div>
+		    		</c:if>
+				</c:forEach>
+				
+				<input class="product clearfix name btn btn-warning" type="submit" value="Wait list Books"/>
+				
+				
+			</form>
+			
+		</c:if>
+	</c:if>
+	
+	<c:if test="${message!=null}">
+		<div>${message}</div>
+	</c:if>
+	
+		
+	</div>
+	</div>
+	
 </body>
 </html>
