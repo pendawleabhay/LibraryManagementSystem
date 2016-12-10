@@ -138,14 +138,14 @@
                     		<input type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></input>
                     	
                   		</div>
-                  		<h3 style="bold;" class="container input-group col-md-12"> ${message} </h3>
+                  		
                 	</div>
             </div>
         </div>
         </form>
     </div>    
     	
-   
+   <h3 style="bold; text-align: center;" class="container input-group col-md-12"> ${message} </h3>
    
 </body>
 </html>

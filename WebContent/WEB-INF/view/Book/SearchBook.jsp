@@ -219,7 +219,7 @@ label {
 <title>Book | Search Results</title>
 </head>
 <body>
-	<div class="modal-body row vertical-divider" style="margin-top: 30px">
+	<div class="modal-body row vertical-divider" style="margin-top: -100px">
 	 <div class="col-md-6">
 	<h2 style="bold;">
 	Available Books</h2>
@@ -271,7 +271,6 @@ label {
 	    				<input type="hidden" name="bookid" value="${book.bookid }"/>
 	    				<input class="btn btn-success" type="submit" value="Update"/>
 					</form>
-						
 					<!-- Form for submitting delete -->
 					<form action = "/lab2/book/delete" method="POST" class="product clearfix name">
 						<input type="hidden" name="bookid" value="${book.bookid}"/>

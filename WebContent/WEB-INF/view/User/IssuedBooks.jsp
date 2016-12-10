@@ -30,6 +30,23 @@
     color: #cccccc;
     font-size: 1.3em;
 }
+.row.vertical-divider {
+  overflow: hidden;
+}
+.row.vertical-divider > div[class^="col-"] {
+  text-align: center;
+  padding-bottom: 100px;
+  margin-bottom: -100px;
+  border-left: 3px solid #F2F7F9;
+  border-right: 3px solid #F2F7F9;
+}
+.row.vertical-divider div[class^="col-"]:first-child {
+  border-left: none;
+}
+.row.vertical-divider div[class^="col-"]:last-child {
+  border-right: none;
+}
+
 .btn-success {
     background-color: #2ecc71;
     border-color: #27ae60;
@@ -205,6 +222,10 @@ label {
 <%@ include file="NavBarUser.jsp" %>
 </head>
 <body>
+<div class="modal-body row vertical-divider" style="margin-top: -100px">
+	 <div class="col-md-6">
+	<h2 style="bold;">
+	Issued Books</h2>
 	<c:choose>
 		<c:when test="${issuedBooksList != null}">
 			<c:forEach var = "index" begin = "0" end = "${size-1}">
@@ -235,11 +256,12 @@ label {
                      
                      </span>
             			
-		    		<br>
-		    		<form action = "/lab2/book/return" method="POST" class="product clearfix name">
+		    		
+		    		<form action = "/lab2/book/return" method="POST" class="product">
 						<input type="hidden" name="bookid" value="${issuedBooksList[index].bookid}"/>
 						<input class="btn btn-warning" type="submit" value="Return"/>
 					</form>
+					<br>
 		    		</li>
 		    		</ul>
 		    		</div>
@@ -253,5 +275,13 @@ label {
 			<h3>${message}</h3>
 		</c:when>
 	</c:choose>
+	
+	</div>
+	
+	<div class="col-md-6">
+	<h2 style="bold;">
+	Waitlisted Books</h2>
+	</div>
+	</div>
 </body>
 </html>
