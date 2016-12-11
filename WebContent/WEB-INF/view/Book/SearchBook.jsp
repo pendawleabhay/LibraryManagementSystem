@@ -11,8 +11,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
 <style>
-
-
 .widget-products li>a:after {
     content: "\f138";
     font-family: FontAwesome;
@@ -43,7 +41,6 @@
 .row.vertical-divider div[class^="col-"]:last-child {
   border-right: none;
 }
-
 .btn-success {
     background-color: #2ecc71;
     border-color: #27ae60;
@@ -212,7 +209,6 @@ label {
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
-
 </style>
 
 
@@ -226,11 +222,11 @@ label {
 	
 	
 	
-	<c:if test="${searchResultBookList!=null}">		
+	<c:if test="${bookList!=null}">		
 		<!-- For Librarian -->
 		<c:if test="${user.userType == 'librarian'}">
 			<%@ include file="NavBarLib.jsp" %>
-			<c:forEach items="${searchResultBookList}" var="book">
+			<c:forEach items="${bookList}" var="book">
 				<c:if test="${book.copies_available>0}">
 				<div class="col-md-9">
 			<ul class="widget-products">
@@ -292,18 +288,13 @@ label {
 		<c:if test="${user.userType == 'patron'}">
 			<%@ include file="NavBarPat.jsp" %>
 			<form action = "/lab2/issue/addToCart" method="POST">
-				<c:forEach items="${searchResultBookList}" var="book">
+				<c:forEach items="${bookList}" var="book">
 				<c:if test="${book.copies_available>0}">
 					
 					
 					<div class="col-md-9">
 			<ul class="widget-products">
                   <li>
-                  	<% if (day == 1 | day == 7) { %>
-				      <p> Today is weekend</p>
-					<% } else { %>
-					      <p> Today is not weekend</p>
-					<% } %>
                      <input style=" text-align: left;"  type="checkbox" name="bookIssue" value="${book.bookid}"/>
                      <span class="img">
                      </span>
@@ -342,11 +333,11 @@ label {
 	<div class="col-md-6">
 	<h2 style="bold;">
 	Not Available Books</h2>
-	<c:if test="${searchResultBookList!=null}">		
+	<c:if test="${bookList!=null}">		
 		<!-- For Librarian -->
 		<c:if test="${user.userType == 'librarian'}">
 			<%@ include file="NavBarLib.jsp" %>
-			<c:forEach items="${searchResultBookList}" var="book">
+			<c:forEach items="${bookList}" var="book">
 				<c:if test="${book.copies_available==0}">
 				<div class="col-md-9">
 			<ul class="widget-products">
@@ -394,7 +385,7 @@ label {
 		<c:if test="${user.userType == 'patron'}">
 			<%@ include file="NavBarPat.jsp" %>
 			<form action = "/lab2/issue/addToWaitlist" method="POST">
-				<c:forEach items="${searchResultBookList}" var="book">
+				<c:forEach items="${bookList}" var="book">
 				<c:if test="${book.copies_available==0}">
 					<div class="col-md-9">
 			<ul class="widget-products">
