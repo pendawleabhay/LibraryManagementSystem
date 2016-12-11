@@ -1,6 +1,5 @@
 package edu.sjsu.cmpe275.lab2.controllers;
 
-
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -148,49 +147,54 @@ public class IssueController
 	}
 	
 	@RequestMapping(value ="/addToCart", method = RequestMethod.POST)
-	public ModelAndView addToCart(@RequestParam("bookIssue") int[] bookIds, HttpSession session)
+	public ModelAndView addToCart(@RequestParam("bookIssue") int[] issueBookIds, HttpSession session)
 	{
-		ModelAndView model;
+		ModelAndView model = new ModelAndView("User/PatronHomepage");
 		int[] issueCart = (int[]) session.getAttribute("issueCart");
-		if(issueCart.length + bookIds.length >5 )
+		
+		// check if book already exists in cart
+		if(exists(issueBookIds, issueCart))
 		{
-			model = new ModelAndView("User/PatronHomepage");
+			model.addObject("message", "Book Already Present in cart");
+		}
+		//check if number of books in cart is not > 5
+		else if(issueCart.length + issueBookIds.length >5 )
+		{
 			model.addObject("message", "You Cannot have more than 5 books in cart");
 			
 		}
 		else
 		{
-			int[] newBookIds;
+			int[] newCart;
 			if(issueCart.length == 0)
 			{
-				newBookIds = new int[bookIds.length];
+				newCart = new int[issueBookIds.length];
 			}
 			else
 			{
-				newBookIds = new int[issueCart.length + bookIds.length];
+				newCart = new int[issueCart.length + issueBookIds.length];
 			}
 			int j=0;
 			for(int i=0; i< issueCart.length ; i++)
 			{
-				newBookIds[j] = issueCart[i];
+				newCart[j] = issueCart[i];
 				j++;
 			}
 			System.out.println("j=" + j);
-			System.out.println("bookid length" + bookIds.length);
+			System.out.println("bookid length" + issueBookIds.length);
 			for(int i=0; i< issueCart.length ; i++)
 			{
-				newBookIds[j] = issueCart[i];
+				newCart[j] = issueCart[i];
 				j++;
 			}
-			for(int i=0; i< bookIds.length ; i++)
+			for(int i=0; i< issueBookIds.length ; i++)
 			{
-				newBookIds[j] = bookIds[i];
+				newCart[j] = issueBookIds[i];
 				j++;
 			}
-			session.setAttribute("issueCart", newBookIds);
-			model = new ModelAndView("User/PatronHomepage");
-			model.addObject("message", bookIds.length + " books added to Cart");
-			for(int tempbook:newBookIds)
+			session.setAttribute("issueCart", newCart);
+			model.addObject("message", issueBookIds.length + " book added to Cart");
+			for(int tempbook:newCart)
 			{
 				System.out.println(tempbook);
 			}
@@ -203,34 +207,54 @@ public class IssueController
 	}
 
 	@RequestMapping(value ="/addToWaitlist", method = RequestMethod.POST)
-	public ModelAndView addToWaitlist(@RequestParam("bookIssue") int[] bookIds, HttpSession session)
+	public ModelAndView addToWaitlist(@RequestParam("bookIssue") int[] waitlistBookIds, HttpSession session)
 	{
-		ModelAndView model;
+		ModelAndView model = new ModelAndView("User/PatronHomepage");
 		int[] waitlistCart = (int[]) session.getAttribute("waitlistCart");
 		User user = (User) session.getAttribute("user");
 		
-		// 
-		int[] newBookIds = new int[waitlistCart.length + bookIds.length];
-		int j=0;
-		for(int i=0; i< waitlistCart.length ; i++)
+		// check if book already exists in cart
+		if(exists(waitlistBookIds, waitlistCart))
 		{
-			newBookIds[j] = waitlistCart[i];
-			j++;
+			model.addObject("message", "Book Already Present in cart");
 		}
-		for(int i=0; i< bookIds.length ; i++)
+		else
 		{
-			newBookIds[j] = bookIds[i];
-			j++;
+			int[] newCart = new int[waitlistCart.length + waitlistBookIds.length];
+			int j=0;
+			for(int i=0; i< waitlistCart.length ; i++)
+			{
+				newCart[j] = waitlistCart[i];
+				j++;
+			}
+			for(int i=0; i< waitlistBookIds.length ; i++)
+			{
+				newCart[j] = waitlistBookIds[i];
+				j++;
+			}
+			
+			
+			session.setAttribute("waitlistCart", newCart);
+			model.addObject("message", waitlistBookIds.length + " book added to Cart");
+			int[] waitlistCart1 = (int[]) session.getAttribute("waitlistCart");
+			System.out.println("waitlist cart lenght" + waitlistCart1.length);
 		}
-		
-		
-		session.setAttribute("waitlistCart", newBookIds);
-		model = new ModelAndView("User/PatronHomepage");
-		model.addObject("message", bookIds.length + " books added to Cart");
-		int[] waitlistCart1 = (int[]) session.getAttribute("waitlistCart");
-		System.out.println("waitlist cart lenght" + waitlistCart1.length);
-		
 		return model;
+	}
+	
+	private boolean exists(int[] firstArray, int[] secondArray)
+	{
+		for(int i : firstArray)
+		{
+			for(int j : secondArray)
+			{
+				if(i==j)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	
