@@ -388,7 +388,7 @@ label {
 		<!-- For Patron -->
 		<c:if test="${user.userType == 'patron'}">
 			<%@ include file="NavBarPat.jsp" %>
-			<form action = "/lab2/issue/addToCart" method="POST">
+			<form action = "/lab2/issue/addToWaitlist" method="POST">
 				<c:forEach items="${bookList}" var="book">
 				<c:if test="${book.copies_available==0}">
 					<div class="col-md-9">

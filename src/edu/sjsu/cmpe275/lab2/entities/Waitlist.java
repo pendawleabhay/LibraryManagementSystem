@@ -1,6 +1,8 @@
 package edu.sjsu.cmpe275.lab2.entities;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,9 +27,19 @@ public class Waitlist
 	private int bookId;
 	
 	@Column(name = "waitlistDate")
-	private Date waitlistDate;
+	private Timestamp waitlistDate;
 	
 	
+
+	public Timestamp getWaitlistDate()
+	{
+		return waitlistDate;
+	}
+
+	public void setWaitlistDate(Timestamp waitlistDate)
+	{
+		this.waitlistDate = waitlistDate;
+	}
 
 	public String getUserEmail()
 	{
@@ -60,13 +72,5 @@ public class Waitlist
 		this.bookId = bookId;
 	}
 
-	public Date getWaitlistDate()
-	{
-		return waitlistDate;
-	}
-
-	public void setWaitlistDate(Date waitlistDate)
-	{
-		this.waitlistDate = waitlistDate;
-	}
+	
 }

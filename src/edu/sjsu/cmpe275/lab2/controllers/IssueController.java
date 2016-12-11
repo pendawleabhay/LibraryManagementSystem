@@ -2,6 +2,7 @@ package edu.sjsu.cmpe275.lab2.controllers;
 
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -38,13 +39,14 @@ public class IssueController
 	public ModelAndView checkout( HttpSession session)
 	{
 		ModelAndView model;
-		int[] bookids = (int[]) session.getAttribute("issueCart");
+		int[] issueCart = (int[]) session.getAttribute("issueCart");
+		int[] waitlistCart = (int[]) session.getAttribute("waitlistCart");
 		IssueDao issueDao = context.getBean(IssueDao.class);
 		BookDao bookDao = context.getBean(BookDao.class);
 		User user = (User) session.getAttribute("user");
 		
 		
-		if(bookids==null || bookids.length<1){
+		if(issueCart.length + waitlistCart.length <1){
 			model = new ModelAndView("User/PatronHomepage");
 			model.addObject("message", "No books in your cart to Checkout!");
 			return model;
@@ -59,7 +61,7 @@ public class IssueController
 		System.out.println("totalcount" + totalCount);
 		
 		// check if already checked out more than 5 books for the day
-		if(countToday + bookids.length >5)
+		if(countToday + issueCart.length >5)
 		{
 			model = new ModelAndView("User/PatronHomepage");
 			model.addObject("message","You cannot issue more than 5 books for the day");
@@ -80,7 +82,7 @@ public class IssueController
 			
 			String emailBody = "Your Order is";
 			
-			for(int bookid:bookids)
+			for(int bookid:issueCart)
 			{
 				// add issue object to list
 				Issue issue = new Issue();
@@ -106,19 +108,19 @@ public class IssueController
 			
 			
 			// user object
-			int[] issueCart = (int[]) session.getAttribute("issueCart");
+			//int[] issueCart = (int[]) session.getAttribute("issueCart");
 			user.setNoOfBooksIssued(user.getNoOfBooksIssued() + issueCart.length);
 			
 			// waitlist object
 			ArrayList<Waitlist> waitlists = new ArrayList<Waitlist>();
-			int[] waitlistCart = (int[]) session.getAttribute("waitlistCart");
+			
 			
 			for(int tempBookId : waitlistCart)
 			{
 				Waitlist waitlist = new Waitlist();
 				waitlist.setBookId(tempBookId);
 				waitlist.setUserEmail(user.getEmail());
-				waitlist.setWaitlistDate(DateService.addDate(0));
+				waitlist.setWaitlistDate(new Timestamp(System.currentTimeMillis()));
 				waitlists.add(waitlist);
 			}
 			
@@ -136,10 +138,11 @@ public class IssueController
 			//Mail.generateAndSendEmail("Your Order", emailBody, user.getEmail());
 		}
 		
-		int[] issueCart1 = (int[]) session.getAttribute("issueCart");
-		System.out.println("cart" + issueCart1.length);
+		// empty carts after checkout
 		int[] issueCart2={};
 		session.setAttribute("issueCart", issueCart2);
+		int[] waitlistCart2={};
+		session.setAttribute("waitlistCart", waitlistCart2);
 		
 		return model;
 	}
@@ -199,6 +202,7 @@ public class IssueController
 		return model;
 	}
 
+	@RequestMapping(value ="/addToWaitlist", method = RequestMethod.POST)
 	public ModelAndView addToWaitlist(@RequestParam("bookIssue") int[] bookIds, HttpSession session)
 	{
 		ModelAndView model;
@@ -206,7 +210,7 @@ public class IssueController
 		User user = (User) session.getAttribute("user");
 		
 		// 
-		int[] newBookIds = null;
+		int[] newBookIds = new int[waitlistCart.length + bookIds.length];
 		int j=0;
 		for(int i=0; i< waitlistCart.length ; i++)
 		{
@@ -218,15 +222,13 @@ public class IssueController
 			newBookIds[j] = bookIds[i];
 			j++;
 		}
+		
+		
 		session.setAttribute("waitlistCart", newBookIds);
 		model = new ModelAndView("User/PatronHomepage");
 		model.addObject("message", bookIds.length + " books added to Cart");
-		for(int tempbook:newBookIds)
-		{
-			System.out.println(tempbook);
-		}
 		int[] waitlistCart1 = (int[]) session.getAttribute("waitlistCart");
-		System.out.println("cart" + waitlistCart1.length);
+		System.out.println("waitlist cart lenght" + waitlistCart1.length);
 		
 		return model;
 	}
