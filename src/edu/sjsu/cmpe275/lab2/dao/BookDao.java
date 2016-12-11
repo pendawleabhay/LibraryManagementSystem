@@ -26,6 +26,7 @@ public class BookDao {
 	
 	@Transactional
 	public void updateBook(Book book) {
+		System.out.println(book.toString());
 		 entitymanager.merge(book);
 	}
 	

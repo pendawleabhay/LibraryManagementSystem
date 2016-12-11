@@ -143,7 +143,7 @@ margin: 1em 0;
                     </li>
                     
                     <li>
-                        <a href="/book/add">Add Books</a>
+                        <a href="/lab2/book/add">Add Books</a>
                     </li>
                     <li class="signout">
                     	<a href="/lab2/user/signout">SignOut</a>

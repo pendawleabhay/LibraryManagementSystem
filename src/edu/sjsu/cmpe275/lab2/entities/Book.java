@@ -1,5 +1,7 @@
 package edu.sjsu.cmpe275.lab2.entities;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -52,6 +54,32 @@ public class Book {
 	private String updated_by;
 	/*@Column(name = "coverageimage")
 	private Blob coverageimage;*/
+	
+	@Column(name = "reserved_for")
+	private String reserved_for;
+	
+	@Column(name = "reserved_till")
+	private Date reserved_till;
+	
+	public String getReserved_for()
+	{
+		return reserved_for;
+	}
+
+	public void setReserved_for(String reserved_for)
+	{
+		this.reserved_for = reserved_for;
+	}
+
+	public Date getReserved_till()
+	{
+		return reserved_till;
+	}
+
+	public void setReserved_till(Date reserved_till)
+	{
+		this.reserved_till = reserved_till;
+	}
 
 	public int getBookid() {
 		return bookid;

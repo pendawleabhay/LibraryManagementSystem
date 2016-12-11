@@ -16,9 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.sjsu.cmpe275.lab2.dao.BookDao;
 import edu.sjsu.cmpe275.lab2.dao.IssueDao;
 import edu.sjsu.cmpe275.lab2.dao.UserDao;
+import edu.sjsu.cmpe275.lab2.dao.WaitlistDao;
 import edu.sjsu.cmpe275.lab2.entities.Book;
 import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
+import edu.sjsu.cmpe275.lab2.entities.Waitlist;
+import edu.sjsu.cmpe275.lab2.logic.DateService;
 
 @Controller
 @RequestMapping(value = "/book")
@@ -154,7 +157,11 @@ public class BookController {
 			//if book title exist, redirect the librarian to book update page
 			// check if book title exists
 			bookDao = context.getBean(BookDao.class);
-			
+			Book oldBook = bookDao.getBookById(book.getBookid());
+			if(oldBook.getCopies_available()==0 && book.getCopies_available()>0)
+			{
+				book = reserveBook(book);
+			}
 			book.setUpdated_by(user.getEmail());
 			bookDao.updateBook(book);
 			model = new ModelAndView("/User/LibrarianHomepage");
@@ -167,6 +174,8 @@ public class BookController {
 		return model;
 	}
 	
+	
+
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public ModelAndView search(
 			@RequestParam("searchType") String searchType,
@@ -305,6 +314,20 @@ public class BookController {
 			model.addObject("message","Book has been Returned!");
 		}
 		return model;
+	}
+	
+	private Book reserveBook(Book book)
+	{
+		System.out.println("inside reserve book");
+		
+		// set reserved in books table
+		WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
+		String waitlistUserEmail = waitlistDao.getHighestWaitlist(book.getBookid());
+		book.setReserved_for(waitlistUserEmail);
+		book.setReserved_till(DateService.addDate(3));
+		
+		return book;
+		
 	}
 	
 }
