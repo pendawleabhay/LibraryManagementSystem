@@ -199,18 +199,18 @@ public class BookController {
 			else 
 				querySearch = "select b from Book b where b." + searchType + " like '%" + searchString +"%'";
 			
-			List<Book> bookList = bookDao.getBookBySearchType(querySearch);
+			List<Book> searchResultBookList = bookDao.getBookBySearchType(querySearch);
 			
 			model = new ModelAndView("/Book/SearchBook");
-			if(bookList!=null && bookList.size()>=1) {
-				model.addObject("bookList", bookList);
+			if(searchResultBookList!=null && searchResultBookList.size()>=1) {
+				model.addObject("bookList", searchResultBookList);
 				if(user.getUserType().equals("patron"))
 				{
 					querySearch = "select i.bookId from Issue i where i.userEmail='" + user.getEmail() + "'";
 					System.out.println(querySearch);
-					List<Integer> bookidList = new ArrayList<Integer>();
-					bookidList = (List<Integer>) issueDao.getBookIds(querySearch);
-					model.addObject(bookidList);
+					List<Integer> userBooksList = new ArrayList<Integer>();
+					userBooksList = (List<Integer>) issueDao.getBookIds(querySearch);
+					model.addObject(userBooksList);
 				}
 				model.addObject("user", user);
 			} else{

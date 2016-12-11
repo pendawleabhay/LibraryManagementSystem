@@ -226,11 +226,11 @@ label {
 	
 	
 	
-	<c:if test="${bookList!=null}">		
+	<c:if test="${searchResultBookList!=null}">		
 		<!-- For Librarian -->
 		<c:if test="${user.userType == 'librarian'}">
 			<%@ include file="NavBarLib.jsp" %>
-			<c:forEach items="${bookList}" var="book">
+			<c:forEach items="${searchResultBookList}" var="book">
 				<c:if test="${book.copies_available>0}">
 				<div class="col-md-9">
 			<ul class="widget-products">
@@ -292,13 +292,18 @@ label {
 		<c:if test="${user.userType == 'patron'}">
 			<%@ include file="NavBarPat.jsp" %>
 			<form action = "/lab2/issue/addToCart" method="POST">
-				<c:forEach items="${bookList}" var="book">
+				<c:forEach items="${searchResultBookList}" var="book">
 				<c:if test="${book.copies_available>0}">
 					
 					
 					<div class="col-md-9">
 			<ul class="widget-products">
                   <li>
+                  	<% if (day == 1 | day == 7) { %>
+				      <p> Today is weekend</p>
+					<% } else { %>
+					      <p> Today is not weekend</p>
+					<% } %>
                      <input style=" text-align: left;"  type="checkbox" name="bookIssue" value="${book.bookid}"/>
                      <span class="img">
                      </span>
@@ -337,11 +342,11 @@ label {
 	<div class="col-md-6">
 	<h2 style="bold;">
 	Not Available Books</h2>
-	<c:if test="${bookList!=null}">		
+	<c:if test="${searchResultBookList!=null}">		
 		<!-- For Librarian -->
 		<c:if test="${user.userType == 'librarian'}">
 			<%@ include file="NavBarLib.jsp" %>
-			<c:forEach items="${bookList}" var="book">
+			<c:forEach items="${searchResultBookList}" var="book">
 				<c:if test="${book.copies_available==0}">
 				<div class="col-md-9">
 			<ul class="widget-products">
@@ -389,7 +394,7 @@ label {
 		<c:if test="${user.userType == 'patron'}">
 			<%@ include file="NavBarPat.jsp" %>
 			<form action = "/lab2/issue/addToWaitlist" method="POST">
-				<c:forEach items="${bookList}" var="book">
+				<c:forEach items="${searchResultBookList}" var="book">
 				<c:if test="${book.copies_available==0}">
 					<div class="col-md-9">
 			<ul class="widget-products">
