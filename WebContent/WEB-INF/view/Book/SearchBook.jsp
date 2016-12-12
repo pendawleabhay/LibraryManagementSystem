@@ -289,7 +289,7 @@ label {
 			<%@ include file="NavBarPat.jsp" %>
 			<form action = "/lab2/issue/addToCart" method="POST">
 				<c:forEach items="${bookList}" var="book">
-				<c:if test="${book.copies_available>0}">
+				<c:if test="${(book.copies_available>0) && !(book.isReserved==1)}">
 					
 					
 					<div class="col-md-9">
@@ -386,7 +386,9 @@ label {
 			<%@ include file="NavBarPat.jsp" %>
 			<form action = "/lab2/issue/addToWaitlist" method="POST">
 				<c:forEach items="${bookList}" var="book">
-				<c:if test="${book.copies_available==0}">
+		
+				<c:if test="${(book.copies_available==0) ||  (book.isReserved==1)}">
+					
 					<div class="col-md-9">
 			<ul class="widget-products">
                   <li>

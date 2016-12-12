@@ -34,12 +34,15 @@ public class IssueDao
 		for(Book book: bookList)
 		{
 			entitymanager.merge(book);
+			String queryStr = "delete from Waitlist w where w.bookId=" + book.getBookid() + " and w.userEmail='" + user.getEmail() + "'";
+			int i = entitymanager.createQuery(queryStr).executeUpdate();
 		}
 		
 		for(Waitlist waitlist : waitlists)
 		{
 			entitymanager.persist(waitlist);
 		}
+		
 		
 		entitymanager.merge(user);
 		

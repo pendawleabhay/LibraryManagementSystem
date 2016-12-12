@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "book")
@@ -57,6 +58,19 @@ public class Book {
 	
 	@Column(name = "reserved_till")
 	private Date reserved_till;
+	
+	@Transient
+	private int isReserved = 0;
+
+	public int getIsReserved()
+	{
+		return isReserved;
+	}
+
+	public void setIsReserved(int isReserved)
+	{
+		this.isReserved = isReserved;
+	}
 
 	public Date getReserved_till()
 	{

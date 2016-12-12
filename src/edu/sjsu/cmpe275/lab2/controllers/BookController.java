@@ -3,6 +3,7 @@ package edu.sjsu.cmpe275.lab2.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -209,7 +210,33 @@ public class BookController {
 			
 			model = new ModelAndView("/Book/SearchBook");
 			if(searchResultBookList!=null && searchResultBookList.size()>=1) {
-				model.addObject("bookList", searchResultBookList);
+				WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
+				List<Book> updatedBooksList = new ArrayList<Book>();
+				for(Book tempBook : searchResultBookList)
+				{
+					if(tempBook.getReserved_till().compareTo(DateService.addDate(0))>=0)
+					{
+						List<Waitlist> waitlists = waitlistDao.getHighestWaitlist(tempBook.getBookid(), tempBook.getCopies_available());
+						boolean exist = false;
+						for(Waitlist tempWaitlist : waitlists)
+						{
+							System.out.println("tempWaitlist" + tempWaitlist.getUserEmail());
+							System.out.println("user" + user.getEmail());
+							if(user.getEmail().equals(tempWaitlist.getUserEmail()))
+							{
+								exist = true;
+								
+							}
+						}
+						if(!exist)
+						{
+							tempBook.setIsReserved(1);
+						}
+					}
+					
+					updatedBooksList.add(tempBook);
+				}
+				model.addObject("bookList", updatedBooksList);
 				if(user.getUserType().equals("patron"))
 				{
 					querySearch = "select i.bookId from Issue i where i.userEmail='" + user.getEmail() + "'";
@@ -319,8 +346,8 @@ public class BookController {
 		Book oldBook = bookDao.getBookById(book.getBookid());
 		if(oldBook.getCopies_available()==0 && book.getCopies_available()>0)
 		{
-			WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
-			String waitlistUserEmail = waitlistDao.getHighestWaitlist(book.getBookid());
+			/*WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
+			String waitlistUserEmail = waitlistDao.getHighestWaitlist(book.getBookid());*/
 			book.setReserved_till(DateService.addDate(3));
 			bookDao.reserveBook(book);
 			//Mail
