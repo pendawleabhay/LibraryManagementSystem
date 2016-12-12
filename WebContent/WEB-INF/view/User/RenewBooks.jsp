@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Issued Books</title>
+<title>Renew Books</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
@@ -228,10 +228,10 @@ label {
 	Issued Books</h2>
 	<c:choose>
 		<c:when test="${issuedBooksList == null}">
-		<h4>No books found!!</h4>
+		<h4>No Issued Books found!!</h4>
 		</c:when>
 		<c:when test="${issuedBooksList != null}">
-		<form action = "/lab2/book/return" method="POST" class="product">
+		<form action = "/lab2/book/renewBooks" method="POST" class="product">
 			<c:forEach var = "index" begin = "0" end = "${size-1}">
 			
 					
@@ -241,23 +241,28 @@ label {
                      <span class="img">
                      </span>
                      <span class="product clearfix">
-                     <input style=" text-align: left;" type="checkbox" name="bookid" value="${issuedBooksList[index].bookid}"/>
+                     <c:if test="${(issuedBookIdList[index].renewalCount < 3) && (issuedBookIdList[index].renewalCount >= 0) }">
+                     	<input style=" text-align: left;" type="checkbox" name="bookid" value="${issuedBooksList[index].bookid}"/>
+                     </c:if>
+                     
                      <span class="name"><b>Title : </b>
                      <i class="fa fa-money"></i>
-                     ${issuedBooksList[index].title}
+                     	${issuedBooksList[index].title}
                      </span>
                       <span class="price"><b>Issue Date:</b>
                      
                      <i class="fa fa-money"></i>${issuedBookIdList[index].issueDate}
                      </span>
                      
-                     
-                   
                     <span class="price"><b>Due Date</b>
                      
                      <i class="fa fa-money"></i>${issuedBookIdList[index].dueDate}
                      </span>
                      
+                     <span class="price"><b>Book Renewed</b>
+                     
+                     	<i class="fa fa-money"></i>${issuedBookIdList[index].renewalCount}
+                     </span>
                      
                      </span>
             			
@@ -271,7 +276,7 @@ label {
 		    		</ul>
 		    		</div>
 			</c:forEach>
-			<input class="btn btn-warning" type="submit" value="Return"/>
+			<input class="btn btn-warning" type="submit" value="Renew"/>
 			</form>
 		</c:when>
 		

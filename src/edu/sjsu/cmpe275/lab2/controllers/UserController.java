@@ -220,4 +220,35 @@ public class UserController
 		}
 		return model;
 	}
+	
+	
+	@RequestMapping(value="/renew", method = RequestMethod.GET)
+	public ModelAndView renewBooks(HttpSession session) {
+		ModelAndView model = null;
+		
+		User user = (User) session.getAttribute("user");
+		
+		if(user!=null && user.getUserType().equals("patron")){
+			
+			model = new ModelAndView("/User/RenewBooks");
+			model.addObject("user", user);
+			
+			issueDao = context.getBean(IssueDao.class);
+			List<Issue> issuedBookIdList = issueDao.getIssuedBooksId(user.getEmail());
+			//System.out.println("issuedBookIdList length in controller: " + issuedBookIdList.size());
+			if(issuedBookIdList != null && issuedBookIdList.size()>=1){
+				List<Book> issuedBooksList = issueDao.getIssuedBooks(issuedBookIdList);
+				model.addObject("size", issuedBooksList.size());
+				model.addObject("issuedBooksList", issuedBooksList);
+				model.addObject("issuedBookIdList", issuedBookIdList);
+				System.out.println("issuedBooksList length: " + issuedBooksList.size());
+			} else
+				model.addObject("message", "You have Issued no books!");
+				
+		}else {
+			model = new ModelAndView("error");
+			model.addObject("error", "Login as a Patron to see your Issued Books!");
+		}
+		return model;
+	}
 }

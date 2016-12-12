@@ -235,32 +235,28 @@ label {
                      <span class="img">
                      </span>
                      <span class="product clearfix">
-                     <span class="name"><b>Book Title:</b>
-                     <i class="fa fa-money"></i>
-                     ${book.title}
-                     </span>
-                     <span class="price"><b>Author:</b>
+                     	<span class="name"><b>Book Title:</b>
+                     		<i class="fa fa-money"></i>
+                     		${book.title}
+                     	</span>
                      
-                     <i class="fa fa-money"></i>${book.author}
-                     </span>
-                     
-                     <span class="price"><b>Copies Available:</b>
-                     
-                     <i class="fa fa-money"></i>${book.copies_available}
-                     </span>
-                     
-                     <span class="price"><b>Publisher:</b>
-                     
-                     <i class="fa fa-money"></i>${book.publisher}
-                     </span>
-                     <span class="price"><b>Year of Publication:</b>
-                     
-                     <i class="fa fa-money"></i>${book.year_of_publication}
-                     </span>
-                     
+	                    <span class="price"><b>Author:</b>
+		                     <i class="fa fa-money"></i>${book.author}
+	                    </span>
+	                     
+	                    <span class="price"><b>Copies Available:</b>
+	                     	<i class="fa fa-money"></i>${book.copies_available}
+	                    </span>
+	                     
+	                    <span class="price"><b>Publisher:</b>
+	                     	<i class="fa fa-money"></i>${book.publisher}
+	                    </span>
+	                     
+	                    <span class="price"><b>Year of Publication:</b>
+	                     	<i class="fa fa-money"></i>${book.year_of_publication}
+	                    </span>
                      </span>
                      
-            
 	    		<div>
 	    			<!-- Form for submitting update -->
 	    			<form action = "/lab2/book/update" method="POST" class="product clearfix name">
@@ -295,26 +291,29 @@ label {
 					<div class="col-md-9">
 			<ul class="widget-products">
                   <li>
-                     <input style=" text-align: left;"  type="checkbox" name="bookIssue" value="${book.bookid}"/>
-                     <span class="img">
-                     </span>
+                     	<input style=" text-align: left;"  type="checkbox" name="bookIssue" value="${book.bookid}"/>
+                     <span class="img"></span>
                      <span class="product clearfix">
-                     <span class="name"><b>Book Title:</b>
-                     <i class="fa fa-money"></i>
-                     ${book.title}
-                     </span>
-                     <span class="price"><b>Author:</b>
-                     <i class="fa fa-money"></i>${book.author}
-                     </span>
-                     <span class="price"><b>Copies Available:</b>
-                     <i class="fa fa-money"></i>${book.copies_available}
-                     </span>
-                     <span class="price"><b>Publisher:</b>
-                     <i class="fa fa-money"></i>${book.publisher}
-                     </span>
-                     <span class="price"><b>Year of Publication:</b>
-                     <i class="fa fa-money"></i>${book.year_of_publication}
-                     </span>
+                     	<span class="name"><b>Book Title:</b>
+                     		<i class="fa fa-money"></i>
+                     			${book.title}
+                     	</span>
+                     
+	                    <span class="price"><b>Author:</b>
+	                     	<i class="fa fa-money"></i>${book.author}
+	                    </span>
+	                     
+	                    <span class="price"><b>Copies Available:</b>
+	                     	<i class="fa fa-money"></i>${book.copies_available}
+	                    </span>
+	                     
+	                    <span class="price"><b>Publisher:</b>
+	                     	<i class="fa fa-money"></i>${book.publisher}
+	                    </span>
+	                     
+	                    <span class="price"><b>Year of Publication:</b>
+	                     	<i class="fa fa-money"></i>${book.year_of_publication}
+	                    </span>
                      </span>
 		    		<br>
 		    		</li>

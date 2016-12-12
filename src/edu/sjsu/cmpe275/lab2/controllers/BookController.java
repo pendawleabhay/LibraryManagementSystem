@@ -301,11 +301,59 @@ public class BookController {
 	
 	@RequestMapping(value = "/return", method = RequestMethod.POST)
 	public ModelAndView returnBook(
-			@RequestParam(name = "bookid") String bookStr,
+			@RequestParam(name = "bookid") String[] bookStr,
 			HttpSession session){
-		ModelAndView model=null;
+		ModelAndView model;
 		
-		System.out.println("BookidStr: " + bookStr);
+		if(bookStr!=null && bookStr.length > 0) {
+		
+			Integer[] bookidList = new Integer[bookStr.length];
+			
+			for(int index = 0; index < bookStr.length; index++){
+				System.out.println("bookStr[" + index + "]:" + bookStr[index]);
+				bookidList[index] = Integer.parseInt(bookStr[index]);
+			}
+			
+			User user = (User)session.getAttribute("user");
+			if(user!=null && user.getUserType().equals("patron")) {
+				
+				bookDao = context.getBean(BookDao.class);
+				issueDao = context.getBean(IssueDao.class);
+				userDao = context.getBean(UserDao.class);
+				
+				for(int index = 0 ; index < bookidList.length; index++) {
+					
+					//Removing Issue
+					Issue issue = issueDao.getIssueById("select i from Issue i where i.bookId=" + bookidList[index] + " and i.userEmail='" + user.getEmail() + "'");
+					if(issue!=null)
+						issueDao.deleteIssue(issue.getIssueId());
+					else
+						System.out.println("No Issue Found");
+					
+					//Update Book
+					Book book = bookDao.getBookById(bookidList[index]);
+					if(book!=null){
+						book.setCopies_available(book.getCopies_available()+1);
+						bookDao.updateBook(book);
+					}
+						
+					//Update User
+					user.setNoOfBooksIssued(user.getNoOfBooksIssued()-1);
+					userDao.updateUser(user);
+					session.setAttribute("user", user);
+				}
+				
+				model = new ModelAndView("/User/PatronHomepage");
+				model.addObject("message","Books has been Returned!");
+			} else {
+				model = new ModelAndView("error");
+				model.addObject("message","Please Login as Patron to return Books!");
+			}
+		} else {
+			model = new ModelAndView("error");
+			model.addObject("message", "Please select books to return!");
+		}
+		/*System.out.println("BookidStr: " + bookStr);
 		int bookid = Integer.parseInt(bookStr);
 		System.out.println("BookId int: " + bookid);
 
@@ -336,7 +384,96 @@ public class BookController {
 			
 			model = new ModelAndView("/User/PatronHomepage");
 			model.addObject("message","Book has been Returned!");
+		}*/
+		return model;
+	}
+	
+	@RequestMapping(value = "/renewBooks", method = RequestMethod.POST)
+	public ModelAndView renewBook(
+			@RequestParam(name = "bookid") String[] bookStr,
+			HttpSession session){
+		ModelAndView model;
+		
+		if(bookStr!=null && bookStr.length > 0) {
+		
+			Integer[] bookidList = new Integer[bookStr.length];
+			
+			for(int index = 0; index < bookStr.length; index++){
+				System.out.println("bookStr[" + index + "]:" + bookStr[index]);
+				bookidList[index] = Integer.parseInt(bookStr[index]);
+			}
+			
+			User user = (User)session.getAttribute("user");
+			if(user!=null && user.getUserType().equals("patron")) {
+				
+				bookDao = context.getBean(BookDao.class);
+				issueDao = context.getBean(IssueDao.class);
+				userDao = context.getBean(UserDao.class);
+				
+				for(int index = 0 ; index < bookidList.length; index++) {
+					
+					//Removing Issue
+					Issue issue = issueDao.getIssueById("select i from Issue i where i.bookId=" + bookidList[index] + " and i.userEmail='" + user.getEmail() + "'");
+					if(issue!=null)
+						issueDao.deleteIssue(issue.getIssueId());
+					else
+						System.out.println("No Issue Found");
+					
+					//Update Book
+					Book book = bookDao.getBookById(bookidList[index]);
+					if(book!=null){
+						book.setCopies_available(book.getCopies_available()+1);
+						bookDao.updateBook(book);
+					}
+						
+					//Update User
+					user.setNoOfBooksIssued(user.getNoOfBooksIssued()-1);
+					userDao.updateUser(user);
+					session.setAttribute("user", user);
+				}
+				
+				model = new ModelAndView("/User/PatronHomepage");
+				model.addObject("message","Books has been Returned!");
+			} else {
+				model = new ModelAndView("error");
+				model.addObject("message","Please Login as Patron to return Books!");
+			}
+		} else {
+			model = new ModelAndView("error");
+			model.addObject("message", "Please select books to return!");
 		}
+		/*System.out.println("BookidStr: " + bookStr);
+		int bookid = Integer.parseInt(bookStr);
+		System.out.println("BookId int: " + bookid);
+
+		User user = (User)session.getAttribute("user");
+		if(user!=null && user.getUserType().equals("patron")) {
+			bookDao = context.getBean(BookDao.class);
+			issueDao = context.getBean(IssueDao.class);
+			userDao = context.getBean(UserDao.class);
+			
+			//Removing Issue
+			Issue issue = issueDao.getIssueById("select i from Issue i where i.bookId=" + bookid + " and i.userEmail='" + user.getEmail() + "'");
+			if(issue!=null)
+				issueDao.deleteIssue(issue.getIssueId());
+			else
+				System.out.println("No Issue Found");
+			
+			//Update Book
+			Book book = bookDao.getBookById(bookid);
+			if(book!=null){
+				book.setCopies_available(book.getCopies_available()+1);
+				bookDao.updateBook(book);
+			}
+				
+			//Update User
+			user.setNoOfBooksIssued(user.getNoOfBooksIssued()-1);
+			userDao.updateUser(user);
+			session.setAttribute("user", user);
+			
+			model = new ModelAndView("/User/PatronHomepage");
+			model.addObject("message","Book has been Returned!");
+		}*/
 		return model;
 	}
 	

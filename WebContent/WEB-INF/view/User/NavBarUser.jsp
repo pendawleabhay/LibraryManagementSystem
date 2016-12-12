@@ -143,10 +143,11 @@ margin: 1em 0;
                         </a>
                     </li>
                     <li>
-                        <a href="/lab2/user/issued">Issued Books</a>
+                        <a href="/lab2/user/issued">Return Books</a>
                     </li>
-                    
-                    
+                    <li>
+                        <a href="/lab2/user/renew">Renew Books</a>
+                    </li>
                      <li>
                         <a href="/lab2/issue/checkout">Check Out</a>
                     </li>
