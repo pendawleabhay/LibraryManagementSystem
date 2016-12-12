@@ -228,7 +228,7 @@ label {
 	Issued Books</h2>
 	<c:choose>
 		<c:when test="${issuedBooksList == null}">
-		<h4>No waitlisted books found!!</h4>
+		<h4>No books found!!</h4>
 		</c:when>
 		<c:when test="${issuedBooksList != null}">
 			<c:forEach var = "index" begin = "0" end = "${size-1}">

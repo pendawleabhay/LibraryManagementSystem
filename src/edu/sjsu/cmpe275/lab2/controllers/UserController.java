@@ -204,7 +204,7 @@ public class UserController
 			
 			issueDao = context.getBean(IssueDao.class);
 			List<Issue> issuedBookIdList = issueDao.getIssuedBooksId(user.getEmail());
-			System.out.println("issuedBookIdList length in controller: " + issuedBookIdList.size());
+			//System.out.println("issuedBookIdList length in controller: " + issuedBookIdList.size());
 			if(issuedBookIdList != null && issuedBookIdList.size()>=1){
 				List<Book> issuedBooksList = issueDao.getIssuedBooks(issuedBookIdList);
 				model.addObject("size", issuedBooksList.size());
