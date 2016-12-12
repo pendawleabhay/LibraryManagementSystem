@@ -86,5 +86,12 @@ public class BookDao {
 		Book book = entitymanager.find(Book.class, bookid);
 		entitymanager.remove(book);
 	}
+
+	@Transactional
+	public void reserveBook(Book book)
+	{
+		entitymanager.merge(book);
+		//Query query = entitymanager.createQuery("delete from Waitlist w where w.bookId=" + book.getBookid());
+	}
 	
 }

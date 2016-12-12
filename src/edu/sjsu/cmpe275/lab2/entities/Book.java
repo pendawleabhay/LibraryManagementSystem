@@ -55,21 +55,8 @@ public class Book {
 	/*@Column(name = "coverageimage")
 	private Blob coverageimage;*/
 	
-	@Column(name = "reserved_for")
-	private String reserved_for;
-	
 	@Column(name = "reserved_till")
 	private Date reserved_till;
-	
-	public String getReserved_for()
-	{
-		return reserved_for;
-	}
-
-	public void setReserved_for(String reserved_for)
-	{
-		this.reserved_for = reserved_for;
-	}
 
 	public Date getReserved_till()
 	{

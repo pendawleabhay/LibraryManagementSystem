@@ -157,11 +157,8 @@ public class BookController {
 			//if book title exist, redirect the librarian to book update page
 			// check if book title exists
 			bookDao = context.getBean(BookDao.class);
-			Book oldBook = bookDao.getBookById(book.getBookid());
-			if(oldBook.getCopies_available()==0 && book.getCopies_available()>0)
-			{
-				book = reserveBook(book);
-			}
+			reserveBook(book);
+			book = bookDao.getBookById(book.getBookid());
 			book.setUpdated_by(user.getEmail());
 			bookDao.updateBook(book);
 			model = new ModelAndView("/User/LibrarianHomepage");
@@ -316,18 +313,18 @@ public class BookController {
 		return model;
 	}
 	
-	private Book reserveBook(Book book)
+	private void reserveBook(Book book)
 	{
 		System.out.println("inside reserve book");
-		
-		// set reserved in books table
-		WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
-		String waitlistUserEmail = waitlistDao.getHighestWaitlist(book.getBookid());
-		book.setReserved_for(waitlistUserEmail);
-		book.setReserved_till(DateService.addDate(3));
-		
-		return book;
-		
+		Book oldBook = bookDao.getBookById(book.getBookid());
+		if(oldBook.getCopies_available()==0 && book.getCopies_available()>0)
+		{
+			WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
+			String waitlistUserEmail = waitlistDao.getHighestWaitlist(book.getBookid());
+			book.setReserved_till(DateService.addDate(3));
+			bookDao.reserveBook(book);
+			//Mail
+		}		
 	}
 	
 }
