@@ -41,6 +41,7 @@ public class IssueDao
 		for(Waitlist waitlist : waitlists)
 		{
 			entitymanager.persist(waitlist);
+			
 		}
 		
 		

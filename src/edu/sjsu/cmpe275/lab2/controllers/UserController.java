@@ -25,10 +25,12 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.sjsu.cmpe275.lab2.dao.BookDao;
 import edu.sjsu.cmpe275.lab2.dao.IssueDao;
 import edu.sjsu.cmpe275.lab2.dao.UserDao;
+import edu.sjsu.cmpe275.lab2.dao.WaitlistDao;
 import edu.sjsu.cmpe275.lab2.logic.Mail;
 import edu.sjsu.cmpe275.lab2.entities.Book;
 import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
+import edu.sjsu.cmpe275.lab2.entities.Waitlist;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -197,7 +199,8 @@ public class UserController
 		
 		User user = (User) session.getAttribute("user");
 		
-		if(user!=null && user.getUserType().equals("patron")){
+		if(user!=null && user.getUserType().equals("patron"))
+		{
 			
 			model = new ModelAndView("/User/IssuedBooks");
 			model.addObject("user", user);
@@ -205,16 +208,21 @@ public class UserController
 			issueDao = context.getBean(IssueDao.class);
 			List<Issue> issuedBookIdList = issueDao.getIssuedBooksId(user.getEmail());
 			//System.out.println("issuedBookIdList length in controller: " + issuedBookIdList.size());
-			if(issuedBookIdList != null && issuedBookIdList.size()>=1){
+			if(issuedBookIdList != null && issuedBookIdList.size()>=1)
+			{
 				List<Book> issuedBooksList = issueDao.getIssuedBooks(issuedBookIdList);
 				model.addObject("size", issuedBooksList.size());
 				model.addObject("issuedBooksList", issuedBooksList);
 				model.addObject("issuedBookIdList", issuedBookIdList);
 				System.out.println("issuedBooksList length: " + issuedBooksList.size());
-			} else
+			} 
+			else
+			{
 				model.addObject("message", "You have Issued no books!");
-				
-		}else {
+			}		
+		}
+		else 
+		{
 			model = new ModelAndView("error");
 			model.addObject("error", "Login as a Patron to see your Issued Books!");
 		}

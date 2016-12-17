@@ -1,5 +1,6 @@
 package edu.sjsu.cmpe275.lab2.controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
 import edu.sjsu.cmpe275.lab2.entities.Waitlist;
 import edu.sjsu.cmpe275.lab2.logic.DateService;
+import edu.sjsu.cmpe275.lab2.logic.Mail;
 
 @Controller
 @RequestMapping(value = "/book")
@@ -225,7 +227,6 @@ public class BookController {
 							if(user.getEmail().equals(tempWaitlist.getUserEmail()))
 							{
 								exist = true;
-								
 							}
 						}
 						if(!exist)
@@ -479,15 +480,24 @@ public class BookController {
 	
 	private void reserveBook(Book book)
 	{
+		WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
 		System.out.println("inside reserve book");
 		Book oldBook = bookDao.getBookById(book.getBookid());
 		if(oldBook.getCopies_available()==0 && book.getCopies_available()>0)
 		{
-			/*WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
-			String waitlistUserEmail = waitlistDao.getHighestWaitlist(book.getBookid());*/
-			book.setReserved_till(DateService.addDate(3));
+			Date reservedTill = DateService.addDate(3);
+			book.setReserved_till(reservedTill);
 			bookDao.reserveBook(book);
-			//Mail
+			
+			//send email to waitlisted patrons saying their book is now available
+			List<Waitlist> waitlists = waitlistDao.getHighestWaitlist(book.getBookid(), book.getCopies_available());
+			for(Waitlist waitlist : waitlists)
+			{
+				String subject = "Your book is now availble";
+				String emailBody = "Book " + book.getTitle() + " is now availble and reserved for you till " + reservedTill;
+				String to = waitlist.getUserEmail();
+				Mail.generateAndSendEmail(subject, emailBody, to);
+			}
 		}		
 	}
 	

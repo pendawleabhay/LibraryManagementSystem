@@ -37,6 +37,7 @@ public class IssueController
 	@RequestMapping(value ="/checkout")
 	public ModelAndView checkout( HttpSession session)
 	{
+		// declarations
 		ModelAndView model;
 		int[] issueCart = (int[]) session.getAttribute("issueCart");
 		int[] waitlistCart = (int[]) session.getAttribute("waitlistCart");
@@ -44,20 +45,17 @@ public class IssueController
 		BookDao bookDao = context.getBean(BookDao.class);
 		User user = (User) session.getAttribute("user");
 		
-		
+		// error if empty cart
 		if(issueCart.length + waitlistCart.length <1){
 			model = new ModelAndView("User/PatronHomepage");
 			model.addObject("message", "No books in your cart to Checkout!");
 			return model;
 		}
-			
-		String query3 = "select count(i) from Issue i where i.userEmail='" + user.getEmail() + "' AND i.issueDate='" + DateService.addDate(0) +"'";
-		int countToday = issueDao.countQuery(query3 );
-		System.out.println("query" + query3);
-		System.out.println("count today =" + countToday);
 		
+		// declaration for cart size
+		String query3 = "select count(i) from Issue i where i.userEmail='" + user.getEmail() + "' AND i.issueDate='" + DateService.addDate(0) +"'";
+		int countToday = issueDao.countQuery(query3 );		
 		int totalCount = issueDao.countQuery("select count(i) from Issue i where i.userEmail='" + user.getEmail() + "'" );
-		System.out.println("totalcount" + totalCount);
 		
 		// check if already checked out more than 5 books for the day
 		if(countToday + issueCart.length >5)
@@ -103,17 +101,14 @@ public class IssueController
 											"<br> Author:" + book.getAuthor()
 											);
 			}
-			
-			
-			
+	
 			// user object
 			//int[] issueCart = (int[]) session.getAttribute("issueCart");
 			user.setNoOfBooksIssued(user.getNoOfBooksIssued() + issueCart.length);
 			
 			// waitlist object
 			ArrayList<Waitlist> waitlists = new ArrayList<Waitlist>();
-			
-			
+			ArrayList<Book> waitlistBooks = new ArrayList<Book>();	
 			for(int tempBookId : waitlistCart)
 			{
 				Waitlist waitlist = new Waitlist();
@@ -121,15 +116,15 @@ public class IssueController
 				waitlist.setUserEmail(user.getEmail());
 				waitlist.setWaitlistDate(new Timestamp(System.currentTimeMillis()));
 				waitlists.add(waitlist);
+				Book book = bookDao.getBookById(tempBookId);
+				waitlistBooks.add(book);
 			}
 			
 			issueDao.checkout(issueList, bookList, user, waitlists);
-					
 	
-			System.out.println("bookList Length: " + bookList.size());
-			
 			model = new ModelAndView("User/Checkout");
 			model.addObject("bookList", bookList);
+			model.addObject(waitlistBooks);
 			model.addObject("dueDate", dueDate);
 			
 			// send Mail

@@ -28,4 +28,11 @@ public class WaitlistDao
 		List<Waitlist> list = (List<Waitlist>)query.getResultList();
 		return list;
 	}
+	
+	@Transactional
+	public List<Waitlist> getWaitlistByUserEmail()
+	{
+		return null;
+		
+	}
 }
