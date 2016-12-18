@@ -45,7 +45,7 @@ body {
 .login1 { 
 	position: absolute;
 	top: 25%;
-	left: 50%;
+	left: 88%;
 	margin: -150px 0 0 -150px;
 	width:300px;
 	height:300px;
