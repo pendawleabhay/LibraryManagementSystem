@@ -294,7 +294,11 @@ label {
                   		<!-- Checking if book is already issued by the user -->
                      	
                      	<c:if test="${userBookList[loop.index] eq true}">
-                     		<div>Book Already Issued!</div>
+							<span class="product clearfix">
+                    		<span class="name">
+                     		<h3>Book Already Issued!!!!!!!</h3>
+                     		</span>
+                     	</span>
                      	</c:if>
                      	<%-- <div>Status: ${userBookList[loop.index]}</div> --%>
                      	<c:if test="${userBookList[loop.index] eq false}">
@@ -400,7 +404,11 @@ label {
                   <li>
                   	<!-- Checking if book is already issued by the user -->
                     	<c:if test="${userBookList[loop.index] eq true}">
-                     		<div>Book Already Issued!</div>
+                    	<span class="product clearfix">
+                    		<span class="name">
+                     		<h1>Book Already Issued!!!!!!!</h1>
+                     		</span>
+                     	</span>
                      	</c:if>
                     	
                      	<%-- <div>Status: ${userBookList[loop.index]}</div> --%>

@@ -42,7 +42,17 @@ body {
 	width:300px;
 	height:300px;
 }
+.login1 { 
+	position: absolute;
+	top: 25%;
+	left: 50%;
+	margin: -150px 0 0 -150px;
+	width:300px;
+	height:300px;
+}
+
 .login h1 { color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; }
+.login1 h3 { color: #fff; text-shadow: 0 0 10px rgba(0,0,0,0.3); letter-spacing:1px; text-align:center; }
 
 input { 
 	width: 100%; 
@@ -72,18 +82,19 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 </head>
 <body>
 	
-	
+<div class="login1">
 <form action="action_page.php">
- 	Change Date : <input type="date" name="date">
+ 	<h3>Change Date :</h3> <input type="date" name="date">
   	<input type="submit">
 </form>
-		
+</div>
 		
 <div class="login">
     <h1>SJSU Library</h1>
     <form action="/lab2/user/signIn" method="post">
-    	<input type="text" name="email" placeholder="Email" required="required" />
+    	<input type="email" name="email" placeholder="Email" required="required" />
         <input type="password" name="password" placeholder="Password" required="required" />
+        
         <button type="submit" value="Sign In" class="btn btn-primary btn-block btn-large">Let me in.</button>
     </form>
     <br>

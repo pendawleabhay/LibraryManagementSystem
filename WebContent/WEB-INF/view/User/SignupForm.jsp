@@ -78,8 +78,8 @@
 	    
 		    <form action="/lab2/user/signUp" method="post">
 		    	<input type="text" name="name" placeholder="Your Name" required="required" />
-		    	<input type="text" name="sjsuId" placeholder="SJSU ID" required="required" />
-		    	<input type="text" name="email" placeholder="Email Id" required="required" />
+		    	<input type="text" name="sjsuId" placeholder="SJSU ID" maxlength="9" minlength="9" required="required" />
+		    	<input type="email" name="email" placeholder="Email Id" required="required" />
 		        <input type="password" name="password" placeholder="Password" required="required" />
 				<input type="submit" class="btn btn-primary btn-block btn-large" value="Sign Up" />
 			</form>
