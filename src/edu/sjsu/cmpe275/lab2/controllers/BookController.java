@@ -322,30 +322,62 @@ public class BookController {
 				issueDao = context.getBean(IssueDao.class);
 				userDao = context.getBean(UserDao.class);
 				
-				for(int index = 0 ; index < bookidList.length; index++) {
+				//old logic
+				//for(int index = 0 ; index < bookidList.length; index++) {
 					
-					//Removing Issue
+					/*//Removing Issue
 					Issue issue = issueDao.getIssueById("select i from Issue i where i.bookId=" + bookidList[index] + " and i.userEmail='" + user.getEmail() + "'");
 					if(issue!=null)
 						issueDao.deleteIssue(issue.getIssueId());
 					else
-						System.out.println("No Issue Found");
+						System.out.println("No Issue Found");*/
 					
-					//Update Book
+					/*//Update Book
 					Book book = bookDao.getBookById(bookidList[index]);
 					if(book!=null){
 						book.setCopies_available(book.getCopies_available()+1);
 						bookDao.updateBook(book);
-					}
-						
-					//Update User
-					user.setNoOfBooksIssued(user.getNoOfBooksIssued()-1);
-					userDao.updateUser(user);
-					session.setAttribute("user", user);
+					}*/
+				//}
+			
+				//New Logic
+				//Removing Issue
+				String bookidQuery = "";
+				
+				for(int index = 0; index < bookidList.length; index++){
+					if(index == (bookidList.length-1))
+						bookidQuery += bookidList[index];
+					else 
+						bookidQuery += bookidList[index] + ",";
 				}
 				
+				List<Issue> issueList = issueDao.getIssuesById("select i from Issue i where i.bookId in (" + bookidQuery + ") and i.userEmail='" + user.getEmail() + "'");
+				int rowsDeleted = 0;
+				if(issueList!=null) {
+					String issueidQuery = String.valueOf(issueList.get(0).getIssueId());
+					for(int index = 1;index < issueList.size(); index++){
+						issueidQuery += "," + String.valueOf(issueList.get(index).getIssueId());
+					}
+					//Deleting Issues
+					rowsDeleted = issueDao.deleteIssues("delete from Issue i where i.issueId in (" + issueidQuery + ")");
+				} else
+					System.out.println("No Issues Found");
+				
+				//Update User
+				user.setNoOfBooksIssued(user.getNoOfBooksIssued()-bookidList.length);
+				userDao.updateUser(user);
+				session.setAttribute("user", user);
+				
+				//Update Book
+				String updateBooksCopiesAvailableQuery = "update Book b set b.copies_available=b.copies_available-1 where b.bookid in (" + bookidQuery + ")";
+				int rowsUpdated = bookDao.updateBooks(updateBooksCopiesAvailableQuery);
+				
+				//Returning
 				model = new ModelAndView("/User/PatronHomepage");
-				model.addObject("message","Books has been Returned!");
+				if(rowsDeleted == bookidList.length && rowsUpdated == bookidList.length)
+					model.addObject("message","Books has been Returned!");
+				else
+					model.addObject("message","Books could not be Returned!");
 			} else {
 				model = new ModelAndView("error");
 				model.addObject("message","Please Login as Patron to return Books!");
@@ -413,11 +445,16 @@ public class BookController {
 				
 				for(int index = 0 ; index < bookidList.length; index++) {
 					
-					//Removing Issue
+					//Update Issue
 					Issue issue = issueDao.getIssueById("select i from Issue i where i.bookId=" + bookidList[index] + " and i.userEmail='" + user.getEmail() + "'");
-					if(issue!=null)
-						issueDao.deleteIssue(issue.getIssueId());
-					else
+					if(issue!=null){
+						int renewalCount = issue.getRenewalCount();
+						if(renewalCount < 3 && renewalCount >=0){
+							issue.setRenewalCount(issue.getRenewalCount()+1);
+							issueDao.updateIssue(issue);
+						} else
+							System.out.println("Can not Renew this book!");
+					} else
 						System.out.println("No Issue Found");
 					
 					//Update Book

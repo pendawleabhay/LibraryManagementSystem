@@ -94,4 +94,15 @@ public class BookDao {
 		//Query query = entitymanager.createQuery("delete from Waitlist w where w.bookId=" + book.getBookid());
 	}
 	
+	@Transactional
+	public int updateBooks(String queryUpdate) {
+		try {
+			int rowsUpdated = entitymanager.createQuery(queryUpdate).executeUpdate();
+			return rowsUpdated;
+			
+		} catch(NoResultException e){
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }

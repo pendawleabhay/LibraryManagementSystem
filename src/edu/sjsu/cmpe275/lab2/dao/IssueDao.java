@@ -119,6 +119,18 @@ public class IssueDao
 	}
 	
 	@Transactional
+	public List<Issue> getIssuesById(String queryId){
+		try {
+			Query query = entitymanager.createQuery(queryId);
+			List<Issue> issueList = (List<Issue>)query.getResultList();
+			return issueList;
+		} catch(NoResultException e){
+			System.out.println("No Issue found for user!");
+			return null;
+		}
+	}
+	
+	@Transactional
 	public List<Integer> getBookIds(String queryId){
 		try {
 			Query query = entitymanager.createQuery(queryId);
@@ -140,5 +152,23 @@ public class IssueDao
 	{
 		Issue issue= entitymanager.find(Issue.class, issueid);
 		entitymanager.remove(issue);
+	}
+	
+	@Transactional
+	public int deleteIssues(String queryDelete) {
+		
+		try {
+			int rowsDeleted = entitymanager.createQuery(queryDelete).executeUpdate();
+			return rowsDeleted;
+			
+		} catch(NoResultException e){
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	@Transactional
+	public void updateIssue(Issue issue){
+		entitymanager.merge(issue);
 	}
 }

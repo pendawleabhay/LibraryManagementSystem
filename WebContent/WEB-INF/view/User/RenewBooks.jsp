@@ -233,8 +233,7 @@ label {
 		<c:when test="${issuedBooksList != null}">
 		<form action = "/lab2/book/renewBooks" method="POST" class="product">
 			<c:forEach var = "index" begin = "0" end = "${size-1}">
-			
-					
+								
 					<div class="col-md-9">
 			<ul class="widget-products">
                   <li>
@@ -259,7 +258,7 @@ label {
                      <i class="fa fa-money"></i>${issuedBookIdList[index].dueDate}
                      </span>
                      
-                     <span class="price"><b>Book Renewed</b>
+                     <span class="price"><b>Renewal Count: </b>
                      
                      	<i class="fa fa-money"></i>${issuedBookIdList[index].renewalCount}
                      </span>
