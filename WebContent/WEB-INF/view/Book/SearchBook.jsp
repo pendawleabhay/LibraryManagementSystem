@@ -284,14 +284,22 @@ label {
 		<c:if test="${user.userType == 'patron'}">
 			<%@ include file="NavBarPat.jsp" %>
 			<form action = "/lab2/issue/addToCart" method="POST">
-				<c:forEach items="${bookList}" var="book">
+				<c:forEach items="${bookList}" var="book" varStatus="loop">
 				<c:if test="${(book.copies_available>0) && !(book.isReserved==1)}">
 					
 					
 					<div class="col-md-9">
 			<ul class="widget-products">
                   <li>
-                     	<input style=" text-align: left;"  type="checkbox" name="bookIssue" value="${book.bookid}"/>
+                  		<!-- Checking if book is already issued by the user -->
+                     	
+                     	<c:if test="${userBookList[loop.index] eq true}">
+                     		<div>Book Already Issued!</div>
+                     	</c:if>
+                     	<%-- <div>Status: ${userBookList[loop.index]}</div> --%>
+                     	<c:if test="${userBookList[loop.index] eq false}">
+                     		<input style=" text-align: left;"  type="checkbox" name="bookIssue" value="${book.bookid}"/>
+                     	</c:if>
                      <span class="img"></span>
                      <span class="product clearfix">
                      	<span class="name"><b>Book Title:</b>
@@ -384,14 +392,22 @@ label {
 		<c:if test="${user.userType == 'patron'}">
 			<%@ include file="NavBarPat.jsp" %>
 			<form action = "/lab2/issue/addToWaitlist" method="POST">
-				<c:forEach items="${bookList}" var="book">
-		
-				<c:if test="${(book.copies_available==0) ||  (book.isReserved==1)}">
+				<c:forEach items="${bookList}" var="book" varStatus="loop">		
+					<c:if test="${(book.copies_available==0) ||  (book.isReserved==1)}">
 					
-					<div class="col-md-9">
-			<ul class="widget-products">
+						<div class="col-md-9">
+				<ul class="widget-products">
                   <li>
-                     <input style=" text-align: left;" type="checkbox" name="bookIssue" value="${book.bookid}"/>
+                  	<!-- Checking if book is already issued by the user -->
+                    	<c:if test="${userBookList[loop.index] eq true}">
+                     		<div>Book Already Issued!</div>
+                     	</c:if>
+                    	
+                     	<%-- <div>Status: ${userBookList[loop.index]}</div> --%>
+                     	<c:if test="${userBookList[loop.index] eq false}">
+                     		<input style=" text-align: left;"  type="checkbox" name="bookIssue" value="${book.bookid}"/>
+                     	</c:if>
+                     	
                      <span class="img">
                      </span>
                      <span class="product clearfix">

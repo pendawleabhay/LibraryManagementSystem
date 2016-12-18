@@ -244,7 +244,20 @@ public class BookController {
 					System.out.println(querySearch);
 					List<Integer> userBooksList = new ArrayList<Integer>();
 					userBooksList = (List<Integer>) issueDao.getBookIds(querySearch);
-					model.addObject(userBooksList);
+					List<Boolean> userBookList = new ArrayList<Boolean>();
+					//Sending Boolean list of values which contain issued books to the users as true, otherwise false
+					if(userBooksList!=null && userBooksList.size()>0){
+						for(int index1=0;index1<updatedBooksList.size();index1++){
+							userBookList.add(index1, false);
+							for(int index2=0;index2<userBooksList.size(); index2++){
+								if(updatedBooksList.get(index1).getBookid()==userBooksList.get(index2)){
+									userBookList.set(index1, true);
+								}
+							}
+						}
+					}
+					
+					model.addObject("userBookList", userBookList);
 				}
 				model.addObject("user", user);
 			} else{
