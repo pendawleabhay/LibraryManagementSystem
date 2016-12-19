@@ -31,7 +31,7 @@ public class frontcontroller
 		if(run==0)
 		{
 			System.out.println("run " + run);
-			//updateTime();
+			updateTime();
 		}
 		
 		User user = (User)session.getAttribute("user");

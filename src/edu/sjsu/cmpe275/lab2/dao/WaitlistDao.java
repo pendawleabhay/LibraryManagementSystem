@@ -40,5 +40,14 @@ public class WaitlistDao
 		
 	}
 
+	@Transactional
+	public void removeReserved(Date date)
+	{
+		String queryStr = "delete from Waitlist w where w.waitlistDate < '" + date + "'";
+		int i = entitymanager.createQuery(queryStr).executeUpdate();
+		System.out.println("number of rows deleted" + i);
+		
+	}
+
 	
 }

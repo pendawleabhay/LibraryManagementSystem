@@ -44,15 +44,12 @@ public class DateService
 	    int newDate = cal.get(Calendar.DATE);
 	   /* System.out.println("old year = " + oldDate);
 	    System.out.println("new year = " + newDate);*/
-		if(date.compareTo(appDate)<0)
-		{
-			
-		}
 		if(date.compareTo(appDate)>0 &&  newDate!=oldDate) //checking if future date is being set
 	    {
 	    	sendDueEmail(date);
-	    	
-	    	removeReserved(date);
+	    	//System.out.println();
+	    	WaitlistDao waitlistDao = new WaitlistDao();
+	    	waitlistDao.removeReserved(date);
 	    }
 		appDate=date;
 	}
@@ -71,11 +68,7 @@ public class DateService
     		Mail.generateAndSendEmail(subject, emailBody, to);
     	}
 	}
-	
-	private void removeReserved(Date date)
-	{
-		
-	}
+
 
 	// returns addition of given number of days and app date
 	public  java.sql.Date addDateToAppDate(int days)
