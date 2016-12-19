@@ -126,8 +126,8 @@ margin: 1em 0;
 	 	Change Date : <input type="date" name="date">
 	  	<input class="btn btn-success" type="submit">
 		</form>
-		<c:if test="${message!=null}">
-		<div>${message}</div>
+		<c:if test="${message1!=null}">
+		<div>${message1}</div>
 		</c:if>
 		</div>
             

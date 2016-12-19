@@ -59,13 +59,13 @@ public class frontcontroller
 		if(date1.compareTo(DateService.getInstance().getDate())<0)
 		{
 			model = new ModelAndView("/User/LibrarianHomepage");
-			model.addObject("message","You cannot set past date");
+			model.addObject("message1","You cannot set past date");
 		}
 		else
 		{
 			DateService.getInstance().setDate(date1);
 			model = new ModelAndView("/User/LibrarianHomepage");
-			model.addObject("message","Email sent to all patrons");
+			model.addObject("message1","Email sent to all patrons");
 		}
 		
 		return model;
