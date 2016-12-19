@@ -135,27 +135,7 @@ margin: 1em 0;
  <link rel="stylesheet" href="styles.css">
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 
-<!-- <script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script> -->
-<script src="http://code.jquery.com/jquery-3.1.1.js" type="text/javascript"></script>
-<script type="text/javascript">
-	/* $(document).ready(function() {
-    	$('#searchisbn').click(function(event) {
-        	    var isbn = $('#isbn').val();
-        	    $.ajax({
-        			url : '/lab2/book/addBookByISBN',
-        			method : 'GET',
-        			data : {
-        				isbn : $('#isbn').val()
-        			},
-        			success : function(response) {
-        				console.log("Successful Operation:");
-        				console.log(response);
-        				//console.log(response.bookid);
-        			}
-        		});
-    	});
-	}); */
-</script>
+
 
 
 <title>Book | Add</title>
@@ -172,28 +152,34 @@ margin: 1em 0;
 		<p class="login-username">
 		<label for="user_login">Author</label> 
 		<br>
-			<input type="text" name="author" id="author" class="input" placeholder="Author Name" value="" size="20" required/> 
-		</p> 
+		<c:choose>
+				<c:when test="${book != null}">
+					<input type="text" name="author" id="author" class="input" placeholder="Book Author" value="${book.author}" size="20" />
+				</c:when>
+				<c:when test="${book == null }">
+					<input type="text" name="author" id="author" class="input" placeholder="Book Author" value="" size="20" required/>
+				</c:when>
+			</c:choose>
+					</p> 
 			
 		<!-- Title -->
 		<p class="login-username">
 		<label for="user_login">Title</label> 
 		<br>
-			<%-- <c:choose>
-				<c:when test="${errorMessage != null}">
+		<c:choose>
+				<c:when test="${book != null}">
 					<input type="text" name="title" id="title" class="input" placeholder="Book Title" value="${book.title}" size="20" />
 				</c:when>
-				<c:when test="${errorMessage == null }">
+				<c:when test="${book == null }">
 					<input type="text" name="title" id="title" class="input" placeholder="Book Title" value="" size="20" />
 				</c:when>
-			</c:choose> 
-			<c:if test="${errorMessage != null}">
-				<p class="login-username">${errorMessage}</p>
-			</c:if> --%>
+			</c:choose>
+		<br>
 			
-			
-			<input type="text" name="title" id="title" class="input" placeholder="Book Title" value="" size="20" required />
-		</p> 
+					
+			<!-- <input type="text" name="title" id="title" class="input" placeholder="Book Title" value="" size="20" required />
+ -->
+ 		</p> 
 		
 		<!-- Call Number -->
 		<p class="login-username">
@@ -216,34 +202,32 @@ margin: 1em 0;
 		
 		<label for="user_login">Publisher</label> 
 		<br>
-			<%-- <c:choose>
-				<c:when test="${errorMessage != null}">
+			<c:choose>
+				<c:when test="${book != null}">
 					<input type="text" name="publisher" id="publisher" class="input" placeholder="Publisher Name" value="${book.publisher}" size="20" />
 				</c:when>
-				<c:when test="${errorMessage == null }">
+				<c:when test="${book == null }">
 					<input type="text" name="publisher" id="publisher" class="input" placeholder="Publisher Name" value="" size="20" /> 
 				</c:when>
-			</c:choose> --%>
+			</c:choose>
 			
-			<input type="text" name="publisher" id="publisher" class="input" placeholder="Publisher Name" value="" size="20" required />
-		</p> 
+			<!-- <input type="text" name="publisher" id="publisher" class="input" placeholder="Publisher Name" value="" size="20" required />
+ -->
+ 		</p> 
 		
 		<!-- Year Of Publication -->
 		<p class="login-username">
 		<label for="user_login">Year Of Publication</label> 
 		<br>
-			<%-- <c:choose>
-				<c:when test="${errorMessage != null}">
+		<c:choose>
+				<c:when test="${book != null}">
 					<input type="text" name="year_of_publication" id="year_of_publication" class="input" placeholder="Publication Year" value="${book.year_of_publication}" size="20" />
 				</c:when>
-				<c:when test="${errorMessage == null }">
+				<c:when test="${book == null }">
 					<input type="text" name="year_of_publication" id="year_of_publication" class="input" placeholder="Publication Year" value="" size="20" /> 
 				</c:when>
-			</c:choose> --%>
-			
-			<input type="text" name="year_of_publication" id="year_of_publication" class="input" placeholder="Publication Year" value="" size="20" required />
-		</p> 
-		
+			</c:choose>
+					
 		<!-- Location -->
 		<p class="login-username">
 		<label for="user_login">Location</label> 
@@ -307,17 +291,18 @@ margin: 1em 0;
 		<p class="login-username">
 		<label for="user_login">Keywords</label>
 		<br> 
-			<%-- <c:choose>
-				<c:when test="${errorMessage != null}">
+			<c:choose>
+				<c:when test="${book != null}">
 					<input type="text" name="keywords" id="keywords" class="input" placeholder="Book Status" value="${book.keywords}" size="20" />
 				</c:when>
-				<c:when test="${errorMessage == null }">
+				<c:when test="${book == null }">
 					<input type="text" name="keywords" id="keywords" class="input" placeholder="Book Keywords" value="" size="20" />
 				</c:when>
-			</c:choose> --%>
+			</c:choose>
 			
-			<input type="text" name="keywords" id="keywords" class="input" placeholder="Book Keywords" value="" size="20" required/>
-		</p>
+			<!-- <input type="text" name="keywords" id="keywords" class="input" placeholder="Book Keywords" value="" size="20" required/>
+ -->
+ 		</p>
 		
 		<!-- Submit Button -->
 		<p class="login-submit">
@@ -327,19 +312,22 @@ margin: 1em 0;
 	</div>
 	<div class="col-md-6">
 	<!-- <form name="isbnsearch" id="searchform" action="/lab2/book/addBookByISBN" method="get" class="wpl-track-me"> -->
-	<form name="isbnsearch" id="searchform" action= "/lab2/book/addBookByIsbn" method="get" class="wpl-track-me">
+	<form name="isbnsearch" id="searchform" action= "/lab2/book/addBookByISBN" method="get" class="wpl-track-me">
 		<!-- ISBN Number -->
 		<h3>Add Book by ISBN</h3>
 		<p class="login-username">
 		 <label for="isbn">ISBN</label> 
 			<input type="text" name="isbn" id="isbn" class="input" placeholder="ISBN" value="" size="20" required/>
 		</p>
+		<!-- Message -->
+		<c:if test="${errorMessage!=null}"><h4>${errorMessage}</h4></c:if>
 		
 		<!-- Submit Button -->
 		<p class="login-submit">
 			<input type="submit" name="wp-submit" id="wp-submit" class="btn btn-success" value="Search By ISBN"/>
 		</p>
 	</form>
+
 	</div>
 	</div>
 	
