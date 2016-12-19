@@ -29,7 +29,7 @@ div.centerpage {
 }
 div.absolute {
     position: absolute;
-    top: 500px;
+    top: 10px;
     width: 200px;
     height: 1000px;
     
@@ -162,20 +162,23 @@ margin: 1em 0;
 </head>
 <body>
 <%@ include file="NavBarLib.jsp" %>
-
-<div id="main" class="container absolute centerpage form-group"> 	
+<div class="modal-body row vertical-divider" style="margin-top: -100px">
+<div class="col-md-6 ">
+	
 	<form name="loginform" id="loginform" action="/lab2/book/addBook" method="post" class="wpl-track-me">
 	<!-- <form name="loginform" id="loginform" action="/book/addBook" method="post" class="wpl-track-me"> --> 
 		<h2 style="top:50px;">Add Book</h2>
 		<!-- Author -->
 		<p class="login-username">
 		<label for="user_login">Author</label> 
+		<br>
 			<input type="text" name="author" id="author" class="input" placeholder="Author Name" value="" size="20" required/> 
 		</p> 
 			
 		<!-- Title -->
 		<p class="login-username">
 		<label for="user_login">Title</label> 
+		<br>
 			<%-- <c:choose>
 				<c:when test="${errorMessage != null}">
 					<input type="text" name="title" id="title" class="input" placeholder="Book Title" value="${book.title}" size="20" />
@@ -195,6 +198,7 @@ margin: 1em 0;
 		<!-- Call Number -->
 		<p class="login-username">
 		<label for="user_login">Call-Number</label> 
+		<br>
 			<%-- <c:choose>
 				<c:when test="${errorMessage != null}">
 					<input type="text" name="call_number" id="call_number" class="input" placeholder="Call Number" value="${book.call_number}" size="20" />
@@ -209,7 +213,9 @@ margin: 1em 0;
 		
 		<!-- Publisher -->
 		<p class="login-username">
+		
 		<label for="user_login">Publisher</label> 
+		<br>
 			<%-- <c:choose>
 				<c:when test="${errorMessage != null}">
 					<input type="text" name="publisher" id="publisher" class="input" placeholder="Publisher Name" value="${book.publisher}" size="20" />
@@ -225,6 +231,7 @@ margin: 1em 0;
 		<!-- Year Of Publication -->
 		<p class="login-username">
 		<label for="user_login">Year Of Publication</label> 
+		<br>
 			<%-- <c:choose>
 				<c:when test="${errorMessage != null}">
 					<input type="text" name="year_of_publication" id="year_of_publication" class="input" placeholder="Publication Year" value="${book.year_of_publication}" size="20" />
@@ -240,6 +247,7 @@ margin: 1em 0;
 		<!-- Location -->
 		<p class="login-username">
 		<label for="user_login">Location</label> 
+		<br>
 			<%-- <c:choose>
 				<c:when test="${errorMessage != null}">
 					<input type="text" name="location_in_library" id="location_in_library" class="input" placeholder="Location in Library" value="${book.location_in_library}" size="20" />
@@ -254,7 +262,8 @@ margin: 1em 0;
 		
 		<!-- Number of Copies --> 
 		<p class="login-username">
-		<label for="user_login">Copies</label> 
+		<label for="user_login">Copies</label>
+		<br> 
 			<%-- <c:choose>
 				<c:when test="${errorMessage != null}">
 					<input type="text" name="number_of_copies" id="number_of_copies" class="input" placeholder="Number of Copies" value="${book.number_of_copies}" size="20" /> 
@@ -270,12 +279,14 @@ margin: 1em 0;
 		<!-- Copies Available --> 
 		<p class="login-username">
 		<label for="user_login">Copies Available</label> 
+		<br>
 			<input type="text" name="copies_available" id="copies_available" class="input" placeholder="Copies Available" value="" size="20" required/>
 		</p>
 		
 		<!-- Current Status --> 
 		<p class="login-username">
-		<label for="user_login">Current Status</label> 
+		<label for="user_login">Current Status</label>
+		<br> 
 			<%-- <c:choose>
 				<c:when test="${errorMessage != null}">
 					<input type="text" name="current_status" id="current_status" class="input" placeholder="Book Status" value="${book.current_status}" size="20" />
@@ -294,7 +305,8 @@ margin: 1em 0;
 		
 		<!-- Keywords --> 
 		<p class="login-username">
-		<label for="user_login">Keywords</label> 
+		<label for="user_login">Keywords</label>
+		<br> 
 			<%-- <c:choose>
 				<c:when test="${errorMessage != null}">
 					<input type="text" name="keywords" id="keywords" class="input" placeholder="Book Status" value="${book.keywords}" size="20" />
@@ -312,7 +324,8 @@ margin: 1em 0;
 			<input type="submit" name="wp-submit" id="wp-submit" class="btn btn-success" value="Add Book" />
 		</p> 	
 	</form> 
-	
+	</div>
+	<div class="col-md-6">
 	<!-- <form name="isbnsearch" id="searchform" action="/lab2/book/addBookByISBN" method="get" class="wpl-track-me"> -->
 	<form name="isbnsearch" id="searchform" action= "/lab2/book/addBookByIsbn" method="get" class="wpl-track-me">
 		<!-- ISBN Number -->
@@ -327,8 +340,10 @@ margin: 1em 0;
 			<input type="submit" name="wp-submit" id="wp-submit" class="btn btn-success" value="Search By ISBN"/>
 		</p>
 	</form>
+	</div>
+	</div>
 	
-</div>
+
 
 </body>
 </html>
