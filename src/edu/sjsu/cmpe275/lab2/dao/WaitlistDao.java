@@ -43,9 +43,16 @@ public class WaitlistDao
 	@Transactional
 	public void removeReserved(Date date)
 	{
-		String queryStr = "delete from Waitlist w where w.waitlistDate < '" + date + "'";
+		String myquery = "select w from waitlist w where w.waitlistDate < '2020'";
+		Query query = entitymanager.createQuery(myquery);
+		List<Waitlist> list = (List<Waitlist>) query.getResultList();
+		for(Waitlist waitlist : list)
+		{
+			System.out.println(waitlist.getWaitlistId());
+		}
+		/*String queryStr = "delete from Waitlist w where w.waitlistDate < '2017-10-10'";
 		int i = entitymanager.createQuery(queryStr).executeUpdate();
-		System.out.println("number of rows deleted" + i);
+		System.out.println("number of rows deleted" + i);*/
 		
 	}
 

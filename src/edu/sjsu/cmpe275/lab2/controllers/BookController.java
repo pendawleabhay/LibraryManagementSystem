@@ -220,7 +220,11 @@ public class BookController {
 				List<Book> updatedBooksList = new ArrayList<Book>();
 				for(Book tempBook : searchResultBookList)
 				{
-					if(tempBook.getReserved_till().compareTo(DateService.getInstance().addDateToAppDate(0))>0)
+					if (tempBook.getReserved_till()==null)
+					{
+						
+					}
+					else if(tempBook.getReserved_till().compareTo(DateService.getInstance().addDateToAppDate(0))>=0)
 					{
 						List<Waitlist> waitlists = waitlistDao.getHighestWaitlist(tempBook.getBookid(), tempBook.getCopies_available());
 						boolean exist = false;
