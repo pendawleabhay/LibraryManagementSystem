@@ -145,8 +145,10 @@
         </div>
         </form>
     </div>    
-    	
-   <h3 style="bold; text-align: center;" class="container input-group col-md-12"> ${message} </h3>
+   <c:if test="${message!=null}">
+		<div><h3 style="bold; text-align: center;" class="container input-group col-md-12"> ${message} </h3></div>
+		</c:if> 	
+   
    
 </body>
 </html>
