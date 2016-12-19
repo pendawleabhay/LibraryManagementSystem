@@ -34,10 +34,12 @@ public class WaitlistDao
 	}
 	
 	@Transactional
-	public List<Waitlist> getWaitlistByUserEmail()
+	public List<Waitlist> getWaitlistByUserEmail(String email)
 	{
-		return null;
-		
+		String myquery = "select w from Waitlist w where w.userEmail = '" + email + "'";
+		Query query = entitymanager.createQuery(myquery);
+		List<Waitlist> list = (List<Waitlist>)query.getResultList();
+		return list;
 	}
 
 	@Transactional

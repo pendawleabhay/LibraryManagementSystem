@@ -253,12 +253,24 @@ public class BookController {
 					List<Integer> userBooksList = new ArrayList<Integer>();
 					userBooksList = (List<Integer>) issueDao.getBookIds(querySearch);
 					List<Boolean> userBookList = new ArrayList<Boolean>();
+					List<Waitlist> userWaitlist = waitlistDao.getWaitlistByUserEmail(user.getEmail());
 					//Sending Boolean list of values which contain issued books to the users as true, otherwise false
-					if(userBooksList!=null && userBooksList.size()>0){
-						for(int index1=0;index1<updatedBooksList.size();index1++){
+					if(userBooksList!=null && userBooksList.size()>0)
+					{
+						for(int index1=0;index1<updatedBooksList.size();index1++)
+						{
 							userBookList.add(index1, false);
-							for(int index2=0;index2<userBooksList.size(); index2++){
-								if(updatedBooksList.get(index1).getBookid()==userBooksList.get(index2)){
+							for(int index2=0;index2<userBooksList.size(); index2++)
+							{
+								if(updatedBooksList.get(index1).getBookid()==userBooksList.get(index2))
+								{
+									userBookList.set(index1, true);
+								}
+							}
+							for(int index3=0;index3<userWaitlist.size(); index3++)
+							{
+								if(updatedBooksList.get(index1).getBookid()==userWaitlist.get(index3).getBookId())
+								{
 									userBookList.set(index1, true);
 								}
 							}

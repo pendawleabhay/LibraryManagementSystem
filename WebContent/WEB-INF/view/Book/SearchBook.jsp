@@ -406,7 +406,7 @@ label {
                     	<c:if test="${userBookList[loop.index] eq true}">
                     	<span class="product clearfix">
                     		<span class="name">
-                     		<h1>Book Already Issued!!!!!!!</h1>
+                     		<h3>Book Already Waitlisted!</h3>
                      		</span>
                      	</span>
                      	</c:if>
