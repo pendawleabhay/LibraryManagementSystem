@@ -214,12 +214,13 @@ public class BookController {
 			List<Book> searchResultBookList = bookDao.getBookBySearchType(querySearch);
 			
 			model = new ModelAndView("/Book/SearchBook");
-			if(searchResultBookList!=null && searchResultBookList.size()>=1) {
+			if(searchResultBookList!=null && searchResultBookList.size()>=1) 
+			{
 				WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
 				List<Book> updatedBooksList = new ArrayList<Book>();
 				for(Book tempBook : searchResultBookList)
 				{
-					if(tempBook.getReserved_till().compareTo(DateService.addDate(0))>=0)
+					if(tempBook.getReserved_till().compareTo(DateService.getInstance().addDateToAppDate(0))>0)
 					{
 						List<Waitlist> waitlists = waitlistDao.getHighestWaitlist(tempBook.getBookid(), tempBook.getCopies_available());
 						boolean exist = false;
@@ -263,11 +264,15 @@ public class BookController {
 					model.addObject("userBookList", userBookList);
 				}
 				model.addObject("user", user);
-			} else{
+			} 
+			else
+			{
 				model.addObject("message", "No Books Found for " + searchType + " = " + searchString +"!");
 				System.out.println("message: No Books Found for " + searchType + " = " + searchString +"!" );
 			}
-		} else {
+		} 
+		else 
+		{
 			model = new ModelAndView("error");
 			model.addObject("error","Please Log in before searching for book!");
 		}
@@ -530,6 +535,7 @@ public class BookController {
 		}*/
 		return model;
 	}
+
 	
 	private void reserveBook(Book book)
 	{
@@ -538,7 +544,7 @@ public class BookController {
 		Book oldBook = bookDao.getBookById(book.getBookid());
 		if(oldBook.getCopies_available()==0 && book.getCopies_available()>0)
 		{
-			Date reservedTill = DateService.addDate(3);
+			Date reservedTill = DateService.getInstance().addDateToAppDate(3);
 			book.setReserved_till(reservedTill);
 			bookDao.reserveBook(book);
 			
@@ -583,4 +589,5 @@ public class BookController {
 		
 		return model;
 	}
+
 }

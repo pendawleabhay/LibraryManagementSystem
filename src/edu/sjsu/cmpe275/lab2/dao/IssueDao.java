@@ -1,7 +1,9 @@
 package edu.sjsu.cmpe275.lab2.dao;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -16,6 +18,7 @@ import edu.sjsu.cmpe275.lab2.entities.Book;
 import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
 import edu.sjsu.cmpe275.lab2.entities.Waitlist;
+import edu.sjsu.cmpe275.lab2.logic.DateService;
 
 @Repository
 public class IssueDao
@@ -145,6 +148,21 @@ public class IssueDao
 		} catch(NoResultException e){
 			return null;
 		}
+	}
+	
+	@Transactional
+	public List<Issue> getDueWaitlist(Date date)
+	{
+		Timestamp fiveDaysLater = new Timestamp(DateService.getInstance().addDate(date,5).getTime());
+		String myquery = "select i from Issue i where i.dueDate <= '" + fiveDaysLater + "'";
+		System.out.println(myquery);
+		Query query = entitymanager.createQuery(myquery);
+		List<Issue> list = (List<Issue>)query.getResultList();
+		for(Issue issue : list)
+		{
+			System.out.println(issue.getBookId());
+		}
+		return list;
 	}
 	
 	@Transactional

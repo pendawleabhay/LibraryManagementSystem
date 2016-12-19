@@ -82,12 +82,6 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 </head>
 <body>
 	
-<div class="login1">
-<form action="action_page.php">
- 	<h3>Change Date :</h3> <input type="date" name="date">
-  	<input type="submit">
-</form>
-</div>
 		
 <div class="login">
     <h1>SJSU Library</h1>

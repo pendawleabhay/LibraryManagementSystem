@@ -4,11 +4,14 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +36,7 @@ import edu.sjsu.cmpe275.lab2.logic.Mail;
 public class IssueController
 {
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-	
+
 	@RequestMapping(value ="/checkout")
 	public ModelAndView checkout( HttpSession session)
 	{
@@ -53,7 +56,7 @@ public class IssueController
 		}
 		
 		// declaration for cart size
-		String query3 = "select count(i) from Issue i where i.userEmail='" + user.getEmail() + "' AND i.issueDate='" + DateService.addDate(0) +"'";
+		String query3 = "select count(i) from Issue i where i.userEmail='" + user.getEmail() + "' AND i.issueDate='" + DateService.getInstance().addDateToAppDate(0) +"'";
 		int countToday = issueDao.countQuery(query3 );		
 		int totalCount = issueDao.countQuery("select count(i) from Issue i where i.userEmail='" + user.getEmail() + "'" );
 		
@@ -84,9 +87,9 @@ public class IssueController
 				// add issue object to list
 				Issue issue = new Issue();
 				issue.setBookId(bookid);
-				dueDate = DateService.addDate(30);
+				dueDate = DateService.getInstance().addDateToAppDate(30);
 				issue.setDueDate(dueDate );
-				issue.setIssueDate(DateService.addDate(0));
+				issue.setIssueDate(DateService.getInstance().addDateToAppDate(0));
 				issue.setUserEmail(user.getEmail());
 				issueList.add(issue);
 				
@@ -112,9 +115,10 @@ public class IssueController
 			for(int tempBookId : waitlistCart)
 			{
 				Waitlist waitlist = new Waitlist();
+				
 				waitlist.setBookId(tempBookId);
 				waitlist.setUserEmail(user.getEmail());
-				waitlist.setWaitlistDate(new Timestamp(System.currentTimeMillis()));
+				waitlist.setWaitlistDate(new Timestamp(DateService.getInstance().getDate().getTime()));
 				waitlists.add(waitlist);
 				Book book = bookDao.getBookById(tempBookId);
 				waitlistBooks.add(book);
@@ -236,6 +240,8 @@ public class IssueController
 		}
 		return model;
 	}
+	
+	
 	
 	private boolean exists(int[] firstArray, int[] secondArray)
 	{

@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.jpa.jpql.parser.DateTime;
+
 @Entity
 @Table(name = "waitlist")
 public class Waitlist
@@ -28,8 +30,6 @@ public class Waitlist
 	
 	@Column(name = "waitlistDate")
 	private Timestamp waitlistDate;
-	
-	
 
 	public Timestamp getWaitlistDate()
 	{
@@ -45,7 +45,7 @@ public class Waitlist
 	{
 		return userEmail;
 	}
-
+	
 	public void setUserEmail(String userEmail)
 	{
 		this.userEmail = userEmail;

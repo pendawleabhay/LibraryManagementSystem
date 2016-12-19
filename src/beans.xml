@@ -4,18 +4,23 @@
   xmlns:p="http://www.springframework.org/schema/p"
   xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:task="http://www.springframework.org/schema/task"
   xsi:schemaLocation="http://www.springframework.org/schema/beans 
   http://www.springframework.org/schema/beans/spring-beans.xsd
   http://www.springframework.org/schema/tx 
   http://www.springframework.org/schema/tx/spring-tx.xsd
   http://www.springframework.org/schema/context 
   http://www.springframework.org/schema/context/spring-context.xsd
+  http://www.springframework.org/schema/task
+  http://www.springframework.org/schema/task/spring-task.xsd
   ">
 
+	<task:annotation-driven/>
   <!-- Enable the component scan (auto wiring etc) for the following package -->
   <context:component-scan base-package="edu.sjsu.cmpe275.lab2.dao" />
     
   <tx:annotation-driven />
+  
     <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>

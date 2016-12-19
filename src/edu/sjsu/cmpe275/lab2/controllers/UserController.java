@@ -26,6 +26,7 @@ import edu.sjsu.cmpe275.lab2.dao.BookDao;
 import edu.sjsu.cmpe275.lab2.dao.IssueDao;
 import edu.sjsu.cmpe275.lab2.dao.UserDao;
 import edu.sjsu.cmpe275.lab2.dao.WaitlistDao;
+import edu.sjsu.cmpe275.lab2.logic.DateService;
 import edu.sjsu.cmpe275.lab2.logic.Mail;
 import edu.sjsu.cmpe275.lab2.entities.Book;
 import edu.sjsu.cmpe275.lab2.entities.Issue;
@@ -87,6 +88,7 @@ public class UserController
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
 	public ModelAndView signIn(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session)
 	{
+		System.out.println(DateService.getInstance().getDate());
 		UserDao dao = context.getBean(UserDao.class);
 		User user = dao.getUser(email);
 		ModelAndView model;
