@@ -1,7 +1,9 @@
 package edu.sjsu.cmpe275.lab2.controllers;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +13,20 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+//import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.books.Books;
+import com.google.api.services.books.BooksRequestInitializer;
+/*import com.google.api.services.books.Books.Volumes.List;*/
+import com.google.api.services.books.model.Volume;
+import com.google.api.services.books.model.Volumes;
 
 import edu.sjsu.cmpe275.lab2.dao.BookDao;
 import edu.sjsu.cmpe275.lab2.dao.IssueDao;
@@ -34,6 +44,7 @@ import edu.sjsu.cmpe275.lab2.logic.Mail;
 public class BookController {
 
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+	private static final String APPLICATION_NAME = "cmpe275";
 	BookDao bookDao;
 	IssueDao issueDao;
 	UserDao userDao;
@@ -588,15 +599,103 @@ public class BookController {
 			
 			if(isbn!=null && isbn.length()>0){
 				try {
-					//BooksService bookService = new BooksService();
-					URL url = new URL("https://www.googleapis.com/books/v1/volumes?q=isbn:0735619670");
+					final Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), null)
+					        .setApplicationName(APPLICATION_NAME)
+					        .setGoogleClientRequestInitializer(new BooksRequestInitializer("AIzaSyD7g5gfVwIZdYrotjEU1rR4gTRLylt6m58"))
+					        .build();
 					
-				} catch (MalformedURLException e) {
+					//.setGoogleClientRequestInitializer(new BooksRequestInitializer(ClientCredentials.API_KEY))
+					// Set query string and Google eBooks.
+					String query = "isbn:" + isbn;
+					com.google.api.services.books.Books.Volumes.List volumesList = books.volumes().list(query);
+					// Execute the query.
+				    Volumes volumes = volumesList.execute();
+				    if (volumes.getTotalItems() == 0 || volumes.getItems() == null) {
+				      System.out.println("No matches found.");
+				      model.addObject("errorMessage", "Wrong ISBN!");
+				      return model;
+				    }
+				    
+				    /*System.out.println("volumes size: " + volumes.size());
+				    List<Volume> volumeList = volumes.getItems();
+				    Volume volume1 = volumeList.get(0);
+				    Volume volume2 = volumeList.get(1);
+				    Volume volume3 = volumeList.get(2);
+				    
+				    System.out.println("volume1:" + volume1.getVolumeInfo().getAuthors().toString());
+				    System.out.println("volume2:" + volume2.getVolumeInfo().getAuthors().toString());
+				    System.out.println("volume3:" + volume3.getVolumeInfo().getAuthors().toString());*/
+				    Book bookAPI = new Book();
+				 // Output results.
+				    for (Volume volume : volumes.getItems()) {
+				      Volume.VolumeInfo volumeInfo = volume.getVolumeInfo();
+				      Volume.SaleInfo saleInfo = volume.getSaleInfo();
+				      System.out.println("==========");
+				      // Title.
+				     
+				     
+				      System.out.println("Title: " + volumeInfo.getTitle());
+				      // Author(s).
+				      java.util.List<String> authors = volumeInfo.getAuthors();
+				      String author = "";
+				      if (authors != null && !authors.isEmpty()) {
+				        System.out.print("Author(s): ");
+				        for (int i = 0; i < authors.size(); ++i) {
+				          System.out.print(authors.get(i));
+				          author += authors.get(i);
+				          if (i < authors.size() - 1) {
+				            System.out.print(", ");
+				            author += ", ";
+				          }
+				        }
+				        System.out.println();
+				      }
+				      
+				   // Keywords(s).
+				      java.util.List<String> categories = volumeInfo.getCategories();
+				      String keywords = "";
+				      if (categories != null && !categories.isEmpty()) {
+				        System.out.print("Category(s): ");
+				        for (int i = 0; i < categories.size(); ++i) {
+				          System.out.print(categories.get(i));
+				          keywords += categories.get(i);
+				          if (i < categories.size() - 1) {
+				            System.out.print(", ");
+				            keywords += ", ";
+				          }
+				        }
+				        System.out.println();
+				      }
+				      
+				      bookAPI.setAuthor(author);
+				      bookAPI.setTitle(volumeInfo.getTitle());
+					  bookAPI.setPublisher(volumeInfo.getPublisher());
+					  bookAPI.setYear_of_publication(Integer.parseInt(volumeInfo.getPublishedDate()));
+					  bookAPI.setKeywords(keywords);
+					  bookAPI.setCall_number(null);
+					  bookAPI.setCopies_available(0);
+					  bookAPI.setCreated_by(user.getEmail());
+					  bookAPI.setCurrent_status(0);
+					  bookAPI.setIsReserved(0);
+					  bookAPI.setLocation_in_library(null);
+					  bookAPI.setNumber_of_copies(0);
+					  bookAPI.setReserved_till(null);
+					  bookAPI.setUpdated_by(user.getEmail());
+					  
+				      //System.out.println("VolumeInfo getCategories: " + volumeInfo.getCategories().toString());
+				    }
+				    System.out.println("Adding book");
+				    model.addObject("book", bookAPI);
+					
+				} catch (GeneralSecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
-				model.addObject("message", "Wrong ISBN!");
+				model.addObject("errorMessage", "Wrong ISBN!");
 			}
 		} else {
 			model = new ModelAndView("error");
