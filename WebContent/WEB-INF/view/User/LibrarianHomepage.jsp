@@ -130,7 +130,7 @@ margin: 1em 0;
 			    <option value="created_by">Created By</option>
 			    <option value="updated_by">Updated By</option>
 			  </select>
-                <input type="text" class="form-control" placeholder="Search for Books" name = "searchString"/>
+                <input type="text" class="form-control" required="required" placeholder="Search for Books" name = "searchString"/>
                 <div class="input-group-btn">
                     <div class="btn-group" role="group"></div>
                     	

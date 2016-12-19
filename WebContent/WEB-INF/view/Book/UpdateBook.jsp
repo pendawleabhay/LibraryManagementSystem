@@ -197,13 +197,13 @@ margin: 1em 0;
 		<!-- Copies --> 
 		<p class="login-username">
 		<label for="user_login">Number of Copies</label> 
-			<input type="text" name="number_of_copies" id="number_of_copies" class="input" placeholder="Number of Copies" value="${book.number_of_copies}" size="20" required /> 
+			<input type="number" name="number_of_copies" min="0" step="1" id="number_of_copies" class="input" placeholder="Number of Copies" value="${book.number_of_copies}" size="20" required /> 
 		</p> 
 		
 		<!-- Copies Available --> 
 		<p class="login-username">
 		<label for="user_login">Copies Available</label> 
-			<input type="text" name="copies_available" id="copies_available" class="input" placeholder="Copies Available" value="${book.copies_available}" size="20" required />
+			<input type="number" name="copies_available" min="0" step="1" id="copies_available" class="input" placeholder="Copies Available" value="${book.copies_available}" size="20" required />
 		</p>
 		
 		<!-- Current Status --> 

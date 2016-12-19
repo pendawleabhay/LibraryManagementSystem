@@ -273,14 +273,14 @@ margin: 1em 0;
 				</c:when>
 			</c:choose> --%>
 			
-			<input type="text" name="number_of_copies" id="number_of_copies" class="input" placeholder="Number of Copies" value="" size="20" required/>
+			<input type="number" name="number_of_copies" min="0" step="1" id="number_of_copies" class="input" placeholder="Number of Copies" value="" size="20" required/>
 		</p> 
 		
 		<!-- Copies Available --> 
 		<p class="login-username">
 		<label for="user_login">Copies Available</label> 
 		<br>
-			<input type="text" name="copies_available" id="copies_available" class="input" placeholder="Copies Available" value="" size="20" required/>
+			<input type="number" name="copies_available" min="0" step="1" id="copies_available" class="input" placeholder="Copies Available" value="" size="20" required/>
 		</p>
 		
 		<!-- Current Status --> 
