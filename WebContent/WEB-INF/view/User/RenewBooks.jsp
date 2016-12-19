@@ -243,6 +243,10 @@ label {
                      <c:if test="${(issuedBookIdList[index].renewalCount < 3) && (issuedBookIdList[index].renewalCount >= 0) }">
                      	<input style=" text-align: left;" type="checkbox" name="bookid" value="${issuedBooksList[index].bookid}"/>
                      </c:if>
+                     <c:if test="${(issuedBookIdList[index].renewalCount == 3)}">
+                     	<span style="bold; text-align = center;">Renew Limit Reached</span>
+                     	
+                     </c:if>
                      
                      <span class="name"><b>Title : </b>
                      <i class="fa fa-money"></i>
