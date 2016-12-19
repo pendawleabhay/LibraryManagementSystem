@@ -56,6 +56,8 @@ public class UserController
 		return model;
 	}
 	
+	
+	//Method for signing out and clearing session
 	@RequestMapping(value = "/signout")
 	public ModelAndView signout(HttpSession session){
 		ModelAndView model;
@@ -85,6 +87,9 @@ public class UserController
 		return model;
 	}
 	
+	
+	
+	//Method for signin
 	@RequestMapping(value = "/signIn", method = RequestMethod.POST)
 	public ModelAndView signIn(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session)
 	{
@@ -121,6 +126,8 @@ public class UserController
 		return model; 
 	}
 	
+	
+	//Method for signup
 	@RequestMapping(value = "/signUp", method = RequestMethod.POST)
 	public ModelAndView signUp(@ModelAttribute("user")  User user)
 	{
@@ -169,6 +176,10 @@ public class UserController
 		return model; 
 	}
 	
+	
+	
+	//Method for verifying the user
+	
 	@RequestMapping(value = "/verify", method = RequestMethod.POST)
 	public ModelAndView verify(@RequestParam("email") String email, @RequestParam("code") int code) throws InterruptedException
 	{
@@ -194,6 +205,9 @@ public class UserController
 		}
 		return model; 
 	}
+	
+	
+	//Method for issuing the book
 
 	@RequestMapping(value="/issued", method = RequestMethod.GET)
 	public ModelAndView issuedBooks(HttpSession session) {
@@ -231,6 +245,9 @@ public class UserController
 		return model;
 	}
 	
+	
+	
+	//Method for renewing the books
 	
 	@RequestMapping(value="/renew", method = RequestMethod.GET)
 	public ModelAndView renewBooks(HttpSession session) {

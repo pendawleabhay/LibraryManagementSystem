@@ -37,6 +37,9 @@ public class IssueController
 {
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 
+	
+	
+	//Method for checkout of books
 	@RequestMapping(value ="/checkout")
 	public ModelAndView checkout( HttpSession session)
 	{
@@ -145,6 +148,10 @@ public class IssueController
 		return model;
 	}
 	
+	
+	
+	//Method for adding the books to the cart
+	
 	@RequestMapping(value ="/addToCart", method = RequestMethod.POST)
 	public ModelAndView addToCart(@RequestParam("bookIssue") int[] issueBookIds, HttpSession session)
 	{
@@ -204,7 +211,9 @@ public class IssueController
 		
 		return model;
 	}
-
+	
+	
+	//Method for adding book it to waitlist
 	@RequestMapping(value ="/addToWaitlist", method = RequestMethod.POST)
 	public ModelAndView addToWaitlist(@RequestParam("bookIssue") int[] waitlistBookIds, HttpSession session)
 	{

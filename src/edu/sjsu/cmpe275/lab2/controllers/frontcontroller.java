@@ -47,6 +47,8 @@ public class frontcontroller
 		return model;
 	}
 	
+	
+	//Setting the date as per requirement
 	@RequestMapping(value="/setDate", method = RequestMethod.POST)
 	public ModelAndView setDate(@RequestParam("date") String str)
 	{
