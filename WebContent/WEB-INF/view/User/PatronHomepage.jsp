@@ -112,7 +112,7 @@
 
 <body>
 	<div class="container">
-		<form action="/lab2/book/search" method = "GET">
+		<form action="/book/search" method = "GET">
 			
 		
 			 

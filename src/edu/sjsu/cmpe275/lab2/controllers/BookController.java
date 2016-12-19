@@ -388,24 +388,7 @@ public class BookController {
 				issueDao = context.getBean(IssueDao.class);
 				userDao = context.getBean(UserDao.class);
 				
-				//old logic
-				//for(int index = 0 ; index < bookidList.length; index++) {
-					
-					/*//Removing Issue
-					Issue issue = issueDao.getIssueById("select i from Issue i where i.bookId=" + bookidList[index] + " and i.userEmail='" + user.getEmail() + "'");
-					if(issue!=null)
-						issueDao.deleteIssue(issue.getIssueId());
-					else
-						System.out.println("No Issue Found");*/
-					
-					/*//Update Book
-					Book book = bookDao.getBookById(bookidList[index]);
-					if(book!=null){
-						book.setCopies_available(book.getCopies_available()+1);
-						bookDao.updateBook(book);
-					}*/
-				//}
-			
+				
 				//New Logic
 				//Removing Issue
 				String bookidQuery = "";
@@ -452,38 +435,6 @@ public class BookController {
 			model = new ModelAndView("error");
 			model.addObject("message", "Please select books to return!");
 		}
-		/*System.out.println("BookidStr: " + bookStr);
-		int bookid = Integer.parseInt(bookStr);
-		System.out.println("BookId int: " + bookid);
-
-		User user = (User)session.getAttribute("user");
-		if(user!=null && user.getUserType().equals("patron")) {
-			bookDao = context.getBean(BookDao.class);
-			issueDao = context.getBean(IssueDao.class);
-			userDao = context.getBean(UserDao.class);
-			
-			//Removing Issue
-			Issue issue = issueDao.getIssueById("select i from Issue i where i.bookId=" + bookid + " and i.userEmail='" + user.getEmail() + "'");
-			if(issue!=null)
-				issueDao.deleteIssue(issue.getIssueId());
-			else
-				System.out.println("No Issue Found");
-			
-			//Update Book
-			Book book = bookDao.getBookById(bookid);
-			if(book!=null){
-				book.setCopies_available(book.getCopies_available()+1);
-				bookDao.updateBook(book);
-			}
-				
-			//Update User
-			user.setNoOfBooksIssued(user.getNoOfBooksIssued()-1);
-			userDao.updateUser(user);
-			session.setAttribute("user", user);
-			
-			model = new ModelAndView("/User/PatronHomepage");
-			model.addObject("message","Book has been Returned!");
-		}*/
 		return model;
 	}
 	
@@ -548,38 +499,6 @@ public class BookController {
 			model = new ModelAndView("error");
 			model.addObject("message", "Please select books to return!");
 		}
-		/*System.out.println("BookidStr: " + bookStr);
-		int bookid = Integer.parseInt(bookStr);
-		System.out.println("BookId int: " + bookid);
-
-		User user = (User)session.getAttribute("user");
-		if(user!=null && user.getUserType().equals("patron")) {
-			bookDao = context.getBean(BookDao.class);
-			issueDao = context.getBean(IssueDao.class);
-			userDao = context.getBean(UserDao.class);
-			
-			//Removing Issue
-			Issue issue = issueDao.getIssueById("select i from Issue i where i.bookId=" + bookid + " and i.userEmail='" + user.getEmail() + "'");
-			if(issue!=null)
-				issueDao.deleteIssue(issue.getIssueId());
-			else
-				System.out.println("No Issue Found");
-			
-			//Update Book
-			Book book = bookDao.getBookById(bookid);
-			if(book!=null){
-				book.setCopies_available(book.getCopies_available()+1);
-				bookDao.updateBook(book);
-			}
-				
-			//Update User
-			user.setNoOfBooksIssued(user.getNoOfBooksIssued()-1);
-			userDao.updateUser(user);
-			session.setAttribute("user", user);
-			
-			model = new ModelAndView("/User/PatronHomepage");
-			model.addObject("message","Book has been Returned!");
-		}*/
 		return model;
 	}
 
@@ -637,16 +556,7 @@ public class BookController {
 				      model.addObject("errorMessage", "Wrong ISBN!");
 				      return model;
 				    }
-				    
-				    /*System.out.println("volumes size: " + volumes.size());
-				    List<Volume> volumeList = volumes.getItems();
-				    Volume volume1 = volumeList.get(0);
-				    Volume volume2 = volumeList.get(1);
-				    Volume volume3 = volumeList.get(2);
-				    
-				    System.out.println("volume1:" + volume1.getVolumeInfo().getAuthors().toString());
-				    System.out.println("volume2:" + volume2.getVolumeInfo().getAuthors().toString());
-				    System.out.println("volume3:" + volume3.getVolumeInfo().getAuthors().toString());*/
+				   
 				    Book bookAPI = new Book();
 				 // Output results.
 				    for (Volume volume : volumes.getItems()) {

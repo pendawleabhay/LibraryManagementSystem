@@ -231,7 +231,7 @@ label {
 		<h4>No books found!!</h4>
 		</c:when>
 		<c:when test="${issuedBooksList != null}">
-		<form action = "/lab2/book/return" method="POST" class="product">
+		<form action = "/book/return" method="POST" class="product">
 			<c:forEach var = "index" begin = "0" end = "${size-1}">
 			
 					

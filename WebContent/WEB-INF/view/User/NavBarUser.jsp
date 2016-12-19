@@ -143,17 +143,17 @@ margin: 1em 0;
                         </a>
                     </li>
                     <li>
-                        <a href="/lab2/user/issued">Return Books</a>
+                        <a href="/user/issued">Return Books</a>
                     </li>
                     <li>
-                        <a href="/lab2/user/renew">Renew Books</a>
+                        <a href="/user/renew">Renew Books</a>
                     </li>
                      <li>
-                        <a href="/lab2/issue/checkout">Check Out</a>
+                        <a href="/issue/checkout">Check Out</a>
                     </li>
                     
                     <li class="signout">
-                    	<a href="/lab2/user/signout">SignOut</a>
+                    	<a href="/user/signout">SignOut</a>
                     </li>
                 </ul>
             </div>
