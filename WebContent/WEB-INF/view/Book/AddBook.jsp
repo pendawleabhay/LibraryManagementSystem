@@ -145,7 +145,7 @@ margin: 1em 0;
 <div class="modal-body row vertical-divider" style="margin-top: -100px">
 <div class="col-md-6 ">
 	
-	<form name="loginform" id="loginform" action="/lab2/book/addBook" method="post" class="wpl-track-me">
+	<form name="loginform" id="loginform" action="/book/addBook" method="post" class="wpl-track-me">
 	<!-- <form name="loginform" id="loginform" action="/book/addBook" method="post" class="wpl-track-me"> --> 
 		<h2 style="top:50px;">Add Book</h2>
 		<!-- Author -->
@@ -311,8 +311,8 @@ margin: 1em 0;
 	</form> 
 	</div>
 	<div class="col-md-6">
-	<!-- <form name="isbnsearch" id="searchform" action="/lab2/book/addBookByISBN" method="get" class="wpl-track-me"> -->
-	<form name="isbnsearch" id="searchform" action= "/lab2/book/addBookByISBN" method="get" class="wpl-track-me">
+	<!-- <form name="isbnsearch" id="searchform" action="/book/addBookByISBN" method="get" class="wpl-track-me"> -->
+	<form name="isbnsearch" id="searchform" action= "/book/addBookByISBN" method="get" class="wpl-track-me">
 		<!-- ISBN Number -->
 		<h3>Add Book by ISBN</h3>
 		<p class="login-username">

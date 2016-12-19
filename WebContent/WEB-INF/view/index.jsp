@@ -85,18 +85,18 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 		
 <div class="login">
     <h1>SJSU Library</h1>
-    <form action="/lab2/user/signIn" method="post">
+    <form action="/user/signIn" method="post">
     	<input type="email" name="email" placeholder="Email" required="required" />
         <input type="password" name="password" placeholder="Password" required="required" />
         
         <button type="submit" value="Sign In" class="btn btn-primary btn-block btn-large">Let me in.</button>
     </form>
     <br>
-		<form action="/lab2/user/getSignUp" >
+		<form action="/user/getSignUp" >
 		<input type="submit" value="Sign Up" />
 		</form>
 	
-	<form action="/lab2/user/getVerify" >
+	<form action="/user/getVerify" >
 		<input type="submit" value="Verify your Account" />
 
 	</form>

@@ -137,17 +137,17 @@ margin: 1em 0;
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                    	<a href="/lab2/user/home">
+                    	<a href="/user/home">
                     		<b style="color: white;, size: 20px;">Home of ${user.name }</b>
                         </a>
                     </li>
                     
                     <li>
-                        <a href="/lab2/book/add">Add Books</a>
+                        <a href="/book/add">Add Books</a>
                     </li>
                     
                     <li class="signout">
-                    <a href="/lab2/user/signout">SignOut</a>
+                    <a href="/user/signout">SignOut</a>
                     </li>
                 </ul>
             </div>

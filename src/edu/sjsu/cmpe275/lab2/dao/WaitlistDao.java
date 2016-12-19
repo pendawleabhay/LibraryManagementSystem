@@ -12,6 +12,8 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.api.client.util.DateTime;
+
 import edu.sjsu.cmpe275.lab2.entities.Issue;
 import edu.sjsu.cmpe275.lab2.entities.User;
 import edu.sjsu.cmpe275.lab2.entities.Waitlist;
@@ -45,17 +47,9 @@ public class WaitlistDao
 	@Transactional
 	public void removeReserved(Date date)
 	{
-		String myquery = "select w from waitlist w where w.waitlistDate < '2020'";
-		Query query = entitymanager.createQuery(myquery);
-		List<Waitlist> list = (List<Waitlist>) query.getResultList();
-		for(Waitlist waitlist : list)
-		{
-			System.out.println(waitlist.getWaitlistId());
-		}
-		/*String queryStr = "delete from Waitlist w where w.waitlistDate < '2017-10-10'";
+		String queryStr = "delete from Waitlist w where w.waitlistDate < '" + date + "'";
 		int i = entitymanager.createQuery(queryStr).executeUpdate();
-		System.out.println("number of rows deleted" + i);*/
-		
+		System.out.println("number of rows deleted" + i);
 	}
 
 	

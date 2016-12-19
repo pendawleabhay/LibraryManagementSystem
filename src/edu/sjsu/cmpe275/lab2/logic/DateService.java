@@ -49,7 +49,7 @@ public class DateService
 	    	sendDueEmail(date);
 	    	//System.out.println();
 	    	WaitlistDao waitlistDao = new WaitlistDao();
-	    	waitlistDao.removeReserved(date);
+	    	//waitlistDao.removeReserved(date);
 	    }
 		appDate=date;
 	}
