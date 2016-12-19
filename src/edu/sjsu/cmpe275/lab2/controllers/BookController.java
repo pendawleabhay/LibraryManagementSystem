@@ -175,9 +175,14 @@ public class BookController {
 			// check if book title exists
 			bookDao = context.getBean(BookDao.class);
 			reserveBook(book);
-			book = bookDao.getBookById(book.getBookid());
+			Book bookGet = bookDao.getBookById(book.getBookid());
 			book.setUpdated_by(user.getEmail());
+			book.setIsReserved(bookGet.getIsReserved());
 			bookDao.updateBook(book);
+			
+			
+			
+			
 			model = new ModelAndView("/User/LibrarianHomepage");
 			model.addObject("message","Book with title '" + book.getTitle() + "' and Book ID=" + book.getBookid() + " updated!");
 		} else {
@@ -294,8 +299,10 @@ public class BookController {
 			} 
 			else
 			{
+				model = new ModelAndView("/User/LibrarianHomepage");
 				model.addObject("message", "No Books Found for " + searchType + " = " + searchString +"!");
 				System.out.println("message: No Books Found for " + searchType + " = " + searchString +"!" );
+				return model;
 			}
 		} 
 		else 
