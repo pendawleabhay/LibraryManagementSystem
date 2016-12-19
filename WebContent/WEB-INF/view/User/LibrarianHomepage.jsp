@@ -111,9 +111,16 @@ margin: 1em 0;
 <body>
 			<%@ include file="NavBarLib.jsp" %>
             <div class="container">
+            
+    <form action="/lab2/setDate" method="post">
+	 	Change Date : <input type="date" name="date">
+	  	<input type="submit">
+	</form>
+            
            <!-- <form action="Dropdown.jsp"> -->
            <form action="/lab2/book/search" method = "GET">
-			  
+			
+	  
   
 	<div class="row">
 		<div class="col-md-12">

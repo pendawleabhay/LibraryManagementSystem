@@ -58,13 +58,13 @@ public class frontcontroller
 		Date date1 = DateService.getInstance().stringToDate(year, month, date);
 		if(date1.compareTo(DateService.getInstance().getDate())<0)
 		{
-			model = new ModelAndView("error");
-			model.addObject("error","Cannot set past date");
+			model = new ModelAndView("/User/LibrarianHomepage");
+			model.addObject("message","You cannot set past date");
 		}
 		else
 		{
 			DateService.getInstance().setDate(date1);
-			model = new ModelAndView("index");
+			model = new ModelAndView("/User/LibrarianHomepage");
 		}
 		
 		return model;
