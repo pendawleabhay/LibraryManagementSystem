@@ -135,6 +135,29 @@ margin: 1em 0;
  <link rel="stylesheet" href="styles.css">
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 
+<!-- <script src="http://code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script> -->
+<script src="http://code.jquery.com/jquery-3.1.1.js" type="text/javascript"></script>
+<script type="text/javascript">
+	/* $(document).ready(function() {
+    	$('#searchisbn').click(function(event) {
+        	    var isbn = $('#isbn').val();
+        	    $.ajax({
+        			url : '/lab2/book/addBookByISBN',
+        			method : 'GET',
+        			data : {
+        				isbn : $('#isbn').val()
+        			},
+        			success : function(response) {
+        				console.log("Successful Operation:");
+        				console.log(response);
+        				//console.log(response.bookid);
+        			}
+        		});
+    	});
+	}); */
+</script>
+
+
 <title>Book | Add</title>
 </head>
 <body>
@@ -149,7 +172,7 @@ margin: 1em 0;
 		<label for="user_login">Author</label> 
 			<input type="text" name="author" id="author" class="input" placeholder="Author Name" value="" size="20" required/> 
 		</p> 
-		
+			
 		<!-- Title -->
 		<p class="login-username">
 		<label for="user_login">Title</label> 
@@ -289,6 +312,22 @@ margin: 1em 0;
 			<input type="submit" name="wp-submit" id="wp-submit" class="btn btn-success" value="Add Book" />
 		</p> 	
 	</form> 
+	
+	<!-- <form name="isbnsearch" id="searchform" action="/lab2/book/addBookByISBN" method="get" class="wpl-track-me"> -->
+	<form name="isbnsearch" id="searchform" action= "/lab2/book/addBookByIsbn" method="get" class="wpl-track-me">
+		<!-- ISBN Number -->
+		<h3>Add Book by ISBN</h3>
+		<p class="login-username">
+		 <label for="isbn">ISBN</label> 
+			<input type="text" name="isbn" id="isbn" class="input" placeholder="ISBN" value="" size="20" required/>
+		</p>
+		
+		<!-- Submit Button -->
+		<p class="login-submit">
+			<input type="submit" name="wp-submit" id="wp-submit" class="btn btn-success" value="Search By ISBN"/>
+		</p>
+	</form>
+	
 </div>
 
 </body>

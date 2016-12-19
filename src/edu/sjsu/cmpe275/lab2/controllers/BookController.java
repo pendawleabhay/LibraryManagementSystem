@@ -1,5 +1,7 @@
 package edu.sjsu.cmpe275.lab2.controllers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -484,10 +487,10 @@ public class BookController {
 				}
 				
 				model = new ModelAndView("/User/PatronHomepage");
-				model.addObject("message","Books has been Returned!");
+				model.addObject("message","Books has been Renewed!");
 			} else {
 				model = new ModelAndView("error");
-				model.addObject("message","Please Login as Patron to return Books!");
+				model.addObject("message","Please Login as Patron to renew Books!");
 			}
 		} else {
 			model = new ModelAndView("error");
@@ -551,4 +554,33 @@ public class BookController {
 		}		
 	}
 	
+	@RequestMapping(value = "/addBookByISBN", method = RequestMethod.GET)
+	public ModelAndView addBookByISBN(
+			@RequestParam("isbn") String isbn,
+			HttpSession session){
+		ModelAndView model;
+		System.out.println("ISBN: " + isbn);
+		User user = (User) session.getAttribute("user");
+		if(user!=null && user.getUserType().equals("librarian")){
+			model = new ModelAndView("Book/AddBook");
+			
+			if(isbn!=null && isbn.length()>0){
+				try {
+					//BooksService bookService = new BooksService();
+					URL url = new URL("https://www.googleapis.com/books/v1/volumes?q=isbn:0735619670");
+					
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				model.addObject("message", "Wrong ISBN!");
+			}
+		} else {
+			model = new ModelAndView("error");
+			model.addObject("message", "Login by Librarian!");
+		}
+		
+		return model;
+	}
 }
