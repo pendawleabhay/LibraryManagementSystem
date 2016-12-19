@@ -49,6 +49,8 @@ public class BookController {
 	IssueDao issueDao;
 	UserDao userDao;
 	
+	
+	//Method for returing book page
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add(HttpSession session)
 	{
@@ -62,7 +64,8 @@ public class BookController {
 		}
 		return model; 
 	}
-
+	
+	//Here the Book gets added
 	@RequestMapping(value = "/addBook", method = RequestMethod.POST)
 	public ModelAndView addBook(
 			@ModelAttribute("book") Book book,
@@ -115,6 +118,8 @@ public class BookController {
 		return model;
 	}
 	
+	
+	//Method for returning update book page
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ModelAndView update(
 			@RequestParam("bookid") String bookidStr,
@@ -146,6 +151,8 @@ public class BookController {
 		return model;
 	}
 	
+	
+	//Method for actually updating the book
 	@RequestMapping(value = "/updateBook", method = RequestMethod.POST)
 	public ModelAndView updateBook(
 			@ModelAttribute("book") Book book,
@@ -194,7 +201,7 @@ public class BookController {
 	}
 	
 	
-
+	//Method to search as per parameters
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public ModelAndView search(
 			@RequestParam("searchType") String searchType,
@@ -314,6 +321,8 @@ public class BookController {
 		return model;
 	}
 	
+	
+	//Method to delete the book
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ModelAndView delete(
 			@RequestParam(name = "bookid") String bookidStr,
@@ -355,6 +364,8 @@ public class BookController {
 		return model;
 	}
 	
+	
+	//Method to return the book
 	@RequestMapping(value = "/return", method = RequestMethod.POST)
 	public ModelAndView returnBook(
 			@RequestParam(name = "bookid") String[] bookStr,
@@ -476,6 +487,8 @@ public class BookController {
 		return model;
 	}
 	
+	
+	//Method to renew the book
 	@RequestMapping(value = "/renewBooks", method = RequestMethod.POST)
 	public ModelAndView renewBook(
 			@RequestParam(name = "bookid") String[] bookStr,
@@ -594,6 +607,8 @@ public class BookController {
 		}		
 	}
 	
+	
+	//Method to add Books by ISBN
 	@RequestMapping(value = "/addBookByISBN", method = RequestMethod.GET)
 	public ModelAndView addBookByISBN(
 			@RequestParam("isbn") String isbn,
