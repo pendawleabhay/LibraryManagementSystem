@@ -59,6 +59,8 @@ public class IssueDao
 	      return count;
 	 }
 	
+	
+	//get issued books by the id
 	@Transactional
 	public List<Issue> getIssuedBooksId(String userEmail) {
 		List<Book> issuedBooks = new ArrayList<Book>();
@@ -80,7 +82,9 @@ public class IssueDao
 		}
 	}
 
-
+	
+	
+	//get issued books
 	@Transactional
 	public List<Book> getIssuedBooks(List<Issue> issuedBookidList) {
 		List<Book> issuedBooks;
@@ -109,6 +113,8 @@ public class IssueDao
 		}
 	}
 	
+	
+	//GET issued books by id
 	@Transactional
 	public Issue getIssueById(String queryId){
 		try {
@@ -150,6 +156,8 @@ public class IssueDao
 		}
 	}
 	
+	
+	//Get waitlist by Id
 	@Transactional
 	public List<Issue> getDueWaitlist(Date date)
 	{

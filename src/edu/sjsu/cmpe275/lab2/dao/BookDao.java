@@ -82,12 +82,15 @@ public class BookDao {
 		return bookList;
 	}
 	
+	
+	//Delete books by bookid
 	@Transactional
 	public void deleteBook(int bookid){
 		Book book = entitymanager.find(Book.class, bookid);
 		entitymanager.remove(book);
 	}
 
+	//Reserve book
 	@Transactional
 	public void reserveBook(Book book)
 	{
@@ -95,6 +98,7 @@ public class BookDao {
 		//Query query = entitymanager.createQuery("delete from Waitlist w where w.bookId=" + book.getBookid());
 	}
 	
+	//Updating the book
 	@Transactional
 	public int updateBooks(String queryUpdate) {
 		try {
