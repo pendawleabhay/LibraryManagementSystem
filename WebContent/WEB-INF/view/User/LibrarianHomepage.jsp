@@ -16,6 +16,16 @@ body {
     margin-top: -1px;
     padding: 6px 20px;
 }
+.login1 { 
+	position: absolute;
+	top: 40%;
+	left: 88%;
+	margin: -150px 0 0 -150px;
+	width:300px;
+	height:300px;
+}
+
+
 .input-group-btn .btn-group {
     display: flex !important;
 }
@@ -111,11 +121,15 @@ margin: 1em 0;
 <body>
 			<%@ include file="NavBarLib.jsp" %>
             <div class="container">
-            
-    <form action="/lab2/setDate" method="post">
+        <div class="login1">    
+    	<form action="/lab2/setDate" method="post">
 	 	Change Date : <input type="date" name="date">
-	  	<input type="submit">
-	</form>
+	  	<input class="btn btn-success" type="submit">
+		</form>
+		<c:if test="${message!=null}">
+		<div>${message}</div>
+		</c:if>
+		</div>
             
            <!-- <form action="Dropdown.jsp"> -->
            <form action="/lab2/book/search" method = "GET">

@@ -65,6 +65,7 @@ public class frontcontroller
 		{
 			DateService.getInstance().setDate(date1);
 			model = new ModelAndView("/User/LibrarianHomepage");
+			model.addObject("message","Email sent to all patrons");
 		}
 		
 		return model;
