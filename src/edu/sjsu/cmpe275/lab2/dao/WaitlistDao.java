@@ -2,6 +2,7 @@ package edu.sjsu.cmpe275.lab2.dao;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,9 +48,13 @@ public class WaitlistDao
 	@Transactional
 	public void removeReserved(Date date)
 	{
-		String queryStr = "delete from Waitlist w where w.waitlistDate < '" + date + "'";
+		    Calendar cal = Calendar.getInstance();
+		    cal.setTime(date);
+		    int year = cal.get(Calendar.YEAR);
+		    int month = cal.get(Calendar.MONTH);
+		    int day = cal.get(Calendar.DAY_OF_MONTH); 
+		String queryStr = "delete from Waitlist w where w.waitlistDate < '" + year + "-" + day + "-" + month +  "'";
 		int i = entitymanager.createQuery(queryStr).executeUpdate();
-		System.out.println("number of rows deleted" + i);
 	}
 
 	

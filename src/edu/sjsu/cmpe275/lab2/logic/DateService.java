@@ -47,9 +47,8 @@ public class DateService
 		if(date.compareTo(appDate)>0 &&  newDate!=oldDate) //checking if future date is being set
 	    {
 	    	sendDueEmail(date);
-	    	//System.out.println();
-	    	WaitlistDao waitlistDao = new WaitlistDao();
-	    	//waitlistDao.removeReserved(date);
+	    	WaitlistDao waitlistDao = context.getBean(WaitlistDao.class);
+	    	waitlistDao.removeReserved(date);
 	    }
 		appDate=date;
 	}

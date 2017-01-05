@@ -122,7 +122,7 @@ margin: 1em 0;
 			<%@ include file="NavBarLib.jsp" %>
             <div class="container">
         <div class="login1">    
-    	<form action="/setDate" method="post">
+    	<form action="/lab2/setDate" method="post">
 	 	Change Date : <input type="date" name="date">
 	  	<input class="btn btn-success" type="submit">
 		</form>
@@ -132,12 +132,12 @@ margin: 1em 0;
 		</div>
             
            <!-- <form action="Dropdown.jsp"> -->
-           <form action="/book/search" method = "GET">
+           <form action="/lab2/book/search" method = "GET">
 			
 	  
   
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-9">
             <div class="input-group" id="adv-search">
             <select name="searchType" class="input-group">
 			    <option value="author">Author</option>

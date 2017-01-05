@@ -23,17 +23,9 @@ import edu.sjsu.cmpe275.lab2.logic.DateService;
 public class frontcontroller
 {
 	ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-	int run = -1;
 	@RequestMapping(value="/")
 	public ModelAndView root(HttpSession session)
-	{
-		run++;
-		if(run==0)
-		{
-			System.out.println("run " + run);
-			updateTime();
-		}
-		
+	{	
 		User user = (User)session.getAttribute("user");
 		ModelAndView model;
 		if(user!=null){
@@ -73,21 +65,4 @@ public class frontcontroller
 		return model;
 	}
 	
-	
-
-	private void updateTime()
-	{
-		TimerTask task = new TimerTask()
-		{
-			@Override
-			public void run()
-			{
-				DateService.getInstance().addSecond(1);
-				//System.out.println("chron job executing");
-			}
-		};
-		
-		Timer timer = new Timer();
-		timer.schedule(task, 0, 1*1000);
-	}
 }

@@ -76,7 +76,7 @@
 	
 		<h1>SJSU Library Sign Up</h1>
 	    
-		    <form action="/user/signUp" method="post">
+		    <form action="/lab2/user/signUp" method="post">
 		    	<input type="text" name="name" placeholder="Your Name" required="required" />
 		    	<input type="number" name="sjsuId" placeholder="SJSU ID" maxlength="9" minlength="9" required="required" />
 		    	<input type="email" name="email" placeholder="Email Id" required="required" />

@@ -418,7 +418,7 @@ public class BookController {
 				session.setAttribute("user", user);
 				
 				//Update Book
-				String updateBooksCopiesAvailableQuery = "update Book b set b.copies_available=b.copies_available-1 where b.bookid in (" + bookidQuery + ")";
+				String updateBooksCopiesAvailableQuery = "update Book b set b.copies_available=b.copies_available+1 where b.bookid in (" + bookidQuery + ")";
 				int rowsUpdated = bookDao.updateBooks(updateBooksCopiesAvailableQuery);
 				
 				//Returning

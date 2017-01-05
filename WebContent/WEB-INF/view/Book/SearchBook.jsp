@@ -292,18 +292,19 @@ label {
 			<ul class="widget-products">
                   <li>
                   		<!-- Checking if book is already issued by the user -->
-                     	
-                     	<c:if test="${userBookList[loop.index] eq true}">
+                     	<c:choose>
+                     	<c:when test="${userBookList[loop.index] eq true}">
 							<span class="product clearfix">
                     		<span class="name">
                      		<h3>Book Already Issued!!!!!!!</h3>
                      		</span>
                      	</span>
-                     	</c:if>
+                     	</c:when>
                      	<%-- <div>Status: ${userBookList[loop.index]}</div> --%>
-                     	<c:if test="${userBookList[loop.index] eq false}">
+                     	<c:otherwise> <%-- test="${userBookList[loop.index] eq false}"> --%>
                      		<input style=" text-align: left;"  type="checkbox" name="bookIssue" value="${book.bookid}"/>
-                     	</c:if>
+                     	</c:otherwise>
+                     	</c:choose>
                      <span class="img"></span>
                      <span class="product clearfix">
                      	<span class="name"><b>Book Title:</b>
